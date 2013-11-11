@@ -69,6 +69,6 @@ class AvatarsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def avatar_params
-      params[:avatar]
+      params.require(:avatar).permit(:image)
     end
 end
