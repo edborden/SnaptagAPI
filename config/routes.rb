@@ -1,6 +1,4 @@
 Gridweb::Application.routes.draw do
-  resources :avatars
-
   devise_for :users
   root "pages#home"
   # The priority is based upon order of creation: first created -> highest priority.
