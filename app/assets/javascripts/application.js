@@ -15,3 +15,4 @@
 //= require bootstrap
 //= require turbolinks
 //= require_tree .
+//= http://maps.googleapis.com/maps/api/js?sensor=false
