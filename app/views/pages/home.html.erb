@@ -1,5 +1,7 @@
 <% if user_signed_in? %>
-	# do something
+
+ >> <%= link_to "AGENT ACTIVATE", root_path %>_
+
 
 <% else %>
 <p>
@@ -16,4 +18,5 @@
 	>> <%= link_to "GRIDWEB", new_user_session_path %>_<BR>
 	
 </p>
+
 <% end %>

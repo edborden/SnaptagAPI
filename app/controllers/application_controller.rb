@@ -15,5 +15,9 @@ protected
    devise_parameter_sanitizer.for(:account_update) << :handle
     devise_parameter_sanitizer.for(:sign_up) << :facebook
    devise_parameter_sanitizer.for(:account_update) << :facebook
+   devise_parameter_sanitizer.for(:sign_up) << :lat
+   devise_parameter_sanitizer.for(:account_update) << :lat
  end
+
+
 end

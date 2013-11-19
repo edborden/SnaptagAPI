@@ -1,25 +1,25 @@
 <h2>Edit <%= resource_name.to_s.humanize %></h2>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }, html: { multipart: true }) do |f| %>
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }, html: { multipart: true }, html: {class: "gllpLatlonPicker"}) do |f| %>
   <%= devise_error_messages! %>
 
    <div class="form-group">
        <%= f.label :name %>
-       <%= f.text_field :name, class: "form-control", :autofocus => true %>
+       <%= f.text_field :name %>
     </div>
 
     <div class="form-group">
        <%= f.label :handle %>
-       <%= f.text_field :handle, class: "form-control", :autofocus => true %>
+       <%= f.text_field :handle %>
     </div>
 
     <div class="form-group">
        <%= f.label :facebook %>
-       <%= f.text_field :facebook, class: "form-control", :autofocus => true %>
+       <%= f.text_field :facebook %>
     </div>
 
   <div><%= f.label :email %><br />
-  <%= f.email_field :email, :autofocus => true %></div>
+  <%= f.email_field :email %></div>
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
