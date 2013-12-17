@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131118200339) do
+ActiveRecord::Schema.define(version: 20131122223956) do
+
+  create_table "activationqueues", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "users_count"             default: 0,  null: false
+  end
 
   create_table "active_admin_comments", force: true do |t|
     t.string   "namespace"
@@ -49,7 +55,7 @@ ActiveRecord::Schema.define(version: 20131118200339) do
   create_table "relationships", force: true do |t|
     t.integer "user_id"
     t.integer "relation_id"
-    t.string  "type"
+    t.string  "relationship_type"
   end
 
   create_table "users", force: true do |t|
@@ -72,8 +78,13 @@ ActiveRecord::Schema.define(version: 20131118200339) do
     t.string   "facebook"
     t.string   "name"
     t.string   "handle"
+    t.integer  "activationqueue_id"
+    t.integer  "huntercount"            default: 0,  null: false
+    t.integer  "targetcount"            default: 0,  null: false
+    t.boolean  "active"                 default: 0,  null: false
   end
 
+  add_index "users", ["activationqueue_id"], name: "index_users_on_activationqueue_id"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
