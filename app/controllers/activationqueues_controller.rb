@@ -18,7 +18,7 @@ class ActivationqueuesController < RelationshipsController
 	end	
 
 	def blast_off
-
+		
 	end	
 
 end
