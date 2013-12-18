@@ -1,5 +1,5 @@
 class RelationshipsController < ApplicationController
-  def make(user_id, relation_id, relationship_type)
+  def create(user_id, relation_id, relationship_type)
     Relationship.create(:user_id => user_id, :relation_id => relation_id, :relationship_type => relationship_type)
   end
   
@@ -16,10 +16,10 @@ class RelationshipsController < ApplicationController
       @gonna_hunt_these = User.active.need_hunters.take(3)
       @gonna_get_targeted_by_these = User.active.need_targets.take(3)
       @gonna_hunt_these.each do |v|
-        make(current_user.user_id, v.id, hunt)
+        create(current_user.user_id, v.id, hunt)
       end
       @gonna_get_targeted_by_these.each do |v|
-        make(v.id, current_user.id, hunt)
+        create(v.id, current_user.id, hunt)
       end  
     end
   end  

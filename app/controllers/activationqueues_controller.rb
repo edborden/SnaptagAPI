@@ -14,11 +14,13 @@ class ActivationqueuesController < RelationshipsController
 	private
 
 	def check_full
-		@queue.blast_off if @queue.full?
+		blast_off(@queue) if @queue.full?
 	end	
 
-	def blast_off
-		
+	def blast_off(userlist)
+		userlist.each do |u|
+			user
+		end
 	end	
 
 end
