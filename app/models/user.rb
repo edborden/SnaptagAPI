@@ -18,15 +18,6 @@ class User < ActiveRecord::Base
   counter_culture :activationqueue
 
 
-  def self.set_counts(hunter_count,target_count)
-    users = User.all
-    users.each do |u|
-      u.hunter_count = hunter_count
-      u.target_count = target_count
-      u.save
-    end
-  end  
-
   def self.set_activationqueue(id)
     users = User.all
     users.each do |u|
@@ -39,4 +30,13 @@ class User < ActiveRecord::Base
     users = User.where(hunter_count:hcount, target_count:tcount)
     users.count
   end  
+
+  def is_not_already_hunting?(target)
+    return true if self.relations.include?(target)
+  end  
+
+  def has_enough_hunters?
+    return true if hunter_count > 3
+  end
+
 end

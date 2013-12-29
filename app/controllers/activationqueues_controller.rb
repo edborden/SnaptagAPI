@@ -22,18 +22,27 @@ class ActivationqueuesController < ApplicationController
 	end	
 
 	def blast_off(queue)
-		count = 0
 		userlist = queue.users.shuffle
-		userlist << userlist[0] << userlist[1] << userlist[2]
-		userlist.each do |u|
-			if count < 13
-				Relationship.create(:user_id => u.id, :relation_id => userlist[(count + 1)].id, :relationship_type => :hunt)
-				Relationship.create(:user_id => u.id, :relation_id => userlist[(count + 2)].id, :relationship_type => :hunt)
-				Relationship.create(:user_id => u.id, :relation_id => userlist[(count + 3)].id, :relationship_type => :hunt)
-				count = count + 1
-			end
+		@targetslist = userlist
+		userlist.each do |user|
+			3.times { shuffle_and_relate(user) }
 		end
 		queue.destroy
 	end	
+
+	private
+
+	def shuffle_and_relate(user)
+		@targetslist.shuffle
+		position = 0
+		## target can't be same as hunter and no duplicate targets
+		position += 1 until user != @targetslist[position] && user.is_not_already_hunting?(@targetslist[position])
+
+		Relationship.create(:user_id => user.id, :relation_id => @targetslist[position].id, :relationship_type => :hunt)
+		
+		## check if huntercount is full, then remove from list
+		@targetslist -= @targetslist[position] if @targetslist[position].reload.has_enough_hunters? 
+
+	end
 
 end
