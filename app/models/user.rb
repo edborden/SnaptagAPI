@@ -8,18 +8,18 @@ class User < ActiveRecord::Base
   belongs_to :activationqueue
 
   has_many :hunts, :foreign_key => "hunter_id"
-  has_many :relations, :through => :relationships
-  has_many :inverse_relationships, :class_name => "Relationship", :foreign_key => "target_id"
-  has_many :inverse_relations, :through => :inverse_relationships, :source => :user
+  has_many :targets, :through => :hunts, :source => :hunter
+  has_many :flights, :class_name => "Hunt", :foreign_key => "target_id"
+  has_many :hunters, :through => :flights, :source => :target
 
   scope :active, -> { where(active: true) }
-  scope :need_hunters, -> { where("hunter_count < 3") }
-  scope :need_targets, -> { where("target_count < 3") }
+  scope :need_hunters, -> { where("hunters_count < 3") }
+  scope :need_targets, -> { where("targets_count < 3") }
 
   counter_culture :activationqueue
 
   def self.list_with_count(hcount,tcount)
-    users = User.where(hunter_count:hcount, target_count:tcount)
+    users = User.where(hunters_count:hcount, targets_count:tcount)
     users.count
   end  
 

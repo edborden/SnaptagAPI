@@ -16,7 +16,7 @@ class Blastoff
 
 	def assign_a_target(hunter,list)
 		validated_target = find_a_valid_target_in_list(hunter,list)
-		Relationship.create(:user_id => hunter.id, :relation_id => validated_target.id, :relationship_type => :hunt)
+		Hunt.create(:hunter_id => hunter.id, :target_id => validated_target.id)
 		list = take_target_off_list_if_has_enough_hunters(validated_target,list)
 	end
 

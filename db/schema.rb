@@ -53,9 +53,8 @@ ActiveRecord::Schema.define(version: 20131219191935) do
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
 
   create_table "hunts", force: true do |t|
-    t.integer "user_id"
+    t.integer "hunter_id"
     t.integer "target_id"
-    t.string  "relationship_type"
   end
 
   create_table "users", force: true do |t|
@@ -79,8 +78,8 @@ ActiveRecord::Schema.define(version: 20131219191935) do
     t.string   "name"
     t.string   "handle"
     t.integer  "activationqueue_id"
-    t.integer  "hunter_count",           default: 0,     null: false
-    t.integer  "target_count",           default: 0,     null: false
+    t.integer  "hunters_count",           default: 0,     null: false
+    t.integer  "targets_count",           default: 0,     null: false
     t.boolean  "active",                 default: false, null: false
   end
 
