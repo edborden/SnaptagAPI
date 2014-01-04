@@ -24,10 +24,7 @@ class User < ActiveRecord::Base
   end  
 
   def is_not_already_hunting?(target)
-  #  if self.relations.include?(target) == false
-  #    return true
-  #  elseif self.relations.each |user| do {user}
-
+  return true if self.targets.include?(target) == false
   end  
 
 end

@@ -23,7 +23,7 @@ class Blastoff
 	def find_a_valid_target_in_list(hunter,list)
 		position = 0
 		## target can't be same as hunter and no duplicate targets
-		position += 1 until hunter != list[position] && user.is_not_already_hunting?(list[position])
+		position += 1 until hunter != list[position] && hunter.is_not_already_hunting?(list[position])
 		return list[position]
 	end
 
