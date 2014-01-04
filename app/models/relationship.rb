@@ -5,14 +5,6 @@ class Relationship < ActiveRecord::Base
 	after_create :plus_one 
 	before_destroy :minus_one
 
-
-	def self.kill_all
-    relationships = Relationship.all
-    relationships.each do |r|
-      r.destroy
-    end
-  end  
-
 	private
 
 	def plus_one

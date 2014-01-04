@@ -52,9 +52,9 @@ ActiveRecord::Schema.define(version: 20131219191935) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
 
-  create_table "relationships", force: true do |t|
+  create_table "hunts", force: true do |t|
     t.integer "user_id"
-    t.integer "relation_id"
+    t.integer "target_id"
     t.string  "relationship_type"
   end
 

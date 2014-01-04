@@ -6,9 +6,10 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }
 
   belongs_to :activationqueue
-  has_many :relationships
+
+  has_many :hunts, :foreign_key => "hunter_id"
   has_many :relations, :through => :relationships
-  has_many :inverse_relationships, :class_name => "Relationship", :foreign_key => "relation_id"
+  has_many :inverse_relationships, :class_name => "Relationship", :foreign_key => "target_id"
   has_many :inverse_relations, :through => :inverse_relationships, :source => :user
 
   scope :active, -> { where(active: true) }
@@ -17,26 +18,16 @@ class User < ActiveRecord::Base
 
   counter_culture :activationqueue
 
-
-  def self.set_activationqueue(id)
-    users = User.all
-    users.each do |u|
-      u.activationqueue_id = id
-      u.save
-    end
-  end
-
   def self.list_with_count(hcount,tcount)
     users = User.where(hunter_count:hcount, target_count:tcount)
     users.count
   end  
 
   def is_not_already_hunting?(target)
-    return true if self.relations.include?(target)
-  end  
+  #  if self.relations.include?(target) == false
+  #    return true
+  #  elseif self.relations.each |user| do {user}
 
-  def has_enough_hunters?
-    return true if hunter_count > 3
-  end
+  end  
 
 end
