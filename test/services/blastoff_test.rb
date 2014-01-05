@@ -10,13 +10,13 @@ class BlastoffTest < ActiveSupport::TestCase
 	end
 
 	test "find_a_valid_target_in_list returns 3rd record in list if first two records are invalid" do
-	#	user1 = Fabricate(:user)
-	#	user2 = Fabricate(:user)
-	#	user3 = Fabricate(:user)
-	#	queue = [user1,user2,user3]
-	#	blastoff = Blastoff.new(queue)
-	#	blastoff.find_a_valid_target_in_list()
-
+		user1 = Fabricate(:user)
+		user2 = Fabricate(:user)
+		user3 = Fabricate(:user)
+		queue = [user1,user2,user3]
+		blastoff = Blastoff.new(queue)
+		result = blastoff.find_a_valid_target_in_list(user1,queue)
+		assert_equal result,user3,"Did not return third user"
 	end
 
 	test "take_target_off_list_if_has_enough_hunters works" do

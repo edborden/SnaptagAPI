@@ -8,9 +8,9 @@ class User < ActiveRecord::Base
   belongs_to :activationqueue
 
   has_many :hunts, :foreign_key => "hunter_id"
-  has_many :targets, :through => :hunts, :source => :hunter
+  has_many :targets, :through => :hunts, :source => :target
   has_many :flights, :class_name => "Hunt", :foreign_key => "target_id"
-  has_many :hunters, :through => :flights, :source => :target
+  has_many :hunters, :through => :flights, :source => :hunter
 
   scope :active, -> { where(active: true) }
   scope :need_hunters, -> { where("hunters_count < 3") }
@@ -21,10 +21,6 @@ class User < ActiveRecord::Base
   def self.list_with_count(hcount,tcount)
     users = User.where(hunters_count:hcount, targets_count:tcount)
     users.count
-  end  
-
-  def is_not_already_hunting?(target)
-  return true if self.targets.include?(target) == false
   end  
 
 end

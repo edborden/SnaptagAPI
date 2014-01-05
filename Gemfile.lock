@@ -16,14 +16,6 @@ GIT
       ransack (~> 1.0)
       sass-rails
 
-GIT
-  remote: git://github.com/thomas-mcdonald/bootstrap-sass.git
-  revision: 9c6c07f74ff515cf38380b014cfede14a4f0eae4
-  branch: 3
-  specs:
-    bootstrap-sass (3.0.0.0)
-      sass (~> 3.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -62,6 +54,8 @@ GEM
       nokogiri (>= 1.4.4, < 1.6.0)
       uuidtools (~> 2.1)
     bcrypt-ruby (3.1.2-x86-mingw32)
+    bootstrap-sass (3.0.3.0)
+      sass (~> 3.2)
     bourbon (3.1.8)
       sass (>= 3.2.0)
       thor
@@ -118,7 +112,6 @@ GEM
     mime-types (1.25.1)
     minitest (4.7.5)
     multi_json (1.8.2)
-    nokogiri (1.5.11)
     nokogiri (1.5.11-x86-mingw32)
     orm_adapter (0.5.0)
     paperclip (3.5.2)
@@ -201,7 +194,7 @@ PLATFORMS
 DEPENDENCIES
   activeadmin!
   aws-sdk (~> 1.20.0)
-  bootstrap-sass!
+  bootstrap-sass
   coffee-rails (~> 4.0.0)
   counter_culture (~> 0.1.18)
   devise
