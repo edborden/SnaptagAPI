@@ -18,13 +18,8 @@ class User < ActiveRecord::Base
 
   counter_culture :activationqueue
 
-  def self.list_with_count(hcount,tcount)
-    users = User.where(hunters_count:hcount, targets_count:tcount)
-    users.count
-  end  
-
   def is_not_already_hunting?(target)
-    return true if self.targets.reload.include?(target) == false
+    true if self.targets.reload.include?(target) == false
   end
 
 end
