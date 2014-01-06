@@ -23,4 +23,8 @@ class User < ActiveRecord::Base
     users.count
   end  
 
+  def is_not_already_hunting?(target)
+    return true if self.targets.reload.include?(target) == false
+  end
+
 end

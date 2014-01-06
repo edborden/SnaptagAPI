@@ -18,17 +18,22 @@ class Blastoff
 		validated_target = find_a_valid_target_in_list(hunter,list)
 		Hunt.create(:hunter_id => hunter.id, :target_id => validated_target.id)
 		list = take_target_off_list_if_has_enough_hunters(validated_target,list)
+		return list
 	end
 
 	def find_a_valid_target_in_list(hunter,list)
 		position = 0
 		## target can't be same as hunter and no duplicate targets
-		position += 1 until hunter != list[position] && hunter.targets.include?(list[position])
+		position += 1 until hunter != list[position] && hunter.is_not_already_hunting?(list[position])
 		return list[position]
 	end
 
 	def take_target_off_list_if_has_enough_hunters(validated_target,list)
-		list -= list[position] if list[position].huntercount == 3
+		if validated_target.hunters_count == 3
+			index = list.index(validated_target)
+			list.delete_at(index)
+		end
+		return list
 	end
 
 end
