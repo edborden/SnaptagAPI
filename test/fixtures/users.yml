@@ -1,5 +1,0 @@
-<% 12.times do |n| %>
-user<%= n %>:
-  email: <%= "user#{n}@example.com" %>
-  password: <%= "password#{n}" %>
-<% end %>

@@ -12,9 +12,8 @@ class User < ActiveRecord::Base
   has_many :flights, :class_name => "Hunt", :foreign_key => "target_id"
   has_many :hunters, :through => :flights, :source => :hunter
 
-  scope :active, -> { where(active: true) }
-  scope :need_hunters, -> { where("hunters_count < 3") }
-  scope :need_targets, -> { where("targets_count < 3") }
+  scope :need_hunters, -> { where("hunters_count < 3").where(active: true).where(activationqueue_id: nil) }
+  scope :need_targets, -> { where("targets_count < 3").where(active: true).where(activationqueue_id: nil) }
 
   counter_culture :activationqueue
 

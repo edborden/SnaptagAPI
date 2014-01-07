@@ -8,27 +8,23 @@ class Holefiller
 	end
 
 	def it_is_time?
-		if User.active.need_hunters.count >= 3 && User.active.need_targets.count >= 3
-			## Can't fill holes if no one is waiting
+		if User.need_hunters.count >= 3 && User.need_targets.count >= 3
+			## Can't fill holes if no one is waiting to fill them
 			return true if Activationqueue.all.empty? == false
 		end
 		return false
 	end
 
 	def get_new_player
-		lucky_user = Activationqueue.first.users.shuffle.take(1)
+		lucky_user = Activationqueue.first.users.shuffle.first
 		return lucky_user
 	end
 
 	def fill_hunt_holes(lucky_user)
-      targets = User.active.need_hunters.shuffle.take(3)
-      hunters = User.active.need_targets.shuffle.take(3)
-      targets.each do |target|
-        Hunt.create(lucky_user.user_id,target.id)
-      end
-      hunters.each do |hunter|
-        Hunt.create(hunter.id, lucky_user.id)
-      end  
+      targets = User.need_hunters.shuffle.take(3)
+      hunters = User.need_targets.shuffle.take(3)
+      targets.each {|target| Hunt.create(hunter_id:lucky_user.id,target_id:target.id)}
+      hunters.each {|hunter| Hunt.create(hunter_id:hunter.id,target_id:lucky_user.id)}
     end
 
 end
