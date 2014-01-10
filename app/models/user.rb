@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }
 
-  belongs_to :activationqueue
+  belongs_to :activationqueue, counter_cache: true
 
   has_many :hunts, :foreign_key => "hunter_id"
   has_many :targets, :through => :hunts, :source => :target
@@ -14,8 +14,6 @@ class User < ActiveRecord::Base
 
   scope :need_hunters, -> { where("hunters_count < 3").where(active: true).where(activationqueue_id: nil) }
   scope :need_targets, -> { where("targets_count < 3").where(active: true).where(activationqueue_id: nil) }
-
-  counter_culture :activationqueue
 
   def is_not_already_hunting?(target)
     true if self.targets.reload.include?(target) == false

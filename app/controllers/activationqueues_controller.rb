@@ -1,20 +1,18 @@
 class ActivationqueuesController < ApplicationController
 
 	def create
+		activationqueue = Activationqueue.create
+		activationqueue.users<<(current_user)
 		current_user.active = true
-		if Activationqueue.exists?
-			activationqueue = Activationqueue.first
-			current_user.activationqueue_id = activationqueue.id 
-			current_user.save
-			if activationqueue.full?
-				Blastoff.new(activationqueue) 
-				activationqueue.destroy
-			end
-		else 
-			activationqueue = Activationqueue.create
-			current_user.activationqueue_id = activationqueue.id
-			current_user.save			
-		end
+		current_user.save
+		redirect_to root_path	
+	end
+
+	def update
+		activationqueue = Activationqueue.first
+		activationqueue.users<<(current_user)
+		current_user.active = true
+		current_user.save
 		redirect_to root_path
 	end
 end

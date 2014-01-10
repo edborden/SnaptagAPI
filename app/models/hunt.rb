@@ -8,21 +8,21 @@ class Hunt < ActiveRecord::Base
 	private
 
 	def plus_one
-		@user = User.find(self.hunter_id)
-		@user.targets_count += 1 
-		@user.save
-		@relation = User.find(self.target_id)
-		@relation.hunters_count += 1
-		@relation.save
+		user = User.find(self.hunter_id)
+		user.targets_count += 1 
+		user.save
+		relation = User.find(self.target_id)
+		relation.hunters_count += 1
+		relation.save
 	end
 
 	def minus_one
-		@user = User.find(self.hunter_id)
-		@user.targets_count -= 1 
-		@user.save
-		@relation = User.find(self.target_id)
-		@relation.hunters_count -= 1
-		@relation.save
+		user = User.find(self.hunter_id)
+		user.targets_count -= 1 
+		user.save
+		relation = User.find(self.target_id)
+		relation.hunters_count -= 1
+		relation.save
 	end
 
 end

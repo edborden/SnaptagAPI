@@ -16,17 +16,14 @@ class HolefillerTest < ActiveSupport::TestCase
 	test "get_new_player returns a player on the activation queue" do
 		activationqueue = Activationqueue.create
 		User.all.each do |user|
-			user.activationqueue_id=activationqueue.id
-			user.save
+			activationqueue.users<<(user)
 		end
-		assert activationqueue.users.include?(@user0), "should include user0"
 		assert activationqueue.users.include?(Holefiller.new.get_new_player)
 	end
 
 	test "fill_hunt_holes" do
 		activationqueue = Activationqueue.create
-		@user3.activationqueue_id = activationqueue.id
-		@user3.save
+		activationqueue.users<<(@user3)
 		assert_equal 4,User.count
 		assert_equal 3,User.need_hunters.count
 		Holefiller.new.fill_hunt_holes(@user3)

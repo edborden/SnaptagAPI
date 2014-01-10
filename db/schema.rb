@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20131219191935) do
   create_table "activationqueues", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "users_count"
+    t.integer  "users_count",          default: 0,  null: false
   end
 
   create_table "active_admin_comments", force: true do |t|

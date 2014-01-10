@@ -12,7 +12,6 @@ gem 'paperclip', '~> 3.0'
 gem 'aws-sdk', '~> 1.20.0'
 gem 'activeadmin', github: 'gregbell/active_admin'
 gem 'sass-rails'
-gem 'counter_culture', '~> 0.1.18'
 
 group :doc do
   gem 'sdoc', require: false

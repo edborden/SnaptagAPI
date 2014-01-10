@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Gridweb::Application.config.secret_key_base = 'a61af315d0cd82eb1378eb45b24ab5c2cc228237c2b2f41abc6267ed25ccb06ebf4284d898387af17c2a3e0085a7110ced9c8c3652817f47834f564c2d1f32c6'
+Assassin::Application.config.secret_key_base = 'a61af315d0cd82eb1378eb45b24ab5c2cc228237c2b2f41abc6267ed25ccb06ebf4284d898387af17c2a3e0085a7110ced9c8c3652817f47834f564c2d1f32c6'
