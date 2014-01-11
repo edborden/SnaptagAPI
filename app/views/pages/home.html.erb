@@ -1,9 +1,8 @@
-<% if user_signed_in? %>
+
 
  >> <%= link_to "AGENT ACTIVATE", 'activationqueue', method: :post %>_
 
 
-<% else %>
 <p>
 	CHESS<br>
 	POKER<br>
@@ -15,8 +14,7 @@
 	THEATERWIDE BIOTOXIC AND CHEMICAL WARFARE<BR>
 	GLOBAL THERMONUCLEAR WAR<BR>
 	<BR>
-	>> <%= link_to "ASSASSIN", new_user_session_path %>_<BR>
+	>> <%= link_to "ASSASSIN", "/auth/facebook" %>_<BR>
 	
 </p>
 
-<% end %>

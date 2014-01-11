@@ -1,11 +1,11 @@
 Assassin::Application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
-  devise_for :users
   root "pages#home"
   #if Activationqueue.exists?
-  #  post 'activationqueue', to: 'activationqueues#update'
+  #  put 'activationqueue', to: 'activationqueues#update'
   #else
   #  post 'activationqueue', to: 'activationqueues#create'
   #end
+  	get 'sessions', to: 'sessions#destroy', as: 'signout'
+  	get 'auth/:provider/callback', to: 'sessions#create'
+	get 'auth/failure', to: redirect('/')
 end
