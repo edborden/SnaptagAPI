@@ -1,8 +1,4 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }
-
   belongs_to :activationqueue, counter_cache: true
 
   has_many :hunts, :foreign_key => "hunter_id"
@@ -13,19 +9,31 @@ class User < ActiveRecord::Base
   scope :need_hunters, -> { where("hunters_count < 3").where(active: true).where(activationqueue_id: nil) }
   scope :need_targets, -> { where("targets_count < 3").where(active: true).where(activationqueue_id: nil) }
 
-  def is_not_already_hunting?(target)
-    true if self.targets.reload.include?(target) == false
+  def self.from_mobile(facebookid,token)
+    find_by(facebookid: facebookid) || create_from_facebook(token)
   end
 
-  def self.from_omniauth(auth)
-    where(auth.slice("provider", "uid")).first || create_from_omniauth(auth)
+  def facebook
+    @facebook ||= Koala::Facebook::API.new(token)
   end
 
-  def self.create_from_omniauth(auth)
+  def exchange_token
+    oauth ||= Koala::Facebook::OAuth.new(726528350693125, "96ec2c1f6e53d6d1b4607164c190109c")
+    newtoken = oauth.exchange_access_token(self.token)
+    self.token=newtoken
+    self.save
+    return newtoken
+  end
+
+  def self.create_from_facebook(token)
+    profile = Koala::Facebook::API.new(token).get_object("me")
     create! do |user|
-      user.provider = auth["provider"]
-      user.uid = auth["uid"]
-      user.name = auth["info"]["nickname"]
+      user.facebookid = profile["id"]
+      user.firstname = profile["firstname"]
+      user.lastname = profile["lastname"]
+      user.token = testuserhash["access_token"]
+      user.email = profile["email"]
+      user.gender = profile["gender"]
     end
   end
 

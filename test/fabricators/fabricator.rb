@@ -1,6 +1,6 @@
 Fabricator(:user) do
-	name { Faker::Name.name }
+	firstname { Faker::Name.first_name }
+	lastname { Faker::Name.last_name }
   	email { |attrs| "#{Faker::Lorem.characters(10)}@example.com" }
-  	password { Faker::Lorem.characters(10) }
   	active true
 end

@@ -25,15 +25,13 @@ ActiveRecord::Schema.define(version: 20131219191935) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "avatar_file_name"
-    t.string   "avatar_content_type"
-    t.integer  "avatar_file_size"
-    t.datetime "avatar_updated_at"
-    t.string   "name"
+    t.string   "email"
+    t.string   "gender"
+    t.string   "firstname"
+    t.string   "lastname"
     t.string   "handle"
-    t.string   "provider"
-    t.string   "uid"
+    t.integer   "facebookid"
+    t.string   "token"
     t.integer  "activationqueue_id"
     t.integer  "hunters_count",          default: 0,  null: false
     t.integer  "targets_count",          default: 0,  null: false

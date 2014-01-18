@@ -1,12 +1,13 @@
 class SessionsController < ApplicationController
 	def create
-	  user = User.from_omniauth(env["omniauth.auth"])
+	  user = User.from_mobile(params[:id],params[:token])
 	  session[:user_id] = user.id
-	  redirect_to root_url, notice: "Signed in!"
+	  session[:token] = user.exchange_token
+	  render status: :accepted
 	end
 
 	def destroy
 	  session[:user_id] = nil
-	  redirect_to root_url, notice: "Signed out!"
+	  render status: :accepted
 	end
 end

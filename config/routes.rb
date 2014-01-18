@@ -5,7 +5,6 @@ Assassin::Application.routes.draw do
   #else
   #  post 'activationqueue', to: 'activationqueues#create'
   #end
-  	get 'sessions', to: 'sessions#destroy', as: 'signout'
-  	get 'auth/:provider/callback', to: 'sessions#create'
-	get 'auth/failure', to: redirect('/')
+  	delete 'sessions', to: 'sessions#destroy', as: 'signout'
+	post 'sessions', to: 'sessions#create', as: 'login'
 end
