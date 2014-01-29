@@ -21,20 +21,26 @@ class UserTest < ActiveSupport::TestCase
   end 
 
   test "facebook test user is working" do
-    @test_users ||= Koala::Facebook::TestUsers.new(:app_id => 726528350693125, :secret => "96ec2c1f6e53d6d1b4607164c190109c")
-    testuserhash = @test_users.create(true)
-    profile = Koala::Facebook::API.new(testuserhash["access_token"]).get_object("me")
-    User.create! do |user|
-      user.facebookid = profile["id"]
-      user.firstname = profile["firstname"]
-      user.lastname = profile["lastname"]
-      user.token = testuserhash["access_token"]
-      user.email = profile["email"]
-      user.gender = profile["gender"]
-    end
+    skip
+    create_facebook_test_user
+    assert_instance_of User,user
   end
 
-  
+  test "from_mobile calls its methods" do
+     facebookid = 123
+     token = 456
+    User.expects(:find_by).returns(false)
+    User.expects(:create_from_facebook).with(token)
+    User.from_mobile(facebookid,token)
+  end
+
+  test "exchange_token doesn't return the same token" do
+    user = create_facebook_test_user
+    oldtoken = user.token
+    newtoken = user.exchange_token
+    assert_instance_of String,newtoken
+    assert_not_equal oldtoken,user.reload.token
+  end
 
 end
 

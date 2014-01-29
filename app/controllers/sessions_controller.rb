@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
 	  user = User.from_mobile(params[:id],params[:token])
 	  session[:user_id] = user.id
 	  session[:token] = user.exchange_token
-	  render status: :accepted
+	  head :accepted
 	end
 
 	def destroy

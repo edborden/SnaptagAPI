@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
 
   def exchange_token
     oauth ||= Koala::Facebook::OAuth.new(726528350693125, "96ec2c1f6e53d6d1b4607164c190109c")
-    newtoken = oauth.exchange_access_token(self.token)
+    newtoken = oauth.exchange_access_token(token)
     self.token=newtoken
     self.save
     return newtoken
@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
       user.facebookid = profile["id"]
       user.firstname = profile["firstname"]
       user.lastname = profile["lastname"]
-      user.token = testuserhash["access_token"]
+      user.token = token
       user.email = profile["email"]
       user.gender = profile["gender"]
     end
