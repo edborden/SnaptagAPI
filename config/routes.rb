@@ -8,5 +8,5 @@ Assassin::Application.routes.draw do
 	delete 'sessions', to: 'sessions#destroy', as: 'signout'
 	post 'sessions', to: 'sessions#create', as: 'login'
 	get 'users', to: 'users#show'
-	get 'test', to: 'users#test'
+	get 'user/:firstname', to: 'users#test'
 end
