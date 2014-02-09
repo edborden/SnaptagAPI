@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
 	def test
 		test = User.find_by(firstname: params[:firstname])
-		render json: test
+		render json: test, callback: param[:callback]
 	end
 
 end
