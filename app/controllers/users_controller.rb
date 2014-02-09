@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 	end
 
 	def test
-		test = User.find_by(firstname: params[firstname])
+		test = User.find_by(firstname: params[:firstname])
 		render json: test
 	end
 
