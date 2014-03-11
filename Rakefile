@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Assassin::Application.load_tasks
+Gridwebclient::Application.load_tasks
