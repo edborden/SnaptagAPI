@@ -1,19 +1,13 @@
 class ApplicationController < ActionController::API
-  protected
 
   # Renders a 401 status code if the current user is not authorized
   def ensure_authenticated_user
     head :unauthorized unless current_user
   end
 
-  # Returns the active user associated with the access token if available
+  # Returns the user associated with the access token if available
   def current_user
-    api_key = ApiKey.active.where(access_token: token).first
-    if api_key
-      return api_key.user
-    else
-      return nil
-    end
+    current_user ||= User.find_by(token: token)
   end
 
   # Parses the access token from the header

@@ -1,28 +1,40 @@
 class UsersController < ApplicationController
-  before_filter :ensure_authenticated_user, only: [:index]
+  before_filter :ensure_authenticated_user, except: [:create]
 
-  # Returns list of users. This requires authorization
-  def index
-    render json: User.all
+  # login:
+  def create
+
+    user = User.find_by(facebookid: params[:facebookid])
+
+    ## if new user:
+    ### exchange for 60 day token
+    ### create user, return user
+
+    if user == nil
+      new_token = Facebook.new.exchange_token(params[:token])
+      user = User.create_from_facebook(new_token)
+      render json: user, callback: params[:callback], root: true
+
+    ## if existing user
+    ### if tokens match, return user
+    ### if tokens don't match, exchange for 60 day token, return user
+
+    else
+      if user.token == params[:token]
+        render json: user, callback: params[:callback], root: true
+      else
+        user.token = Facebook.new.exchange_token(params[:token])
+        user.save
+        render json: user, callback: params[:callback], root: true
   end
 
   def show
     render json: User.find(params[:id])
   end
 
-  def create
-    user = User.create(user_params)
-    if user.new_record?
-      render json: { errors: user.errors.messages }, status: 422
-    else
-      render json: user.session_api_key, status: 201
-    end
+  def test
+    test = User.find_by(firstname: params[:firstname])
+    render json: test, callback: params[:callback], root: true
   end
 
-  private
-
-  # Strong Parameters (Rails 4)
-  def user_params
-    params.require(:user).permit(:name, :username, :email, :password, :password_confirmation)
-  end
 end
