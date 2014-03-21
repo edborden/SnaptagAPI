@@ -7,18 +7,18 @@ class HolefillerTest < ActiveSupport::TestCase
 	end
 
 	test "if is_it_time returning true and false correctly" do 
-	assert_equal 4,User.all.need_hunters.count
-	assert_not Holefiller.new.it_is_time?
-	Activationqueue.create
-	assert Holefiller.new.it_is_time?
+		assert_equal 4,User.all.need_hunters.count
+		assert_not Holefiller.new.it_is_time?
+		Activationqueue.create
+		assert Holefiller.new.it_is_time?
 	end
 
-	test "get_new_player returns a player on the activation queue" do
+	test "lucky_player returns a player on the activation queue" do
 		activationqueue = Activationqueue.create
 		User.all.each do |user|
 			activationqueue.users<<(user)
 		end
-		assert activationqueue.users.include?(Holefiller.new.get_new_player)
+		assert activationqueue.users.include?(Holefiller.new.lucky_player)
 	end
 
 	test "fill_hunt_holes" do

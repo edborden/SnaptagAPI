@@ -1,18 +1,13 @@
 class ActivationqueuesController < ApplicationController
 
 	def create
-		activationqueue = Activationqueue.create
-		activationqueue.users<<(current_user)
-		current_user.active = true
-		current_user.save
-		redirect_to root_path	
+		if Activationqueue.empty?
+			activationqueue = Activationqueue.create.add_user(current_user)
+		else
+			activationqueue = Activationqueue.first.add_user(current_user)
+		end
+		current_user.activate
+		Holefiller.new.run
 	end
 
-	def update
-		activationqueue = Activationqueue.first
-		activationqueue.users<<(current_user)
-		current_user.active = true
-		current_user.save
-		redirect_to root_path
-	end
 end

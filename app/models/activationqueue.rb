@@ -1,6 +1,10 @@
 class Activationqueue < ActiveRecord::Base
 	has_many :users, after_add: :blastoff_if_full
 
+	def add_user(user)
+		self.users<<(user)
+	end
+
 	def full?
 		true if self.users(true).size == 12
 	end

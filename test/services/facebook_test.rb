@@ -10,7 +10,7 @@ class FacebookTest < ActiveSupport::TestCase
 	end
 
 	test "exchange_token doesn't return the same token and get_profile works" do
-		user = dump_create_facebook_test_user
+		user = onetime_create_facebook_test_user
 		oldtoken = user.token
 		newtoken = Facebook.new.exchange_token(oldtoken)
 		assert_instance_of String,newtoken

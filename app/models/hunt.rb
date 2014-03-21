@@ -2,27 +2,42 @@ class Hunt < ActiveRecord::Base
 	belongs_to :hunter, :class_name => "User"
 	belongs_to :target, :class_name => "User"
 
+#	before_create :validate_users
 	after_create :plus_one 
-	before_destroy :minus_one
+
+	def hunter
+		hunter ||= User.find(self.hunter_id)
+	end
+
+	def target
+		target ||= User.find(self.target_id)
+	end
+
+	def complete
+		self.active = false
+		save
+		minus_one
+	end
 
 	private
 
-	def plus_one
-		user = User.find(self.hunter_id)
-		user.targets_count += 1 
-		user.save
-		relation = User.find(self.target_id)
-		relation.hunters_count += 1
-		relation.save
-	end
+		## THIS NEEDS EXCEPTION HANDLING
+		#def validate_users
+		#	if hunter.reload.targets_count <= 2 and hunter.active? and target.reload.hunters_count <= 2 and target.active?
+		#		true
+		#	else
+		#		false
+		#	end
+		#end
 
-	def minus_one
-		user = User.find(self.hunter_id)
-		user.targets_count -= 1 
-		user.save
-		relation = User.find(self.target_id)
-		relation.hunters_count -= 1
-		relation.save
-	end
+		def plus_one
+			hunter.increment!(:targets_count)
+			target.increment!(:hunters_count)
+		end
+
+		def minus_one
+			hunter.decrement!(:targets_count)
+			target.decrement!(:hunters_count)
+		end
 
 end
