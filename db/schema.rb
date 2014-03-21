@@ -14,6 +14,9 @@ ActiveRecord::Schema.define(version: 20140310174426) do
     t.boolean  "active",                 default: true,  null: false
   end
 
+  add_index "hunts", ["hunter_id"], name: "index_users_on_hunter_id"
+  add_index "hunts", ["target_id"], name: "index_users_on_target_id"
+
   create_table "users", force: true do |t|
     t.string   "email"
     t.string   "gender"
@@ -32,5 +35,6 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 
   add_index "users", ["activationqueue_id"], name: "index_users_on_activationqueue_id"
   add_index "users", ["facebookid"], name: "index_users_on_facebookid"
+  add_index "users", ["token"], name: "index_users_on_token"
 
 end

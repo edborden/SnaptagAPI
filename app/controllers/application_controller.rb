@@ -9,7 +9,7 @@ class ApplicationController < ActionController::API
 
   # Returns the user associated with the access token if available
   def current_user
-    current_user ||= User.find_by token: get_token
+    @current_user ||= User.find_by token: get_token
   end
 
   # Parses the access token from the header
