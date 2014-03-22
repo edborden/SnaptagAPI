@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 		if user == nil
 			new_token = Facebook.new.exchange_token(params[:token])
 			user = User.create_from_facebook(new_token)
-			render status: :ok, callback: params[:callback]
+			render json: {}, status: 200
 
 		## if existing user
 		### if tokens match, return user
