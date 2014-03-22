@@ -19,12 +19,12 @@ class UsersController < ApplicationController
 		### if tokens don't match, exchange for 60 day token, return user
 
 		elsif user.token == params[:token]
-			render status: :ok, callback: params[:callback]
+			render json: {}, status: 200
 
 		else
 			user.token = Facebook.new.exchange_token(params[:token])
 			user.save
-			render status: :ok, callback: params[:callback]
+			render json: {}, status: 200
 		end
 
 	end
