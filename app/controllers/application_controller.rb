@@ -1,28 +1,35 @@
 class ApplicationController < ActionController::API
+	include ActionController::ImplicitRender
+	include ActionController::MimeResponds
 
-  before_action :ensure_authenticated_user
+	def cors_preflight_check
+		headers['Access-Control-Max-Age'] = '1728000'
+		render json: {} # Render as you need
+	end
 
-  # Renders a 401 status code if the current user is not authorized
-  def ensure_authenticated_user
-    head :unauthorized unless current_user
-  end
+	before_action :ensure_authenticated_user
 
-  # Returns the user associated with the access token if available
-  def current_user
-    @current_user ||= User.find_by token: get_token
-  end
+	# Renders a 401 status code if the current user is not authorized
+	def ensure_authenticated_user
+		head :unauthorized unless current_user
+	end
 
-  # Parses the access token from the header
-  def get_token
-    bearer = request.headers["HTTP_AUTHORIZATION"]
+	# Returns the user associated with the access token if available
+	def current_user
+		@current_user ||= User.find_by token: get_token
+	end
 
-    # allows tests to pass
-    bearer ||= request.headers["rack.session"].try(:[], 'Authorization')
+	# Parses the access token from the header
+	def get_token
+		bearer = request.headers["HTTP_AUTHORIZATION"]
 
-    if bearer.present?
-      bearer.split.last
-    else
-      nil
-    end
-  end
+		# allows tests to pass
+		bearer ||= request.headers["rack.session"].try(:[], 'Authorization')
+
+		if bearer.present?
+			bearer.split.last
+		else
+			nil
+		end
+	end
 end

@@ -4,7 +4,6 @@ gem 'rails', '4.0.3'
 gem 'rails-api'
 gem 'active_model_serializers'
 gem "koala", "~> 1.8.0rc1"
-gem 'rack-cors', :require => 'rack/cors'
 
 group :development, :test do
      gem 'sqlite3'
