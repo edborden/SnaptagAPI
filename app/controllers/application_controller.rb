@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::API
-  respond_to :json
 
   before_action :ensure_authenticated_user
 
