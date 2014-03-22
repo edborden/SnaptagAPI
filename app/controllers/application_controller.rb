@@ -24,7 +24,9 @@ class ApplicationController < ActionController::API
 
 	# Renders a 401 status code if the current user is not authorized
 	def ensure_authenticated_user
-		head :unauthorized unless current_user or request.method == "OPTIONS"
+		if request.method != "OPTIONS"
+			head :unauthorized unless current_user
+		end
 	end
 
 	# Returns the user associated with the access token if available
