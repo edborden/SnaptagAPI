@@ -1,6 +1,6 @@
 Gridwebclient::Application.routes.draw do
 	#constraints :format => "json" do
-		post 'users', to: 'users#create', format: false
+		post 'users', to: 'users#create', format: :json
 		get 'users', to: 'users#show'
 	#end
 end
