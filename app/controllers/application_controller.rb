@@ -1,33 +1,9 @@
 class ApplicationController < ActionController::API
-	before_filter :ensure_authenticated_user, :cors_preflight_check
-	after_filter :cors_set_access_control_headers
-
-	# For all responses in this controller, return the CORS access control headers.
-
-	def cors_set_access_control_headers
-		headers['Access-Control-Allow-Origin'] = '*'
-		headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-		headers['Access-Control-Request-Method'] = '*'
-		headers['Access-Control-Allow-Headers'] = '*'
-		headers['Access-Control-Max-Age'] = '1728000'
-	end
-
-	def cors_preflight_check
-		if request.method == "OPTIONS"
-			headers['Access-Control-Allow-Origin'] = '*'
-			headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
-			headers['Access-Control-Request-Method'] = '*'
-			headers['Access-Control-Allow-Headers'] = '*'
-			headers['Access-Control-Max-Age'] = '1728000'
-			render :text => '', :content_type => 'text/plain'
-		end
-	end
+	before_filter :ensure_authenticated_user
 
 	# Renders a 401 status code if the current user is not authorized
 	def ensure_authenticated_user
-		if request.method != "OPTIONS"
-			head :unauthorized unless current_user
-		end
+		head :unauthorized unless current_user
 	end
 
 	# Returns the user associated with the access token if available
@@ -47,5 +23,9 @@ class ApplicationController < ActionController::API
 		else
 			nil
 		end
+	end
+
+	def jsonp(my_object)
+		render json: my_object, callback: params[:callback]
 	end
 end
