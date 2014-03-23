@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-	skip_before_action :ensure_authenticated_user, only: :create
+	skip_before_action :ensure_authenticated_user, only: :login
 
 	def login
 
