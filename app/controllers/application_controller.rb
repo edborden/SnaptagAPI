@@ -25,7 +25,7 @@ class ApplicationController < ActionController::API
 		end
 	end
 
-	def jsonp(my_object)
+	def jsonp(my_object = {})
 		render json: my_object, callback: params[:callback]
 	end
 end
