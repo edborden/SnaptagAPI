@@ -12,19 +12,19 @@ class UsersController < ApplicationController
 		if user == nil
 			new_token = Facebook.new.exchange_token(params[:token])
 			user = User.create_from_facebook(new_token)
-			jsonp {}
+			jsonp
 
 		## if existing user
 		### if tokens match, return user
 		### if tokens don't match, exchange for 60 day token, return user
 
 		elsif user.token == params[:token]
-			jsonp {}
+			jsonp
 
 		else
 			user.token = Facebook.new.exchange_token(params[:token])
 			user.save
-			jsonp {}
+			jsonp
 		end
 
 	end
