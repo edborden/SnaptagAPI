@@ -2,10 +2,10 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
 
-	test "me with invalid token" do
-		skip
-		user = Fabricate(:user)
-		get(:me, {"token" => "312456asdg"})
+	test "me with unmatching token" do
+		user = fb_user
+		user.set_token("faketoken")
+		get(:me, {"facebookid" => @@fbprofile["id"],"token" => @@fbhash["access_token"]})
 		assert_equal 401,response.status
 	end
 
