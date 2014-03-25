@@ -14,11 +14,10 @@ class ActivationqueueTest < ActiveSupport::TestCase
 	test "activationqueue runs blastoff when full" do
 		activationqueue = Activationqueue.create
 		12.times {Fabricate(:user)}
-		activationqueue.expects(:blastoff_if_full)
+		Blastoff.expects(:new).with(User.all).returns(stub(:run))
 		User.all.each do |user|
 			activationqueue.users<<(user)
 		end
-		assert_equal 36,Hunt.count
 		assert_not Activationqueue.exists?
 	end
 

@@ -2,49 +2,42 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
 
-	test "show without token in header" do
+	test "me without token" do
 		user = Fabricate(:user)
-		get(:show, {"id" => user.id})
+		get(:me)
 		assert_equal 401,response.status
 	end
 
-	test "show with invalid token in header" do
+	test "me with invalid token" do
 		user = Fabricate(:user)
-		get(:show, {"id" => user.id},{ 'Authorization' => "Bearer 12345" })
+		get(:me, {"token" => "312456asdg"})
 		assert_equal 401,response.status
 	end
 
-	test "show with valid token in header" do
+	test "me with valid token" do
 		user = Fabricate(:user)
-		token = user.token
-		get(:show, {"id" => user.id},{ 'Authorization' => "Bearer #{token}" })
-		assert_equal user.email, json_response['user']['email']
+		get(:me, {"token" => user.token})
+		assert_equal 200,response.status
+		assert_equal user.firstname, json_response['user']['firstname']
 	end
 
-	test "new user, token exchange" do
-		onetime_create_facebook_test_hash
-		get(:create, {"facebookid" => @testuserprofile["id"], "token" => @testuserhash["access_token"]})
-		assert_equal @testuserprofile["first_name"],User.first.firstname
-		assert_equal @testuserprofile["first_name"],json_response['user']['firstname']
-		assert_not_equal User.first.token,@testuserhash["access_token"]
+	test "new user" do
+		fb_hash
+		User.expects(:find_by).with(facebookid: @@fbprofile["id"]).returns(nil)
+		Facebook.expects(:new).returns(stub(verify_token?: true))
+		User.expects(:create_from_facebook).with(@@fbhash["access_token"])
+		get(:login, {"facebookid" => @@fbprofile["id"], "token" => @@fbhash["access_token"]})
+		assert_equal 200,@response.status
 	end
 
-	test "existing user with matching token" do
-		user = global_create_facebook_test_user
-		get(:create, {"facebookid" => @@globaltestuserprofile["id"], "token" => @@globaltestuserhash["access_token"]})
-		assert_equal @@globaltestuserprofile["first_name"],user.firstname
-		assert_equal @@globaltestuserprofile["first_name"],json_response['user']['firstname']
-	end
-
-	test "existing user with unmatching token, token exchange" do
-		user = onetime_create_facebook_test_user
-		thetoken = user.token
-		user.token = "123abc"
-		user.save
-		get(:create, {"facebookid" => @testuserprofile["id"], "token" => thetoken})
-		assert_equal @testuserprofile["first_name"],User.first.firstname
-		assert_equal @testuserprofile["first_name"],json_response['user']['firstname']
-		assert_not_equal User.first.token,"123abc"
+	test "existing user with unmatching token" do
+		user = fb_user
+		user.set_token("faketoken")
+		User.expects(:find_by).with(facebookid: @@fbprofile["id"]).returns(user)
+		Facebook.expects(:new).returns(stub(verify_token?: true))
+		user.expects(:set_token)
+		get(:login, {"facebookid" => user.facebookid, "token" => @@fbhash["access_token"]})
+		assert_equal 200,response.status
 	end
 
 end

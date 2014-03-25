@@ -5,4 +5,4 @@
 #
 # see http://stackoverflow.com/questions/13745689/getting-rails-api-and-strong-parameters-to-work-together
 
-ActionController::API.send :include, ActionController::StrongParameters
+#ActionController::API.send :include, ActionController::StrongParameters

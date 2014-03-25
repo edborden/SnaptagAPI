@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
 	belongs_to :activationqueue, counter_cache: true
 
 	validates :token, uniqueness: true
+	validates :facebookid, uniqueness: true
 
 	has_many :hunts, :foreign_key => "hunter_id"
 	has_many :targets, :through => :hunts, :source => :target
@@ -32,9 +33,20 @@ class User < ActiveRecord::Base
 		save
 	end
 
+	def deactivate
+		self.active = false
+		save
+	end
+
 	def active?
 		true if self.active
 	end
+
+	def set_token(token)
+		self.token = token
+		save
+	end
+
 
 	def self.create_from_facebook(token)
 		profile = Facebook.new.get_profile(token)

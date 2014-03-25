@@ -11,7 +11,4 @@ class ApplicationController < ActionController::API
 		@current_user ||= User.find_by token: params[:token]
 	end
 
-	def jsonp(my_object = {})
-		render json: my_object, callback: params[:callback]
-	end
 end

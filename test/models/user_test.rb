@@ -20,9 +20,12 @@ class UserTest < ActiveSupport::TestCase
 	end 
 
 	test "create_from_facebook" do
-		global_create_facebook_test_hash
-		user = User.create_from_facebook(@@globaltestuserhash["access_token"])
+		fb_hash
+		assert_equal 2,User.count
+		user = User.create_from_facebook(@@fbhash["access_token"])
+		assert_equal 3,User.count
 		assert_instance_of User,user
+		assert_equal user.facebookid,@@fbhash["id"].to_i
 	end  
 
 	test "active? and activate work" do
@@ -32,6 +35,11 @@ class UserTest < ActiveSupport::TestCase
 		assert_not @user0.active?, "user is still active"
 		@user0.activate
 		assert @user0.active?, "user didn't activate"
+	end
+
+	test "set_token" do
+		@user0.set_token("123abc")
+		assert_equal "123abc",@user0.token
 	end
 
 end
