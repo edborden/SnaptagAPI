@@ -2,11 +2,24 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
 
-	test "me with unmatching token" do
+		test "me with unmatching token, mocked" do
+		user = fb_user
+		User.expects(:find_by).with(token: "testtoken").returns(nil)
+		Facebook.expects(:new).returns(stub(verify_token?: true))
+		User.expects(:find_by).with(facebookid: "123").returns(user)
+		user.expects(:set_token).with("testtoken")
+		get(:me, {"facebookid" => "123","token" => "testtoken"})
+		assert_equal 200,response.status
+	end
+
+	test "me with unmatching token,integration" do
 		user = fb_user
 		user.set_token("faketoken")
+		User.expects(:find_by).with(token: @@fbhash["access_token"]).returns(nil)
+		User.expects(:find_by).with(facebookid: @@fbprofile["id"]).returns(user)
 		get(:me, {"facebookid" => @@fbprofile["id"],"token" => @@fbhash["access_token"]})
-		assert_equal 401,response.status
+		assert_equal @@fbhash["access_token"],user.token
+		assert_equal 200,response.status
 	end
 
 	test "me with valid token" do

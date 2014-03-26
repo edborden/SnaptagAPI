@@ -6,7 +6,7 @@ class Facebook
 
 	def verify_token?(facebookid,token)
 		response = Koala::Facebook::API.new(FB_APP_ACCESS_TOKEN).debug_token(token)
-		return true if facebookid == response["data"]["user_id"]
+		return true if facebookid.to_i == response["data"]["user_id"]
 	end
 
 	#def exchange_token(token)

@@ -10,8 +10,8 @@ class ApplicationController < ActionController::API
 	def current_user
 		@current_user ||= User.find_by token: params[:token]
 		if @current_user == nil && Facebook.new.verify_token?(params[:facebookid],params[:token])
-				@current_user = User.find_by(facebookid: params[:facebookid])
-				@current_user.set_token(params[:token])
+			@current_user = User.find_by(facebookid: params[:facebookid])
+			@current_user.set_token(params[:token])
 		end
 		return @current_user
 	end

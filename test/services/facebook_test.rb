@@ -18,8 +18,11 @@ class FacebookTest < ActiveSupport::TestCase
 	#end
 
 	test "verify_token works" do
-		user = fb_user
-		assert Facebook.new.verify_token?(user.facebookid,user.token)
+		fb_hash
+		response = Koala::Facebook::API.new(FB_APP_ACCESS_TOKEN).debug_token(@@fbhash["access_token"])
+		assert_not_nil response
+		assert_equal response["data"]["user_id"],@@fbprofile["id"].to_i
+		assert Facebook.new.verify_token?(@@fbprofile["id"],@@fbhash["access_token"])
 		#assert_not Facebook.new.verify_token(user,"abc123")
 	end
 
