@@ -22,6 +22,7 @@ class UserTest < ActiveSupport::TestCase
 	test "create_from_facebook" do
 		fb_hash
 		assert_equal 2,User.count
+		Facebook.any_instance.expects(:get_pics).returns({smallpic: "smallpic",mediumpic: "mediumpic",largepic: "largepic"})
 		user = User.create_from_facebook(@@fbhash["access_token"])
 		assert_equal 3,User.count
 		assert_instance_of User,user

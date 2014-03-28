@@ -4,7 +4,7 @@ class FacebookTest < ActiveSupport::TestCase
 
 	test "get_profile works" do
 		user = fb_user
-		profile = Facebook.new.get_profile(user.token)
+		profile = Facebook.new(user.token).get_profile
 		#test the above call returns data
 		assert profile["gender"] == "male" || profile["gender"] == "female"
 	end
@@ -19,11 +19,10 @@ class FacebookTest < ActiveSupport::TestCase
 
 	test "verify_token works" do
 		fb_hash
-		response = Koala::Facebook::API.new(FB_APP_ACCESS_TOKEN).debug_token(@@fbhash["access_token"])
-		assert_not_nil response
-		assert_equal response["data"]["user_id"],@@fbprofile["id"].to_i
-		assert Facebook.new.verify_token?(@@fbprofile["id"],@@fbhash["access_token"])
+		assert Facebook.new(@@fbhash["access_token"]).verify_token?(@@fbprofile["id"])
 		#assert_not Facebook.new.verify_token(user,"abc123")
 	end
+
+	
 
 end

@@ -9,7 +9,7 @@ class ApplicationController < ActionController::API
 	# Returns the user associated with the access token if available
 	def current_user
 		@current_user ||= User.find_by token: params[:token]
-		if @current_user == nil && Facebook.new.verify_token?(params[:facebookid],params[:token])
+		if @current_user == nil && Facebook.new(params[:token]).verify_token?(params[:facebookid])
 			@current_user = User.find_by(facebookid: params[:facebookid])
 			@current_user.set_token(params[:token])
 		end

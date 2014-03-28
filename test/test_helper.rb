@@ -10,7 +10,7 @@ class ActiveSupport::TestCase
 	def fb_hash
 		test_user_api ||= Koala::Facebook::TestUsers.new(:app_id => 726528350693125, :secret => "96ec2c1f6e53d6d1b4607164c190109c")
 		@@fbhash ||= test_user_api.create(true)
-		@@fbprofile ||= Facebook.new.get_profile(@@fbhash["access_token"])
+		@@fbprofile ||= Facebook.new(@@fbhash["access_token"]).get_profile
 	end
 
 	# create a test user that can be used across tests with gobal variable and doesn't keep pinging facebook

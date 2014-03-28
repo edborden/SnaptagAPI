@@ -47,9 +47,9 @@ class User < ActiveRecord::Base
 		save
 	end
 
-
 	def self.create_from_facebook(token)
-		profile = Facebook.new.get_profile(token)
+		profile = Facebook.new(token).get_profile
+		pichash = Facebook.new(token).get_pics
 		create! do |user|
 			user.facebookid = profile["id"]
 			user.firstname = profile["first_name"]
@@ -57,6 +57,10 @@ class User < ActiveRecord::Base
 			user.token = token
 			user.email = profile["email"]
 			user.gender = profile["gender"]
+			user.birthday = profile["birthday"]
+			user.smallpic = pichash["smallpic"]
+			user.mediumpic = pichash["mediumpic"]
+			user.largepic = pichash["largepic"]
 		end
 	end
 

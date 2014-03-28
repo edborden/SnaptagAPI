@@ -8,7 +8,7 @@ class UsersController < ApplicationController
 		## if new user:
 		### create user
 		if user == nil
-			if Facebook.new.verify_token?(params[:facebookid],params[:token])
+			if Facebook.new(params[:token]).verify_token?(params[:facebookid])
 				User.create_from_facebook(params[:token])
 				render json: {}
 			else
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 			render json: {}
 
 		### there is a matched user, but tokens don't match, verify token
-		elsif Facebook.new.verify_token?(user.facebookid,params[:token])
+		elsif Facebook.new(params[:token]).verify_token?(params[:facebookid])
 			user.set_token(params[:token])
 			render json: {}
 		else
