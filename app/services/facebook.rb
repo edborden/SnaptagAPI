@@ -23,7 +23,7 @@ class Facebook
 
 	def get_picId_profile
 		result = @facebook.get_object("me?fields=picture")
-		@smallpic = picId["picture"]["data"]["url"]
+		@smallpic = result["picture"]["data"]["url"]
 		picId = @smallpic.split("_")
 		@picId = picId[1]
 	end
