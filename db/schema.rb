@@ -29,11 +29,13 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.string   "largepic"
 		t.string   "birthday"
 		t.integer  "activationqueue_id"
-		t.integer  "completed_count",        default: 0,  null: false
-		t.integer  "roll_up_count",          default: 0,  null: false
-		t.integer  "exposed_count",          default: 0,  null: false
+		t.integer  "exposed_count",        default: 0,  null: false
+		t.integer  "counteract_count",          default: 0,  null: false
+		t.integer  "compromised_count",          default: 0,  null: false
 		t.integer  "hunters_count",          default: 0,  null: false
 		t.integer  "targets_count",          default: 0,  null: false
+		t.integer  "givers_count",          default: 0,  null: false
+		t.integer  "receivers_count",          default: 0,  null: false		
 		t.boolean  "active",                 default: false,  null: false
 		t.datetime "created_at"
 		t.datetime "updated_at"
@@ -42,5 +44,13 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 	add_index "users", ["activationqueue_id"], name: "index_users_on_activationqueue_id"
 	add_index "users", ["facebookid"], name: "index_users_on_facebookid"
 	add_index "users", ["token"], name: "index_users_on_token"
+
+	create_table "webs", force: true do |t|
+		t.integer  "giver_id"
+		t.integer  "receiver_id"
+	end
+
+add_index "webs", ["giver_id"], name: "index_users_on_giver_id"
+add_index "webs", ["receiver_id"], name: "index_users_on_receiver_id"
 
 end

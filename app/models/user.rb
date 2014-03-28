@@ -1,13 +1,17 @@
 class User < ActiveRecord::Base
 	belongs_to :activationqueue, counter_cache: true
 
-	validates :token, uniqueness: true
 	validates :facebookid, uniqueness: true
 
 	has_many :hunts, :foreign_key => "hunter_id"
 	has_many :targets, :through => :hunts, :source => :target
 	has_many :flights, :class_name => "Hunt", :foreign_key => "target_id"
 	has_many :hunters, :through => :flights, :source => :hunter
+
+	has_many :webs, :foreign_key => "giver_id"
+	has_many :recievers, :through => :webs, :source => :receiver
+	has_many :antiwebs, :class_name => "Web", :foreign_key => "receiver_id"
+	has_many :givers, :through => :antiwebs, :source => :giver
 
 	scope :need_hunters, -> { where("hunters_count < 3").where(active: true).where(activationqueue_id: nil) }
 	scope :need_targets, -> { where("targets_count < 3").where(active: true).where(activationqueue_id: nil) }
@@ -26,6 +30,16 @@ class User < ActiveRecord::Base
 			list<<flight.hunter
 		end
 		return list
+	end
+
+	def web
+		list = self.current_hunters
+		list<<self.current_targets
+		list<<self.ringers
+		fill_ringers if self.list.count < 11
+
+		return
+
 	end
 
 	def activate

@@ -34,4 +34,8 @@ class UsersController < ApplicationController
 		render json: @current_user
 	end
 
+	#def web
+#
+	#end
+
 end

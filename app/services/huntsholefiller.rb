@@ -1,4 +1,4 @@
-class Holefiller
+class HuntsHolefiller
 
 	def run
 		fill_hunt_holes(lucky_player) if it_is_time?

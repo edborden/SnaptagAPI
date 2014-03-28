@@ -19,25 +19,23 @@ class Hunt < ActiveRecord::Base
 		minus_one
 	end
 
-	private
+	## THIS NEEDS EXCEPTION HANDLING
+	#def validate_users
+	#	if hunter.reload.targets_count <= 2 and hunter.active? and target.reload.hunters_count <= 2 and target.active?
+	#		true
+	#	else
+	#		false
+	#	end
+	#end
 
-		## THIS NEEDS EXCEPTION HANDLING
-		#def validate_users
-		#	if hunter.reload.targets_count <= 2 and hunter.active? and target.reload.hunters_count <= 2 and target.active?
-		#		true
-		#	else
-		#		false
-		#	end
-		#end
+	def plus_one
+		hunter.increment!(:targets_count)
+		target.increment!(:hunters_count)
+	end
 
-		def plus_one
-			hunter.increment!(:targets_count)
-			target.increment!(:hunters_count)
-		end
-
-		def minus_one
-			hunter.decrement!(:targets_count)
-			target.decrement!(:hunters_count)
-		end
+	def minus_one
+		hunter.decrement!(:targets_count)
+		target.decrement!(:hunters_count)
+	end
 
 end
