@@ -51,8 +51,6 @@ class Facebook
 	#	oauth.exchange_access_token(token)
 	#   Koala::Facebook::API.new("726528350693125|Cu3OUIvH7s7j6s1wuJFo1SQOpSk").debug_token()
 	#end
+#Facebook.new("CAAKUxhBDJwUBAIXqCkgi2ZBPKX8a18RZBfNbaZA8xovZAlfsVIZCIjqHZAOVaPLdYJfojgZBrNNjr4GSUibxFtn5Qily5qXR47P2MbZCoO8NeH0vqkTOWfMezOLEcjenTel6cJ2UFGg9iomJnwyk456zxDnvvsUevzQ2ZA6b1n2lhAZAk9oaBOJ0XJrrtftIUcil8ZD").get_pics
 
-
-	#Koala::Facebook::API.new("CAAKUxhBDJwUBABFISPBeCyuvh2fR2cqHgyDyCnIe3tHJ9JmYENbEz1uxvLSB6HZAf2TIQoO9hmc4kSt1MnwLTZC2JGhwhAekDDZA8nZAQS8NlfQ8Qh4BWzsisWtBVrs2Delp7i9TNZBp2rBVL9J1qZBb8uehQZAKnvihkSZCLTmYWEdUVne7ssZCqX7tsCZAL9fCkZD").get_object("me/albums?fields=type")
-	# me/albums?fields=type
 end

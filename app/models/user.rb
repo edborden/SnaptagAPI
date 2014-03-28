@@ -58,9 +58,9 @@ class User < ActiveRecord::Base
 			user.email = profile["email"]
 			user.gender = profile["gender"]
 			user.birthday = profile["birthday"]
-			user.smallpic = pichash["smallpic"]
-			user.mediumpic = pichash["mediumpic"]
-			user.largepic = pichash["largepic"]
+			user.smallpic = pichash[:smallpic]
+			user.mediumpic = pichash[:mediumpic]
+			user.largepic = pichash[:largepic]
 		end
 	end
 
