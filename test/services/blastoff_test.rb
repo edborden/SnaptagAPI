@@ -33,4 +33,6 @@ class BlastoffTest < ActiveSupport::TestCase
 		assert_equal 36,Hunt.count
 	end
 
+	
+
 end

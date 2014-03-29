@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 	has_many :hunters, :through => :flights, :source => :hunter
 
 	has_many :webs, :foreign_key => "giver_id"
-	has_many :recievers, :through => :webs, :source => :receiver
+	has_many :receivers, :through => :webs, :source => :receiver
 	has_many :antiwebs, :class_name => "Web", :foreign_key => "receiver_id"
 	has_many :givers, :through => :antiwebs, :source => :giver
 
