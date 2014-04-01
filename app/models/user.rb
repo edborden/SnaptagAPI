@@ -3,43 +3,22 @@ class User < ActiveRecord::Base
 
 	validates :facebookid, uniqueness: true
 
-	has_many :hunts, :foreign_key => "hunter_id"
+	has_many :hunts, -> { where active: true }, :foreign_key => "hunter_id"
 	has_many :targets, :through => :hunts, :source => :target
-	has_many :flights, :class_name => "Hunt", :foreign_key => "target_id"
+	has_many :flights, -> { where active: true }, :class_name => "Hunt", :foreign_key => "target_id"
 	has_many :hunters, :through => :flights, :source => :hunter
+	scope :need_hunters, -> { where("hunters_count < 3").where(active: true).where(activationqueue_id: nil).order(hunters_count: :asc) }
+	scope :need_targets, -> { where("targets_count < 3").where(active: true).where(activationqueue_id: nil).order(targets_count: :asc) }
 
 	has_many :webs, :foreign_key => "giver_id"
 	has_many :receivers, :through => :webs, :source => :receiver
 	has_many :antiwebs, :class_name => "Web", :foreign_key => "receiver_id"
 	has_many :givers, :through => :antiwebs, :source => :giver
+	scope :need_givers, ->(id) { where("givers_count < 6").where("receivers_count < 6").where(active: true).where(activationqueue_id: nil).where.not(id: id).order(givers_count: :asc) }
+	scope :need_receivers, ->(id) { where("givers_count < 6").where("receivers_count < 6").where(active: true).where(activationqueue_id: nil).where.not(id: id).order(receivers_count: :asc) }
 
-	scope :need_hunters, -> { where("hunters_count < 3").where(active: true).where(activationqueue_id: nil) }
-	scope :need_targets, -> { where("targets_count < 3").where(active: true).where(activationqueue_id: nil) }
-
-	def current_targets
-		list = []
-		self.hunts.where(active: true).each do |hunt|
-			list<<hunt.target
-		end
-		return list
-	end
-
-	def current_hunters
-		list = []
-		self.flights.where(active: true).each do |flight|
-			list<<flight.hunter
-		end
-		return list
-	end
-
-	def web
-		list = self.current_hunters
-		list<<self.current_targets
-		list<<self.ringers
-		fill_ringers if self.list.count < 11
-
-		return
-
+	def allwebs
+		allwebs = self.webs + self.antiwebs
 	end
 
 	def activate
@@ -49,7 +28,13 @@ class User < ActiveRecord::Base
 
 	def deactivate
 		self.active = false
+		#destroy all webs
 		save
+	end
+
+	def remove_nonhunt_web
+		nonhunt_webs = allwebs.select { |web| !web.matching_hunt }
+		nonhunt_webs[0].destroy
 	end
 
 	def active?

@@ -1,4 +1,4 @@
-class Holefiller
+class Huntsholefiller
 
 	def run
 		fill_hunt_holes(lucky_player) if it_is_time?
@@ -13,8 +13,8 @@ class Holefiller
 	end
 
 	def fill_hunt_holes(lucky_player)
-		targets = User.need_hunters.shuffle.take(3)
-		hunters = User.need_targets.shuffle.take(3)
+		targets = User.need_hunters.take(3)
+		hunters = User.need_targets.take(3)
 		targets.each {|target| Hunt.create(hunter_id:lucky_player.id,target_id:target.id)}
 		hunters.each {|hunter| Hunt.create(hunter_id:hunter.id,target_id:lucky_player.id)}
 	end

@@ -34,8 +34,9 @@ class UsersController < ApplicationController
 		render json: @current_user
 	end
 
-	#def web
-#
-	#end
+	def web
+		Websholefiller.new(@current_user).run
+		web = @current_user.givers<<@current_user.receivers
+	end
 
 end

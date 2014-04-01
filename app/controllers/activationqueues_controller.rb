@@ -2,12 +2,12 @@ class ActivationqueuesController < ApplicationController
 
 	def create
 		if Activationqueue.empty?
-			activationqueue = Activationqueue.create.add_user(current_user)
+			Activationqueue.create << current_user
 		else
-			activationqueue = Activationqueue.first.add_user(current_user)
+			Activationqueue.first << current_user
 		end
 		current_user.activate
-		Holefiller.new.run
+		Huntsholefiller.new.run
 	end
 
 end

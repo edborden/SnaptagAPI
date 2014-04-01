@@ -2,16 +2,7 @@ class Hunt < ActiveRecord::Base
 	belongs_to :hunter, :class_name => "User"
 	belongs_to :target, :class_name => "User"
 
-#	before_create :validate_users
-	after_create :plus_one 
-
-	def hunter
-		hunter ||= User.find(self.hunter_id)
-	end
-
-	def target
-		target ||= User.find(self.target_id)
-	end
+	after_create :plus_one, :ensure_matching_web
 
 	def complete
 		self.active = false
@@ -19,14 +10,28 @@ class Hunt < ActiveRecord::Base
 		minus_one
 	end
 
-	## THIS NEEDS EXCEPTION HANDLING
-	#def validate_users
-	#	if hunter.reload.targets_count <= 2 and hunter.active? and target.reload.hunters_count <= 2 and target.active?
-	#		true
-	#	else
-	#		false
-	#	end
-	#end
+	def ensure_matching_web
+		if !matching_web
+			make_room(hunter)
+			make_room(target)
+			if hunter.receivers_count <= target.receivers_count
+				giver = hunter
+				receiver = target
+			else
+				giver = target
+				receiver = hunter
+			end
+			Web.create(giver_id: giver.id, receiver_id: receiver.id)
+		end
+	end
+
+	def make_room(user)
+		user.remove_nonhunt_web until user.reload.allwebs.count < 11
+	end
+
+	def matching_web
+		Web.find_by(giver_id: self.hunter_id, receiver_id: self.target_id) || Web.find_by(giver_id: self.target_id, receiver_id: self.hunter_id)
+	end
 
 	def plus_one
 		hunter.increment!(:targets_count)

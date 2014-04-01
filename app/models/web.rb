@@ -5,12 +5,8 @@ class Web < ActiveRecord::Base
 	after_create :plus_one 
 	before_destroy :minus_one
 
-	def giver
-		giver ||= User.find(self.giver_id)
-	end
-
-	def receiver
-		receiver ||= User.find(self.receiver_id)
+	def matching_hunt
+		Hunt.find_by(hunter_id: self.giver_id, target_id: self.receiver_id) || Hunt.find_by(hunter_id: self.receiver_id, target_id: self.giver_id)
 	end
 
 	def plus_one
@@ -22,4 +18,5 @@ class Web < ActiveRecord::Base
 		giver.decrement!(:receivers_count)
 		receiver.decrement!(:givers_count)
 	end
+
 end

@@ -3,17 +3,17 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
 
 	def setup
-		2.times { |n| instance_variable_set("@user" + n.to_s, Fabricate(:user)) }
+		3.times { |n| instance_variable_set("@user" + n.to_s, Fabricate(:user)) }
 		Hunt.create(hunter_id: @user0.id, target_id: @user1.id)
 	end
 
 	test "user can list current hunters and targets" do
-		assert @user0.current_targets.include?(@user1)
-		assert @user1.current_hunters.include?(@user0)
+		assert @user0.targets.include?(@user1)
+		assert @user1.hunters.include?(@user0)
 		hunt = Hunt.find_by(target_id: @user1.id)
 		hunt.active = false
 		hunt.save
-		assert_not @user1.current_hunters.include?(@user0)
+		assert_not @user1.hunters.include?(@user0)
 	end
 
 	test "inactive user cannot have relationships or be added to the queue" do
@@ -21,10 +21,10 @@ class UserTest < ActiveSupport::TestCase
 
 	test "create_from_facebook" do
 		fb_hash
-		assert_equal 2,User.count
+		assert_equal 3,User.count
 		Facebook.any_instance.expects(:get_pics).returns({smallpic: "smallpic",mediumpic: "mediumpic",largepic: "largepic"})
 		user = User.create_from_facebook(@@fbhash["access_token"])
-		assert_equal 3,User.count
+		assert_equal 4,User.count
 		assert_instance_of User,user
 		assert_equal user.facebookid,@@fbhash["id"].to_i
 	end  
@@ -41,6 +41,20 @@ class UserTest < ActiveSupport::TestCase
 	test "set_token" do
 		@user0.set_token("123abc")
 		assert_equal "123abc",@user0.token
+	end
+
+	test "allwebs" do
+		@user0.antiwebs.create(giver_id: @user2.id)
+		assert @user0.webs.count == 0 || @user0.webs.count == 1
+		assert @user0.antiwebs.count == 1 || @user0.antiwebs.count == 2
+		assert_equal 2,@user0.allwebs.count
+	end
+
+	test "remove_nonhunt_web" do
+		nonhuntweb = Web.create(giver_id: @user0.id, receiver_id: @user2.id)
+		assert @user0.allwebs.include?(nonhuntweb)
+		@user0.remove_nonhunt_web
+		assert_not @user0.reload.allwebs.include?(nonhuntweb)
 	end
 
 end
