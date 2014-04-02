@@ -39,6 +39,7 @@ class UsersController < ApplicationController
 			Websholefiller.new(@current_user).run
 			web = @current_user.givers + @current_user.receivers
 			render json: web
+		end
 	end
 
 end
