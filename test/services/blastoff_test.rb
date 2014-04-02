@@ -2,8 +2,8 @@ require 'test_helper'
 
 class BlastoffTest < ActiveSupport::TestCase
 	def setup
-			12.times { |n| instance_variable_set("@user" + n.to_s, Fabricate(:user)) }
-			@queue = [@user0,@user1,@user2,@user3]
+		12.times { |n| instance_variable_set("@user" + n.to_s, Fabricate(:user)) }
+		@queue = [@user0,@user1,@user2,@user3]
 	end
 
 	test "find_a_valid_target_in_list" do

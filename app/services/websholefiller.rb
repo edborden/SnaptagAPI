@@ -1,22 +1,44 @@
 class Websholefiller
 
-	def run(user)
-		fill_web_holes(user) unless (user.reload.givers + user.receivers) > 10
+	def initialize(user)
+		@user = user
 	end
 
-	def fill_web_holes(user)
-		if giver_or_receiver(user) == "giver"
-			receiver = User.need_givers(user.id).shuffle.take
-			Web.create(:giver_id => user.id, :receiver_id => receiver.id)
-		else
-			giver = User.need_receivers(user.id).shuffle.take
-			Web.create(:giver_id => giver.id, :receiver_id => user.id)
-		end
+	def currently_webbed
+		@user.givers + @user.receivers
+	end
 
-	def giver_or_receiver(user)
-		if user.givers_count >= user.receivers_count
+	def need_givers
+		User.need_givers(@user.id) - [currently_webbed]
+	end
+
+	def need_receivers
+		User.need_receivers(@user.id) - [currently_webbed]
+	end
+
+	def run
+		fill_web_hole until time_to_stop?
+	end
+
+	def time_to_stop?
+		true if @user.reload.allwebs_count >= 11 || (need_givers.blank? && need_receivers.blank?)
+	end
+
+	def fill_web_hole
+		if giver_or_receiver == "giver" && need_receivers.present?
+			receiver = need_givers.first
+			Web.create(giver_id: @user.id, receiver_id: receiver.id)
+		else
+			giver = need_receivers.first
+			Web.create(giver_id: giver.id, receiver_id: @user.id)
+		end
+	end
+
+	def giver_or_receiver
+		if @user.givers_count >= @user.receivers_count
 			return "receiver"
 		else
 			return "giver"
 		end
 	end
+end

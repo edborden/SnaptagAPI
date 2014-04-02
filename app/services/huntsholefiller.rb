@@ -5,7 +5,7 @@ class Huntsholefiller
 	end
 
 	def it_is_time?
-		true if User.need_hunters.count >= 3 and User.need_targets.count >= 3 and Activationqueue.all.empty? == false
+		true if User.need_hunters.count >= 3 && User.need_targets.count >= 3 && Activationqueue.all.present?
 	end
 
 	def lucky_player

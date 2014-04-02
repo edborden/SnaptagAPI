@@ -26,7 +26,7 @@ class Hunt < ActiveRecord::Base
 	end
 
 	def make_room(user)
-		user.remove_nonhunt_web until user.reload.allwebs.count < 11
+		user.remove_nonhunt_web until user.reload.allwebs_count < 11
 	end
 
 	def matching_web

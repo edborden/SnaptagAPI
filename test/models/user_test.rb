@@ -52,7 +52,7 @@ class UserTest < ActiveSupport::TestCase
 
 	test "remove_nonhunt_web" do
 		nonhuntweb = Web.create(giver_id: @user0.id, receiver_id: @user2.id)
-		assert @user0.allwebs.include?(nonhuntweb)
+		assert @user0.reload.allwebs.include?(nonhuntweb)
 		@user0.remove_nonhunt_web
 		assert_not @user0.reload.allwebs.include?(nonhuntweb)
 	end

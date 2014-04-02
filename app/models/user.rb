@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
 	scope :need_givers, ->(id) { where("givers_count < 6").where("receivers_count < 6").where(active: true).where(activationqueue_id: nil).where.not(id: id).order(givers_count: :asc) }
 	scope :need_receivers, ->(id) { where("givers_count < 6").where("receivers_count < 6").where(active: true).where(activationqueue_id: nil).where.not(id: id).order(receivers_count: :asc) }
 
+	def allwebs_count
+		self.givers_count + self.receivers_count
+	end
+
 	def allwebs
 		allwebs = self.webs + self.antiwebs
 	end

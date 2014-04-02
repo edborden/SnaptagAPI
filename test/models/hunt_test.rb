@@ -40,9 +40,9 @@ class HuntTest < ActiveSupport::TestCase
 			Web.create(giver_id: @user0.id, receiver_id: user.id)
 		end
 		assert_equal 14,Web.count
-		assert_equal 14,@user0.allwebs.count
+		assert_equal 14,@user0.reload.allwebs_count
 		Hunt.new.make_room(@user0)
 		assert_equal 10,Web.count
-		assert_equal 10,@user0.reload.allwebs.count
+		assert_equal 10,@user0.reload.allwebs_count
 	end
 end
