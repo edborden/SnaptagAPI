@@ -34,10 +34,11 @@ class UsersController < ApplicationController
 		render json: @current_user
 	end
 
-	def web
-		Websholefiller.new(@current_user).run
-		web = @current_user.givers + @current_user.receivers
-		render json: web
+	def find
+		if params[:web] = true
+			Websholefiller.new(@current_user).run
+			web = @current_user.givers + @current_user.receivers
+			render json: web
 	end
 
 end
