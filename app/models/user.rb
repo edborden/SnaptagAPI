@@ -48,6 +48,8 @@ class User < ActiveRecord::Base
 	end
 
 	def deactivate
+		destroy_all_hunts
+		destroy_all_webs
 		self.active = false
 		save
 	end
@@ -78,4 +80,13 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def disavow
+		self.disavowed_count.increment!
+		deactivate
+	end
+
+	def compromise
+		self.compromised_count.increment!
+		deactivate
+	end
 end

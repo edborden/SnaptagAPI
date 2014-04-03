@@ -10,8 +10,9 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer "hunter_id"
 		t.integer "target_id"
 		t.datetime "created_at"
-		t.datetime "updated_at"
-		t.boolean  "active",                 default: true,  null: false
+		t.datetime "completed_at"
+		t.boolean  "counteracted",               default: false,  null: false
+		t.boolean  "active",               default: true,  null: false
 	end
 
 	add_index "hunts", ["hunter_id"], name: "index_users_on_hunter_id"
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer  "activationqueue_id"
 		t.integer  "exposed_count",        default: 0,  null: false
 		t.integer  "counteract_count",          default: 0,  null: false
+		t.integer  "disavowed_count",          default: 0,  null: false		
 		t.integer  "compromised_count",          default: 0,  null: false
 		t.integer  "hunters_count",          default: 0,  null: false
 		t.integer  "targets_count",          default: 0,  null: false

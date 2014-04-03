@@ -2,8 +2,8 @@ class Hunt < ActiveRecord::Base
 	belongs_to :hunter, :class_name => "User"
 	belongs_to :target, :class_name => "User"
 
-#	before_create :validate_users
-	after_create :plus_one 
+	after_create :plus_one
+	before_destroy :minus_one
 
 	def hunter
 		hunter ||= User.find(self.hunter_id)
@@ -36,6 +36,14 @@ class Hunt < ActiveRecord::Base
 	def minus_one
 		hunter.decrement!(:targets_count)
 		target.decrement!(:hunters_count)
+	end
+
+	def counteract
+		self.counteracted = true
+		save
+		
+		target.compromise
+		complete
 	end
 
 end
