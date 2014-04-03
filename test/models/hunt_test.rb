@@ -3,28 +3,46 @@ require 'test_helper'
 class HuntTest < ActiveSupport::TestCase
 
 	def setup
-		5.times { |n| instance_variable_set("@user" + n.to_s, Fabricate(:user)) }
-		Hunt.create(hunter_id: @user0.id, target_id: @user1.id)
-		Hunt.create(hunter_id: @user0.id, target_id: @user2.id)
+		2.times { |n| instance_variable_set("@user" + n.to_s, Fabricate(:user)) }
+		@web0 = Web.create(giver_id: @user0.id, receiver_id: @user1.id)
 	end
 	
-	## THIS NEEDS EXCEPTION HANDLING
-	test "user should not be able to have more than 3 hunters or targets" do
-		skip
-		Hunt.create(hunter_id: @user0.id, target_id: @user3.id)
-		Hunt.create(hunter_id: @user0.id, target_id: @user4.id)
-		assert_equal 3,Hunt.count
-		Hunt.create(hunter_id: @user1.id, target_id: @user0.id)
-		Hunt.create(hunter_id: @user2.id, target_id: @user0.id)
-		Hunt.create(hunter_id: @user3.id, target_id: @user0.id)
-		Hunt.create(hunter_id: @user4.id, target_id: @user0.id)
-		assert_equal 6,Hunt.count
-	end
-
 	test "deactivate_hunt" do
 	end
 
 	test "complete" do
 	end
 
+	test "ensure_matching_web" do
+		assert_equal 1,Web.count
+		hunt = Hunt.create(hunter_id: @user0.id, target_id: @user1.id)
+		assert_equal 1,Web.count
+		@user2 = Fabricate(:user)
+		hunt2 = Hunt.create(hunter_id: @user0.id, target_id: @user2.id)
+		assert_equal 2,Web.count
+		web2 = Web.last
+		assert hunt2.matching_web
+	end
+
+	test "matching_web" do
+		hunt = Hunt.create(hunter_id: @user0.id, target_id: @user1.id)
+		assert hunt.matching_web
+		Web.first.destroy
+		assert_not hunt.matching_web
+	end
+
+	test "make_room" do
+		13.times {Fabricate(:user)}
+		users = User.all
+		users.delete_at(0)
+		users.delete_at(0)
+		users.each do |user|
+			Web.create(giver_id: @user0.id, receiver_id: user.id)
+		end
+		assert_equal 14,Web.count
+		assert_equal 14,@user0.reload.allwebs_count
+		Hunt.new.make_room(@user0)
+		assert_equal 10,Web.count
+		assert_equal 10,@user0.reload.allwebs_count
+	end
 end

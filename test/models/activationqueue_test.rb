@@ -11,6 +11,9 @@ class ActivationqueueTest < ActiveSupport::TestCase
 	test "create" do
 	end
 
+	test "user_count works" do
+	end
+
 	test "activationqueue runs blastoff when full" do
 		activationqueue = Activationqueue.create
 		12.times {Fabricate(:user)}

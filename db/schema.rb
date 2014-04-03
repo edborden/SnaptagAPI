@@ -15,8 +15,8 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.boolean  "active",               default: true,  null: false
 	end
 
-	add_index "hunts", ["hunter_id"], name: "index_users_on_hunter_id"
-	add_index "hunts", ["target_id"], name: "index_users_on_target_id"
+	add_index "hunts", ["hunter_id"], name: "index_hunts_on_hunter_id"
+	add_index "hunts", ["target_id"], name: "index_hunts_on_target_id"
 
 	create_table "users", force: true do |t|
 		t.string   "email"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer  "receiver_id"
 	end
 
-add_index "webs", ["giver_id"], name: "index_users_on_giver_id"
-add_index "webs", ["receiver_id"], name: "index_users_on_receiver_id"
+	add_index "webs", ["giver_id"], name: "index_webs_on_giver_id"
+	add_index "webs", ["receiver_id"], name: "index_webs_on_receiver_id"
 
 end
