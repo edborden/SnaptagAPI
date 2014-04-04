@@ -55,7 +55,6 @@ class Hunt < ActiveRecord::Base
 	def counteract
 		self.counteracted = true
 		save
-		
 		target.compromise
 		complete
 	end

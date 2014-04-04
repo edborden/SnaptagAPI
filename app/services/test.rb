@@ -8,5 +8,4 @@ def web
 	Web.create(giver_id: ed.id, receiver_id:user1.id)
 	Web.create(giver_id: ed.id, receiver_id:user2.id)
 	Web.create(giver_id: ed.id, receiver_id:user3.id)
-
 end
