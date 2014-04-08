@@ -34,11 +34,13 @@ class UsersController < ApplicationController
 		render json: @current_user
 	end
 
-	def active
-		if @current_user.active?
-			render text: "true" 
-		else
-			render text: "false"
+	def status
+		if @current_user.active? && @current_user.activationqueue_id.present?
+			render text: "queue" 
+		elsif @current_user.active?
+			render text: "active"
+		else 
+			render text: "inactive"
 		end
 	end
 

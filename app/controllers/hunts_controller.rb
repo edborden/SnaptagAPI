@@ -17,4 +17,19 @@ class HuntsController < ApplicationController
 		end
 	end
 
+	def join
+		@current_user.activate
+		if Activationqueue.empty?
+			Activationqueue.create << current_user
+		else
+			Activationqueue.first << current_user
+		end
+		Huntsholefiller.new.run
+		if @current_user.activationqueue_id.present?
+			render text: "queue" 
+		else 
+			render text: "active"
+		end
+	end
+
 end
