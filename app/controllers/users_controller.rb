@@ -30,15 +30,23 @@ class UsersController < ApplicationController
 
 	end
 
+	def me
+		render json: @current_user
+	end
+
+	def active
+		if @current_user.active?
+			render text: "true" 
+		else
+			render text: "false"
+		end
+	end
+
 	def find
-		if params[:web] && @current_user.active?
+		if params[:web]
 			Websholefiller.new(@current_user).run
 			web = @current_user.givers + @current_user.receivers
 			render json: web
-		elsif params[:web] && !@current_user.active?
-			render json: {}
-		elsif params[:me]
-			render json: @current_user
 		end
 	end
 
