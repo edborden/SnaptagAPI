@@ -1,7 +1,11 @@
 class Huntsholefiller
 
 	def run
-		fill_hunt_holes(lucky_player) if it_is_time?
+		if it_is_time?
+			fill_hunt_holes(lucky_player)
+			@lucky_player.activationqueue_id = nil
+			@lucky_player.save
+		end
 	end
 
 	def it_is_time?
@@ -9,7 +13,7 @@ class Huntsholefiller
 	end
 
 	def lucky_player
-		Activationqueue.first.users.shuffle.first
+		@lucky_player ||= Activationqueue.first.users.shuffle.first
 	end
 
 	def fill_hunt_holes(lucky_player)

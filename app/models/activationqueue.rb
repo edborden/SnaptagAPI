@@ -8,6 +8,7 @@ class Activationqueue < ActiveRecord::Base
 	def blastoff_if_full(user = nil)
 		if full?
 			Blastoff.new(self.users).run
+			self.users.clear
 			self.destroy
 		end
 	end

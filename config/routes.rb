@@ -6,4 +6,5 @@ Gridwebclient::Application.routes.draw do
 	get 'users', to: 'users#find'
 
 	get 'hunts/join', to: 'hunts#join'
+	get 'hunts/counteract', to: 'hunts#counteract'
 end
