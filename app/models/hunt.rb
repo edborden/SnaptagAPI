@@ -5,14 +5,6 @@ class Hunt < ActiveRecord::Base
 	after_create :plus_one, :ensure_matching_web
 	before_destroy :minus_one
 
-	def hunter
-		hunter ||= User.find(self.hunter_id)
-	end
-
-	def target
-		target ||= User.find(self.target_id)
-	end
-
 	def complete
 		self.active = false
 		save
@@ -55,8 +47,9 @@ class Hunt < ActiveRecord::Base
 	def counteract
 		self.counteracted = true
 		save
-		target.compromise
 		complete
+		hunter.compromise
+		target.performed_counteraction
 	end
 
 end

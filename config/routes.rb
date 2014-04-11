@@ -7,4 +7,6 @@ Gridwebclient::Application.routes.draw do
 
 	get 'hunts/join', to: 'hunts#join'
 	get 'hunts/counteract', to: 'hunts#counteract'
+
+	get 'locationrequest', to: 'locationrequest#locate'
 end

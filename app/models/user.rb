@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
 	belongs_to :activationqueue, counter_cache: true
 
+	has_one :location
+	after_create :create_location
+
 	validates :facebookid, uniqueness: true
 
 	has_many :hunts, -> { where active: true }, :foreign_key => "hunter_id"
@@ -31,10 +34,11 @@ class User < ActiveRecord::Base
 	end
 
 	def deactivate
-		destroy_all_hunts
-		destroy_all_webs
+		hunts.destroy_all
+		flights.destroy_all
+		webs.destroy_all
+		antiwebs.destroy_all
 		self.active = false
-		#destroy all webs
 		save
 	end
 
@@ -69,13 +73,17 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def performed_counteraction
+		self.increment!(:counteract_count)
+	end
+
 	def disavow
-		self.disavowed_count.increment!
+		self.increment!(:disavowed_count)
 		deactivate
 	end
 
 	def compromise
-		self.compromised_count.increment!
+		self.increment!(:compromised_count)
 		deactivate
 	end
 end

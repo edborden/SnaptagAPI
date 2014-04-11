@@ -11,12 +11,28 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer "target_id"
 		t.datetime "created_at"
 		t.datetime "completed_at"
-		t.boolean  "counteracted",               default: false,  null: false
+		t.boolean  "counteracted",         default: false,  null: false
 		t.boolean  "active",               default: true,  null: false
 	end
 
 	add_index "hunts", ["hunter_id"], name: "index_hunts_on_hunter_id"
 	add_index "hunts", ["target_id"], name: "index_hunts_on_target_id"
+
+	create_table "locations", force: true do |t|
+		t.integer "user_id"
+		t.decimal "latitude",  precision: 9, scale: 6
+		t.decimal "longitude", precision: 9, scale: 6
+		t.boolean "updating",  default: false, null: false
+	end
+
+	add_index "locations", ["user_id"], name: "index_locations_on_user_id"
+
+	create_table "locationrequests", force: true do |t|
+		t.integer "location_id"
+		t.integer "requester_id"
+	end
+
+	add_index "locationrequests", ["location_id"], name: "index_locationrequests_on_location_id"
 
 	create_table "users", force: true do |t|
 		t.string   "email"

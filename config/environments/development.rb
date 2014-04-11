@@ -27,4 +27,10 @@ Gridwebclient::Application.configure do
   # number of complex assets.
   config.assets.debug = true
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
+  require 'pusher'
+
+  Pusher.app_id = '71489'
+  Pusher.key    = '920f77cedd553842882b'
+  Pusher.secret = '4325b6be5578e4345a68'
 end
