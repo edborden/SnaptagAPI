@@ -5,7 +5,7 @@ class Location < ActiveRecord::Base
 	after_update :clear_locationrequests
 
 	def push_location_update_request
-		Pusher.trigger(self.user_id.to_s, 'updatelocation', {message:"updatelocation"}) if self.locationrequests.count == 1
+		Pusher.trigger(self.user.token, 'updatelocation', {message:"updatelocation"}) if self.locationrequests.count == 1
 	end
 
 	def clear_locationrequests

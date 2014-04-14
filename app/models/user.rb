@@ -56,8 +56,7 @@ class User < ActiveRecord::Base
 		save
 	end
 
-	def self.create_from_facebook(token)
-		profile = Facebook.new(token).get_profile
+	def self.create_from_facebook(token,profile)
 		pichash = Facebook.new(token).get_pics
 		create! do |user|
 			user.facebookid = profile["id"]

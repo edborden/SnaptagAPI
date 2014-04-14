@@ -17,11 +17,11 @@ class FacebookTest < ActiveSupport::TestCase
 	#	assert_not_equal oldtoken,newtoken
 	#end
 
-	test "verify_token works" do
-		fb_hash
-		assert Facebook.new(@@fbhash["access_token"]).verify_token?(@@fbprofile["id"])
-		#assert_not Facebook.new.verify_token(user,"abc123")
-	end
+	#test "verify_token works" do
+	#	fb_hash
+	#	assert Facebook.new(@@fbhash["access_token"]).verify_token?(@@fbprofile["id"])
+	#	#assert_not Facebook.new.verify_token(user,"abc123")
+	#end
 
 	test "get_pics" do
 		skip

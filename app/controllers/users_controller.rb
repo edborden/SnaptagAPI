@@ -2,32 +2,22 @@ class UsersController < ApplicationController
 	skip_before_action :ensure_authenticated_user, only: :login
 
 	def login
+		facebook ||= Facebook.new(params[:token])
+		token = facebook.exchange_token
+		profile = facebook.get_profile
+		user = User.find_by(facebookid: profile["id"])
 
-		user = User.find_by(facebookid: params[:facebookid])
-
-		## if new user:
-		### create user
 		if user == nil
-			if Facebook.new(params[:token]).verify_token?(params[:facebookid])
-				User.create_from_facebook(params[:token])
-				render json: {}
+			if profile
+				User.create_from_facebook(token,profile)
+				render text: token
 			else
 				head :unauthorized
 			end
-
-		## if existing user
-		### if tokens match, return ok
-		elsif user.token == params[:token]
-			render json: {}
-
-		### there is a matched user, but tokens don't match, verify token
-		elsif Facebook.new(params[:token]).verify_token?(params[:facebookid])
-			user.set_token(params[:token])
-			render json: {}
 		else
-			head :unauthorized
+			user.set_token(token)
+			render text: token
 		end
-
 	end
 
 	def me
