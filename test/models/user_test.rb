@@ -65,4 +65,7 @@ class UserTest < ActiveSupport::TestCase
 		assert_not @user0.reload.allwebs.include?(nonhuntweb)
 	end
 
+	test "latest_location" do
+	end
+
 end

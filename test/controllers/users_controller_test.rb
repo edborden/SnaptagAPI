@@ -24,4 +24,10 @@ class UsersControllerTest < ActionController::TestCase
 		assert_equal 200,@response.status
 	end
 
+	test "find" do
+	end
+
+	test "intro_map" do
+	end
+
 end

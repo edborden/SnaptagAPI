@@ -11,10 +11,10 @@ class HuntsController < ApplicationController
 		end
 	end
 
-	def complete
-			hunt = Hunt.find(params[:hunt_id])
-			hunt.complete
-			render :ok
+	def success
+		hunt = Hunt.find_by(hunter_id: @current_user.id, target_id: params[:target_id])
+		hunt.success
+		render :ok
 	end
 
 	def join
@@ -32,6 +32,10 @@ class HuntsController < ApplicationController
 		else 
 			render text: "active"
 		end
+	end
+
+	def intro_map
+		render: Hunt.completed, serializer: blank_hunt
 	end
 
 end

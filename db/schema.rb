@@ -11,8 +11,12 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer "target_id"
 		t.datetime "created_at"
 		t.datetime "completed_at"
+		t.integer "influence_appropriated"
 		t.boolean  "counteracted",         default: false,  null: false
 		t.boolean  "active",               default: true,  null: false
+		t.decimal "latitude",  precision: 9, scale: 6
+		t.decimal "longitude", precision: 9, scale: 6
+
 	end
 
 	add_index "hunts", ["hunter_id"], name: "index_hunts_on_hunter_id"
@@ -22,17 +26,11 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer "user_id"
 		t.decimal "latitude",  precision: 9, scale: 6
 		t.decimal "longitude", precision: 9, scale: 6
-		t.boolean "updating",  default: false, null: false
+		t.integer "accuracy"
+		t.integer "timestamp"
 	end
 
 	add_index "locations", ["user_id"], name: "index_locations_on_user_id"
-
-	create_table "locationrequests", force: true do |t|
-		t.integer "location_id"
-		t.integer "requester_id"
-	end
-
-	add_index "locationrequests", ["location_id"], name: "index_locationrequests_on_location_id"
 
 	create_table "users", force: true do |t|
 		t.string   "email"
@@ -40,12 +38,13 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.string   "firstname"
 		t.string   "lastname"
 		t.string   "token"
-		t.integer "facebookid"
+		t.integer  "facebookid"
 		t.string   "smallpic"
 		t.string   "mediumpic"
 		t.string   "largepic"
 		t.string   "birthday"
 		t.integer  "activationqueue_id"
+		t.integer  "influence",        default: 0,  null: false
 		t.integer  "exposed_count",        default: 0,  null: false
 		t.integer  "counteract_count",          default: 0,  null: false
 		t.integer  "disavowed_count",          default: 0,  null: false		
