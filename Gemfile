@@ -5,14 +5,14 @@ gem 'rails-api'
 gem 'active_model_serializers'
 gem "koala", "~> 1.8.0rc1"
 gem "pusher"
+gem 'fabrication'
+gem "faker"
 
 group :development, :test do
      gem 'sqlite3'
 end
 
 group :test do
-	gem 'fabrication'
-	gem "faker", "~> 1.2.0"
 	gem 'mocha'
 end
 

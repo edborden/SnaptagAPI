@@ -109,7 +109,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   fabrication
-  faker (~> 1.2.0)
+  faker
   koala (~> 1.8.0rc1)
   mocha
   pg
