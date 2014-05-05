@@ -45,7 +45,7 @@ class UsersController < ApplicationController
 	end
 
 	def intro_map
-		render: User.active, serializer: intro_map_user
+		render json: User.active, serializer: intro_map_user
 	end
 
 end

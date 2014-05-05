@@ -4,6 +4,9 @@ class HuntTest < ActiveSupport::TestCase
 
 	def setup
 		2.times { |n| instance_variable_set("@user" + n.to_s, Fabricate(:user)) }
+		2.times { |n| instance_variable_set("@location" + n.to_s, Fabricate(:location)) }
+		@user0.locations<<@location0
+		@user1.locations<<@location1
 		@web0 = Web.create(giver_id: @user0.id, receiver_id: @user1.id)
 	end
 

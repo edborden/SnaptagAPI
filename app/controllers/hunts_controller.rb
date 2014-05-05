@@ -35,7 +35,7 @@ class HuntsController < ApplicationController
 	end
 
 	def intro_map
-		render: Hunt.completed, serializer: blank_hunt
+		render json: Hunt.completed, serializer: hunt_location_only
 	end
 
 end

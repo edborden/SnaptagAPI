@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.boolean  "active",               default: true,  null: false
 		t.decimal "latitude",  precision: 9, scale: 6
 		t.decimal "longitude", precision: 9, scale: 6
-
 	end
 
 	add_index "hunts", ["hunter_id"], name: "index_hunts_on_hunter_id"

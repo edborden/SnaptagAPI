@@ -7,6 +7,13 @@ Fabricator(:user) do
   	facebookid { |attrs| "#{Faker::Number.number(30)}" }
 end
 
+Fabricator(:location) do
+	latitude 40.12345
+	longitude 41.24512
+	accuracy 40
+	timestamp 1236
+end
+
 Fabricator(:webbed_user, from: :user) do
 	givers_count 6
 	receivers_count 6

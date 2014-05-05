@@ -16,10 +16,6 @@ class UserTest < ActiveSupport::TestCase
 		assert_not @user1.hunters.include?(@user0)
 	end
 
-	test "location gets created with user" do
-		assert !@user0.location.blank?
-	end
-
 	test "deactivate deletes only active hunts" do
 		hunt_inactive = Hunt.create(hunter_id: @user0.id, target_id: @user2.id, active: false)
 		assert_equal 2,Hunt.count

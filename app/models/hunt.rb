@@ -14,6 +14,7 @@ class Hunt < ActiveRecord::Base
 			location = target.latest_location
 		else
 			location = hunter.latest_location
+		end
 		self.latitude = location.latitude
 		self.longitude = location.longitude
 		save
@@ -38,6 +39,8 @@ class Hunt < ActiveRecord::Base
 			save
 			hunter.add_influence(target.influence)
 			target.wipe_influence
+		end
+	end
 
 	def ensure_matching_web
 		if !matching_web
@@ -79,5 +82,4 @@ class Hunt < ActiveRecord::Base
 		hunter.compromise
 		target.performed_counteraction
 	end
-
 end
