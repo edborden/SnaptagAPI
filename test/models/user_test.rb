@@ -30,7 +30,7 @@ class UserTest < ActiveSupport::TestCase
 		user = User.create_from_facebook(@@fbhash["access_token"],fb_hash)
 		assert_equal 4,User.count
 		assert_instance_of User,user
-		assert_equal user.facebookid,@@fbhash["id"].to_i
+		assert_equal user.facebookid,@@fbhash["id"]
 	end  
 
 	test "active? and activate work" do

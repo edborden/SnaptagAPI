@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.string   "firstname"
 		t.string   "lastname"
 		t.string   "token"
-		t.integer  "facebookid"
+		t.string  "facebookid"
 		t.string   "smallpic"
 		t.string   "mediumpic"
 		t.string   "largepic"
