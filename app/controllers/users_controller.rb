@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 
 	def find
 		if params[:web_without_targets]
-			Websholefiller.new(@current_user).run
+			WebsHoleFiller.new(@current_user).run
 			web_without_targets = @current_user.givers + @current_user.receivers - @current_user.targets
 			render json: web_without_targets
 		elsif params[:targets]

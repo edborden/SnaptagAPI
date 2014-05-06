@@ -7,41 +7,6 @@ class Hunt < ActiveRecord::Base
 
 	scope :completed, -> {where(active: false)}
 
-	def complete
-		self.active = false
-		self.completed_at = Time.now
-		if self.counteracted
-			location = target.latest_location
-		else
-			location = hunter.latest_location
-		end
-		self.latitude = location.latitude
-		self.longitude = location.longitude
-		save
-		appropriate_influence
-		minus_one
-	end
-
-	def success
-		complete
-		target.compromise
-		hunter.performed_successful_hunt
-	end
-
-	def appropriate_influence
-		if self.counteracted
-			self.influence_appropriated = hunter.influence
-			save
-			target.add_influence(hunter.influence)
-			hunter.wipe_influence
-		else
-			self.influence_appropriated = target.influence
-			save
-			hunter.add_influence(target.influence)
-			target.wipe_influence
-		end
-	end
-
 	def ensure_matching_web
 		if !matching_web
 			make_room(hunter)
@@ -75,11 +40,4 @@ class Hunt < ActiveRecord::Base
 		target.decrement!(:hunters_count)
 	end
 
-	def counteract
-		self.counteracted = true
-		save
-		complete
-		hunter.compromise
-		target.performed_counteraction
-	end
 end

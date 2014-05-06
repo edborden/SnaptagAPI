@@ -1,4 +1,4 @@
-class Huntsholefiller
+class HuntsHoleFiller
 
 	def run
 		if it_is_time?

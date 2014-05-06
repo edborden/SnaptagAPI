@@ -10,13 +10,6 @@ class HuntTest < ActiveSupport::TestCase
 		@web0 = Web.create(giver_id: @user0.id, receiver_id: @user1.id)
 	end
 
-	test "complete" do
-		hunt = Hunt.create(hunter_id: @user0.id, target_id: @user1.id)
-		hunt.expects(:minus_one)
-		hunt.complete
-		assert hunt.active == false
-	end
-
 	test "ensure_matching_web" do
 		assert_equal 1,Web.count
 		hunt = Hunt.create(hunter_id: @user0.id, target_id: @user1.id)
@@ -58,12 +51,4 @@ class HuntTest < ActiveSupport::TestCase
 		assert_equal 0,@user0.reload.targets_count
 	end
 
-	test "counteract" do
-		hunt = Hunt.create(hunter_id: @user0.id, target_id: @user1.id)
-		User.any_instance.expects(:compromise)
-		User.any_instance.expects(:performed_counteraction)
-		hunt.expects(:complete)
-		hunt.counteract
-		assert hunt.counteracted
-	end
 end

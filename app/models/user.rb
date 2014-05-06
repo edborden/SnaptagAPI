@@ -34,7 +34,14 @@ class User < ActiveRecord::Base
 		save
 	end
 
+	def disavow
+		# WHERE DOES THE INFLUENCE GO?
+		self.increment!(:disavowed_count)
+		deactivate
+	end
+
 	def deactivate
+		#THIS CAUSES WAY TOO MANY DATABASE WRITES THRU MINUS_ONE'S
 		hunts.destroy_all
 		flights.destroy_all
 		webs.destroy_all
@@ -73,36 +80,8 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def performed_successful_hunt
-		self.increment!(:exposed_count)
-	end
-
-	def performed_counteraction
-		self.increment!(:counteract_count)
-	end
-
-	def disavow
-		self.increment!(:disavowed_count)
-		deactivate
-	end
-
-	def compromise
-		self.increment!(:compromised_count)
-		deactivate
-	end
-
 	def latest_location
 		self.locations.last
-	end
-
-	def add_influence(influence)
-		self.influence += influence
-		save
-	end
-
-	def wipe_influence
-		self.influence = 0
-		save
 	end
 
 end

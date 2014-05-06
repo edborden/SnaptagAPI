@@ -11,8 +11,6 @@ class Location < ActiveRecord::Base
 		end
 	end
 
-	#after_update :clear_locationrequests
-
 	#def push_location_update_request
 	#	Pusher.trigger(self.user.token, 'updatelocation', {message:"updatelocation"}) if self.locationrequests.count == 1
 	#end

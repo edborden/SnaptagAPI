@@ -3,17 +3,17 @@ class HuntsController < ApplicationController
 	def counteract
 		hunt = Hunt.find_by(hunter_id: params[:hunter_id], target_id: @current_user.id, active: true).exists?
 		if hunt.exists?
-			hunt.counteract
+			HuntEnder.new(hunt).counteract_success
 			render text: "success"
 		else
-			user.disavow
-			render text: "disavowed"
+			@current_user.disavow
+			render text: "failure"
 		end
 	end
 
 	def success
 		hunt = Hunt.find_by(hunter_id: @current_user.id, target_id: params[:target_id])
-		hunt.success
+		HuntEnder.new(hunt).expose_success
 		render :ok
 	end
 
@@ -26,7 +26,7 @@ class HuntsController < ApplicationController
 			queue = Activationqueue.first
 			queue.users<<@current_user
 		end
-		Huntsholefiller.new.run
+		HuntsHoleFiller.new.run
 		if @current_user.activationqueue_id.present?
 			render text: "queue" 
 		else 

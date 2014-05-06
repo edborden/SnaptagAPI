@@ -1,4 +1,4 @@
-class Websholefiller
+class WebsHoleFiller
 
 	def initialize(user)
 		@user = user
