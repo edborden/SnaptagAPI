@@ -15,4 +15,5 @@ class Test
 		Web.create(giver_id: @user9.id, receiver_id:ed.id)
 		Web.create(giver_id: @user10.id, receiver_id:ed.id)
 	end
+
 end

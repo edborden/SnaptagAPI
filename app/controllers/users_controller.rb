@@ -40,12 +40,12 @@ class UsersController < ApplicationController
 			web_without_targets = @current_user.givers + @current_user.receivers - @current_user.targets
 			render json: web_without_targets
 		elsif params[:targets]
-			render json: @current_user.targets, serializer: user_with_locations
+			render json: @current_user.targets, serializer: UserWithLocationsSerializer
 		end
 	end
 
 	def intro_map
-		render json: User.active, serializer: intro_map_user
+		render json: User.active, serializer: IntroMapUserSerializer
 	end
 
 end

@@ -14,8 +14,8 @@ Fabricator(:user) do
 end
 
 Fabricator(:location) do
-	latitude 40.12345
-	longitude 41.24512
+	latitude { |attrs| "#{Faker::Address.latitude}" }
+	longitude { |attrs| "#{Faker::Address.longitude}" }
 	accuracy 40
 	timestamp 1236
 end
