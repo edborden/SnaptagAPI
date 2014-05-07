@@ -24,3 +24,8 @@ Fabricator(:webbed_user, from: :user) do
 	givers_count 6
 	receivers_count 6
 end
+
+Fabricator(:web_test_user, from: :user) do
+	activationqueue_id 0
+end
+
