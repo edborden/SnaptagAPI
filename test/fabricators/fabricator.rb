@@ -26,6 +26,6 @@ Fabricator(:webbed_user, from: :user) do
 end
 
 Fabricator(:web_test_user, from: :user) do
-	activationqueue_id 0
+	activationqueue_id 1
 end
 
