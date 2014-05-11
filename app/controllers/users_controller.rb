@@ -42,11 +42,9 @@ class UsersController < ApplicationController
 			render json: web_without_targets
 		elsif params[:targets]
 			render json: @current_user.targets, each_serializer: UserWithLocationsSerializer
+		elsif params[:intro_map]
+			render json: User.active, each_serializer: IntroMapUserSerializer
 		end
-	end
-
-	def intro_map
-		render json: User.active, each_serializer: IntroMapUserSerializer
 	end
 
 end
