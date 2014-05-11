@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
 	skip_before_action :ensure_authenticated_user, only: :login
+	skip_before_action :ensure_authenticated_user, only: :intro_map
 
 	def login
 		facebook ||= Facebook.new(params[:token])
