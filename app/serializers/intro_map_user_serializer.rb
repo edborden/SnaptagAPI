@@ -1,5 +1,4 @@
 class IntroMapUserSerializer < ActiveModel::Serializer
-	embed :ids, include: true
 	attributes :id, :exposed_count
 	has_many :locations
 
