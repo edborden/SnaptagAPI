@@ -8,4 +8,5 @@ class Test
 
 	def active_users
 		25.times { |n| instance_variable_set("@user" + (n+125).to_s, Fabricate(:active_test_user, id: (n+125))) }
+	end
 end
