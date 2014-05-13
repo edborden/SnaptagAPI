@@ -30,3 +30,6 @@ Fabricator(:web_test_user, from: :user) do
 	after_create { |attrs| Fabricate(:location, user_id: attrs[:id] )}
 end
 
+Fabricator(:active_test_user, from: :user) do
+	after_create { |attrs| Fabricate(:location, user_id: attrs[:id] )}
+end
