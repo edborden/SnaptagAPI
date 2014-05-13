@@ -19,6 +19,7 @@ class HuntsController < ApplicationController
 
 	def join
 		@current_user.activate
+		Location.create_from_client(@current_user,params)
 		if !Activationqueue.exists?
 			queue = Activationqueue.create
 			queue.users<<@current_user
