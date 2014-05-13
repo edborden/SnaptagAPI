@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.decimal "latitude",  precision: 9, scale: 6
 		t.decimal "longitude", precision: 9, scale: 6
 		t.integer "accuracy"
-		t.integer "timestamp"
+		t.string "timestamp"
 	end
 
 	add_index "locations", ["user_id"], name: "index_locations_on_user_id"
