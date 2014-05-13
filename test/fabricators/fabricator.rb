@@ -25,11 +25,6 @@ Fabricator(:webbed_user, from: :user) do
 	receivers_count 6
 end
 
-Fabricator(:web_test_user, from: :user) do
-	activationqueue_id 1
-	after_create { |attrs| Fabricate(:location, user_id: attrs[:id] )}
-end
-
 Fabricator(:active_test_user, from: :user) do
 	after_create { |attrs| Fabricate(:location, user_id: attrs[:id] )}
 end
