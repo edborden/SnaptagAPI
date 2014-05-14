@@ -11,7 +11,7 @@ class UsersControllerTest < ActionController::TestCase
 		user = Fabricate(:user)
 		get(:me, {"token" => user.token})
 		assert_equal 200,response.status
-		assert_equal user.firstname, json_response['user']['firstname']
+		assert_equal user.name, json_response['user']['name']
 	end
 
 	test "new user" do

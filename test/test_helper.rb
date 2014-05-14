@@ -18,8 +18,7 @@ class ActiveSupport::TestCase
 		fb_hash
 		User.create! do |user|
 			user.facebookid = @@fbprofile["id"]
-			user.firstname = @@fbprofile["first_name"]
-			user.lastname = @@fbprofile["last_name"]
+			user.name = @@fbprofile["first_name"]
 			user.token = @@fbhash["access_token"]
 			user.email = @@fbprofile["email"]
 			user.gender = @@fbprofile["gender"]
