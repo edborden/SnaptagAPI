@@ -3,7 +3,7 @@ class Blastoff
 	def initialize(activationqueue=[])
 		@master_list = activationqueue.shuffle
 		@master_list_split = @master_list.in_groups(2)
-		@need_targets_list = activationqueue.shuffle
+		@master_list_hunts = activationqueue.shuffle
 		@need_hunters_list = activationqueue.shuffle
 	end
 
@@ -20,18 +20,24 @@ class Blastoff
 			@master_list -= [user]
 		end
 
-		@need_targets_list.each do |hunter|
-			3.times { 
-				@need_hunters_list.shuffle
-				@need_hunters_list = assign_a_target(hunter,@need_hunters_list) 
-			}
+		@master_list_hunts.each do |user|
+			assign_target(user,@master_list_hunts) until user.reload.targets_count == 3
+			assign_hunter(user,@master_list_hunts) until user.reload.hunters_count == 3
+			@master_list_hunts -= [user]
 		end
 	end
 
-	def assign_a_target(hunter,list)
+	def assign_target(hunter,list)
 		validated_target = find_a_valid_target_in_list(hunter,list)
 		Hunt.create(hunter_id: hunter.id, target_id: validated_target.id)
-		list -= [validated_target] if validated_target.hunters_count == 3
+		list -= [validated_target] if validated_target.reload.hunters_count == 3
+		return list
+	end
+
+	def assign_hunter(target,list)
+		validated_hunter = find_a_valid_hunter_in_list(target,list)
+		Hunt.create(hunter_id: validated_hunter.id, target_id: target.id)
+		list -= [validated_hunter] if validated_hunter.reload.targets_count == 3
 		return list
 	end
 
@@ -39,6 +45,13 @@ class Blastoff
 		position = 0
 		## target can't be same as hunter and no duplicate targets
 		position += 1 until hunter != list[position] && !hunter.targets.include?(list[position])
+		return list[position]
+	end
+
+	def find_a_valid_hunter_in_list(target,list)
+		position = 0
+		## target can't be same as hunter and no duplicate targets
+		position += 1 until target != list[position] && !target.hunters.include?(list[position])
 		return list[position]
 	end
 

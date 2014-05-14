@@ -28,7 +28,7 @@ class HuntsController < ApplicationController
 			queue.users<<@current_user
 		end
 		HuntsHoleFiller.new.run
-		if @current_user.activationqueue_id.present?
+		if @current_user.reload.activationqueue_id.present?
 			render text: "queue" 
 		else 
 			render text: "active"

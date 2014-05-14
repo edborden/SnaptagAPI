@@ -12,10 +12,12 @@ class BlastoffTest < ActiveSupport::TestCase
 		assert_equal @user0,Blastoff.new.find_a_valid_target_in_list(@user2,@queue),"Did not return first user"
 	end
 
-	test "assign_a_target" do
-		Blastoff.new.assign_a_target(@user0,@queue)
+	test "assign_a_target creates a hunt" do
+		Blastoff.new.assign_target(@user0,@queue)
 		assert_equal true,Hunt.exists?
 	end
+
+#	test "assign_a_target removes"
 
 	test "find_a_valid_web_target_in_list" do
 		Web.create(giver_id: @user0.id, receiver_id: @user1.id)
@@ -35,6 +37,12 @@ class BlastoffTest < ActiveSupport::TestCase
 		Blastoff.new(mock_activation_queue).run
 		assert_equal 36,Hunt.count
 		assert_equal 66,Web.count
+		mock_activation_queue.each do |user|
+			assert_equal 3, user.reload.hunters_count
+			assert_equal 3, user.targets_count
+			assert user.givers_count == 5 || user.givers_count == 6
+			assert user.receivers_count == 5 || user.receivers_count == 6
+		end
 	end
 
 end
