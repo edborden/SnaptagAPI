@@ -25,6 +25,13 @@ Fabricator(:webbed_user, from: :user) do
 	receivers_count 6
 end
 
-Fabricator(:active_test_user, from: :user) do
+Fabricator(:user_with_location, from: :user) do
 	after_create { |attrs| Fabricate(:location, user_id: attrs[:id] )}
+end
+
+Fabricator(:active_test_user, from: :user_with_location) do
+	hunters_count 3
+	targets_count 3
+	givers_count 5
+	receivers_count 6
 end
