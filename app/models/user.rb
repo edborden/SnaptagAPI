@@ -68,8 +68,7 @@ class User < ActiveRecord::Base
 		pichash = Facebook.new(token).get_pics
 		create! do |user|
 			user.facebookid = profile["id"]
-			user.firstname = profile["first_name"]
-			user.lastname = profile["last_name"]
+			user.name = profile["first_name"]
 			user.token = token
 			user.email = profile["email"]
 			user.gender = profile["gender"]

@@ -34,8 +34,7 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 	create_table "users", force: true do |t|
 		t.string   "email"
 		t.string   "gender"
-		t.string   "firstname"
-		t.string   "lastname"
+		t.string   "name"
 		t.string   "token"
 		t.string  "facebookid"
 		t.string   "smallpic"

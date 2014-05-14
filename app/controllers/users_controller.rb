@@ -42,7 +42,8 @@ class UsersController < ApplicationController
 		elsif params[:targets]
 			render json: @current_user.targets, each_serializer: UserWithLocationsSerializer
 		elsif params[:intro_map]
-			render json: User.active, each_serializer: IntroMapUserSerializer
+			users = User.active - @current_user
+			render json: users, each_serializer: IntroMapUserSerializer
 		end
 	end
 
