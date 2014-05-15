@@ -23,10 +23,10 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 
 	create_table "locations", force: true do |t|
 		t.integer "user_id"
-		t.decimal "latitude",  precision: 9, scale: 6
-		t.decimal "longitude", precision: 9, scale: 6
-		t.integer "accuracy"
-		t.string "timestamp"
+		t.decimal "latitude",  precision: 9, scale: 6, null: false	
+		t.decimal "longitude", precision: 9, scale: 6, null: false	
+		t.integer "accuracy", null: false
+		t.string "timestamp", null: false
 	end
 
 	add_index "locations", ["user_id"], name: "index_locations_on_user_id"
