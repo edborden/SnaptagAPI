@@ -14,7 +14,7 @@ class HuntsController < ApplicationController
 	def success
 		hunt = Hunt.find_by(hunter_id: @current_user.id, target_id: params[:target_id])
 		HuntEnder.new(hunt).expose_success
-		render status: 200
+		render text: "ok"
 	end
 
 	def join
