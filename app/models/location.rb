@@ -1,13 +1,13 @@
 class Location < ActiveRecord::Base
 	belongs_to :user
 
-	def self.create_from_client(user,params)
+	def self.create_from_client(user,latitude,longitude,accuracy,timestamp)
 		create! do |location|
 			location.user_id = user.id
-			location.latitude = params[:latitude]
-			location.longitude = params[:longitude]
-			location.accuracy = params[:accuracy]
-			location.timestamp = params[:timestamp]
+			location.latitude = latitude
+			location.longitude = longitude
+			location.accuracy = accuracy
+			location.timestamp = timestamp
 		end
 	end
 
