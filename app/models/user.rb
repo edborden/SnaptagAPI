@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
 	belongs_to :activationqueue, counter_cache: true
+	belongs_to :zone
 
 	has_many :locations
 

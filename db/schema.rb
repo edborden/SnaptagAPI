@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer "influence_appropriated"
 		t.boolean  "counteracted",         default: false,  null: false
 		t.boolean  "active",               default: true,  null: false
-		t.decimal "latitude",  precision: 9, scale: 6
+		t.decimal "latitude",  precision: 8, scale: 6
 		t.decimal "longitude", precision: 9, scale: 6
 	end
 
@@ -23,13 +23,15 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 
 	create_table "locations", force: true do |t|
 		t.integer "user_id"
-		t.decimal "latitude",  precision: 9, scale: 6, null: false	
+		t.integer "zone_id"
+		t.decimal "latitude",  precision: 8, scale: 6, null: false	
 		t.decimal "longitude", precision: 9, scale: 6, null: false	
 		t.integer "accuracy", null: false
 		t.string "timestamp", null: false
 	end
 
 	add_index "locations", ["user_id"], name: "index_locations_on_user_id"
+
 
 	create_table "users", force: true do |t|
 		t.string   "email"
@@ -42,6 +44,7 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.string   "largepic"
 		t.string   "birthday"
 		t.integer  "activationqueue_id"
+		t.integer  "zone_id"
 		t.integer  "influence",        default: 0,  null: false
 		t.integer  "exposed_count",        default: 0,  null: false
 		t.integer  "counteract_count",          default: 0,  null: false
@@ -67,5 +70,11 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 
 	add_index "webs", ["giver_id"], name: "index_webs_on_giver_id"
 	add_index "webs", ["receiver_id"], name: "index_webs_on_receiver_id"
+
+	create_table "zone", force: true do |t|
+		t.decimal "latitude",  precision: 8, scale: 6, null: false	
+		t.decimal "longitude", precision: 9, scale: 6, null: false
+		t.integer "range", null:false, default: 2 * DEFAULT_MAX_DISTANCE
+	end
 
 end
