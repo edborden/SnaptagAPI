@@ -47,7 +47,9 @@ class User < ActiveRecord::Base
 		flights.destroy_all
 		webs.destroy_all
 		antiwebs.destroy_all
+		locations.destroy_all
 		self.active = false
+		self.zone = nil
 		save
 	end
 
@@ -80,8 +82,17 @@ class User < ActiveRecord::Base
 		end
 	end
 
-	def latest_location
-		self.locations.last
+	# Does this need to save? or does association= inherently save?
+	def set_zone
+		zone = Zone.determine_user_zone(self)
+		if zone
+			self.zone = zone
+			save
+		else
+			zone = Zone.create_or_grow(self.locations.last)
+			self.zone = zone
+			save
+		end
 	end
 
 end
