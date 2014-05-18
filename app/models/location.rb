@@ -4,8 +4,8 @@ class Location < ActiveRecord::Base
 	def self.create_from_client(user,params)
 		create! do |location|
 			location.user_id = user.id
-			location.latitude = params[:latitude]
-			location.longitude = params[:longitude]
+			location.lat = params[:lat]
+			location.lon = params[:lon]
 			location.accuracy = params[:accuracy]
 			location.timestamp = params[:timestamp]
 		end

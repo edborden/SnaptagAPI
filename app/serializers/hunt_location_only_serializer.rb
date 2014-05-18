@@ -1,3 +1,3 @@
 class HuntLocationOnlySerializer < ActiveModel::Serializer
-	attributes :latitude, :longitude, :completed_at
+	attributes :lat, :lon, :completed_at
 end

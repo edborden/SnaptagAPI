@@ -13,10 +13,48 @@ Fabricator(:user) do
 end
 
 Fabricator(:location) do
-	latitude {Faker::Address.latitude}
-	longitude {Faker::Address.longitude}
+	lat {Faker::Address.latitude}
+	lon {Faker::Address.longitude}
 	accuracy 40
 	timestamp 1236
+end
+
+Fabricator(:zone) do
+	lat {Faker::Address.latitude}
+	lon {Faker::Address.longitude}
+end
+
+Fabricator(:location_in_nyc, from: :location) do
+	lat 40.726507
+	lon -73.994293
+end
+
+Fabricator(:location_in_boonton, from: :location) do
+	lat 40.895929
+	lon -74.409714
+end
+
+Fabricator(:user_in_nyc, from: :user) do
+	after_create { |attrs| Fabricate(:location_in_nyc, user_id: attrs[:id] )}
+end
+
+Fabricator(:user_in_boonton, from: :user) do
+	after_create { |attrs| Fabricate(:location_in_boonton, user_id: attrs[:id] )}
+end
+
+Fabricator(:zone_in_nyc, from: :zone) do
+	lat 40.726997
+	lon -73.996010
+end
+
+Fabricator(:zone_in_boonton, from: :zone) do
+	lat 40.920059
+	lon -74.408684
+end
+
+Fabricator(:zone_in_london, from: :zone) do
+	lat 51.522903
+	lon -077720
 end
 
 Fabricator(:webbed_user, from: :user) do
@@ -34,3 +72,4 @@ Fabricator(:active_test_user, from: :user_with_location) do
 	givers_count 5
 	receivers_count 6
 end
+

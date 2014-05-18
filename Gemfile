@@ -9,7 +9,6 @@ gem 'fabrication'
 gem "faker"
 gem "haversine"
 
-
 group :development, :test do
      gem 'sqlite3'
 end

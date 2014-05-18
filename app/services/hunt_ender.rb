@@ -12,8 +12,8 @@ class HuntEnder
 
 		@hunt.active = false
 		@hunt.completed_at = Time.now
-		@hunt.latitude = @hunter.latest_location.latitude
-		@hunt.longitude = @hunter.latest_location.longitude
+		@hunt.lat = @hunter.latest_location.lat
+		@hunt.lon = @hunter.latest_location.lon
 		@hunt.influence_appropriated = @target.influence
 
 		# hunter
@@ -47,8 +47,8 @@ class HuntEnder
 		@hunt.active = false
 		@hunt.counteracted = true
 		@hunt.completed_at = Time.now
-		@hunt.latitude = @target.latest_location.latitude
-		@hunt.longitude = @target.latest_location.longitude
+		@hunt.lat = @target.latest_location.lat
+		@hunt.lon = @target.latest_location.lon
 		@hunt.influence_appropriated = @hunter.influence
 
 		# target
