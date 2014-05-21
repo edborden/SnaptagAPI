@@ -7,7 +7,6 @@ gem "koala", "~> 1.8.0rc1"
 gem "pusher"
 gem 'fabrication'
 gem "faker"
-gem "haversine"
 
 group :development, :test do
      gem 'sqlite3'

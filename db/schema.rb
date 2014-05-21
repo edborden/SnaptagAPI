@@ -53,7 +53,6 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer  "targets_count",          default: 0,  null: false
 		t.integer  "givers_count",          default: 0,  null: false
 		t.integer  "receivers_count",          default: 0,  null: false		
-		t.boolean  "active",                 default: false,  null: false
 		t.datetime "created_at"
 		t.datetime "updated_at"
 	end
@@ -74,7 +73,8 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 	create_table "zones", force: true do |t|
 		t.decimal "lat",  precision: 8, scale: 6, null: false	
 		t.decimal "lon", precision: 9, scale: 6, null: false
-		t.integer "range", null:false, default: 2 * DEFAULT_MAX_DISTANCE
+		t.integer "range", null:false, default: DEFAULT_MAX_DISTANCE
+		t.integer "grow_id"
 	end
 
 end

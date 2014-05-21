@@ -29,14 +29,6 @@ class UserTest < ActiveSupport::TestCase
 		assert_equal 2,@user0.allwebs.count
 	end
 
-	test "active? and activate work" do
-		@user0.active = false
-		@user0.save
-		assert_not @user0.active, "test didn't set up properly"
-		@user0.activate
-		assert @user0.active?, "user didn't activate"
-	end
-
 	test "deactivate deletes only active hunts" do
 		hunt_inactive = Hunt.create(hunter_id: @user0.id, target_id: @user2.id, active: false)
 		assert_equal 2,Hunt.count

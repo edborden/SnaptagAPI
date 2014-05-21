@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
 	validates :facebookid, uniqueness: true
 
-	scope :active, -> {where(active: true).where(activationqueue_id: nil)}
+	scope :active, -> {where.not(zone_id: nil).where(activationqueue_id: nil)}
 
 	has_many :hunts, -> { where active: true }, :foreign_key => "hunter_id"
 	has_many :targets, :through => :hunts, :source => :target
@@ -31,8 +31,7 @@ class User < ActiveRecord::Base
 	end
 
 	def activate
-		self.active = true
-		save
+		set_zone
 	end
 
 	def disavow
@@ -48,9 +47,7 @@ class User < ActiveRecord::Base
 		webs.destroy_all
 		antiwebs.destroy_all
 		locations.destroy_all
-		self.active = false
-		self.zone = nil
-		save
+		zone.remove_user(self)
 	end
 
 	def remove_nonhunt_web
@@ -59,7 +56,7 @@ class User < ActiveRecord::Base
 	end
 
 	def active?
-		true if self.active
+		true if !self.zone_id.nil?
 	end
 
 	def set_token(token)
@@ -70,28 +67,25 @@ class User < ActiveRecord::Base
 	def self.create_from_facebook(token,profile)
 		pichash = Facebook.new(token).get_pics
 		create! do |user|
-			user.facebookid = profile["id"]
-			user.name = profile["first_name"]
+			user.facebookid = profile[:id]
+			user.name = profile[:first_name]
 			user.token = token
-			user.email = profile["email"]
-			user.gender = profile["gender"]
-			user.birthday = profile["birthday"]
+			user.email = profile[:email]
+			user.gender = profile[:gender]
+			user.birthday = profile[:birthday]
 			user.smallpic = pichash[:smallpic]
 			user.mediumpic = pichash[:mediumpic]
 			user.largepic = pichash[:largepic]
 		end
 	end
 
-	# Does this need to save? or does association= inherently save?
 	def set_zone
-		zone = Zone.determine_user_zone(self)
+		zone = Zone.determine_zone_for(self)
 		if zone
 			self.zone = zone
-			save
 		else
-			zone = Zone.create_or_grow(self.locations.last)
+			zone = Zone.create_or_grow(self)
 			self.zone = zone
-			save
 		end
 	end
 

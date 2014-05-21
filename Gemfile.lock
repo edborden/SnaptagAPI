@@ -36,7 +36,6 @@ GEM
       i18n (~> 0.5)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
-    haversine (0.3.0)
     hike (1.2.3)
     httpclient (2.3.4.1)
     i18n (0.6.9)
@@ -111,7 +110,6 @@ DEPENDENCIES
   active_model_serializers
   fabrication
   faker
-  haversine
   koala (~> 1.8.0rc1)
   mocha
   pg
