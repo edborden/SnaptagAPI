@@ -30,8 +30,11 @@ class UserTest < ActiveSupport::TestCase
 	end
 
 	test "deactivate deletes only active hunts" do
+		testobject = "testobject"
 		hunt_inactive = Hunt.create(hunter_id: @user0.id, target_id: @user2.id, active: false)
 		assert_equal 2,Hunt.count
+		@user0.expects(:zone).returns(testobject)
+		testobject.expects(:remove_user).with(@user0)
 		@user0.deactivate
 		assert_equal 1,Hunt.count
 	end

@@ -5,28 +5,41 @@ class ZoneTest < ActiveSupport::TestCase
 	test "determine_zone_for" do
 		10.times {Fabricate(:zone)}
 		nycuser = Fabricate(:user_in_nyc)
-		nyczone = Fabricate(:zone_in_nyc, range:100000)
+		nyczone = Fabricate(:zone_in_nyc, range:200000)
 		assert_equal nyczone,Zone.determine_zone_for(nycuser)
 		user = Fabricate(:user_with_location)
 		assert_nil Zone.determine_zone_for(user)
 	end
 
 	test "create_or_grow with no intersecting" do
-		testobject = "test object"
+		testobject = "testobject"
+		testobject.expects(:locations).twice.returns(testobject)
+		testobject.expects(:first).twice.returns(testobject)
+		testobject.expects(:lat)
+		testobject.expects(:lon)
+		testobject.expects(:id)
 		Zone.expects(:create).returns(testobject)
-		Zone.expects(:intersects_with_existing?).with(testobject).returns(nil)
+		ZoneIntersectionChecker.expects(:new).with(testobject).returns(testobject)
+		testobject.expects(:run).returns(nil)
 		assert_equal testobject,Zone.create_or_grow(testobject)
 	end
 
 	test "create_or_grow with intersecting" do
-		testobject = "test object"
-		testobject2 = "test object 2"
-		testobject3 = "test object 3"
-		Zone.expects(:create).returns(testobject2)
-		Zone.expects(:intersects_with_existing?).with(testobject2).returns(testobject)
-		Zone.expects(:join_zones).with(testobject2,testobject).returns(testobject3)
-		Zone.expects(:intersects_with_existing?).with(testobject3).returns(nil)
-		assert_equal testobject3,Zone.create_or_grow(testobject)
+		testobject = "testobject"
+		testobject2 = "testobject2"
+		testobject3 = "testobject3"
+		testobject.expects(:locations).twice.returns(testobject)
+		testobject.expects(:first).twice.returns(testobject)
+		testobject.expects(:lat)
+		testobject.expects(:lon)
+		testobject.expects(:id)
+		Zone.expects(:create).returns(testobject3)
+		ZoneIntersectionChecker.expects(:new).with(testobject3).returns(testobject)
+		ZoneJoiner.expects(:new).with(testobject3,testobject,true).returns(testobject)
+		testobject.expects(:run).returns(testobject).twice
+		ZoneIntersectionChecker.expects(:new).with(testobject).returns(testobject2)
+		testobject2.expects(:run).returns(nil)		
+		assert_equal testobject,Zone.create_or_grow(testobject)
 	end
 
 end
