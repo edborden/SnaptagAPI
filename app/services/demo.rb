@@ -1,4 +1,4 @@
-class Test
+class Demo
 
 	def web
 #		ed = User.find_by(name: "Ed")

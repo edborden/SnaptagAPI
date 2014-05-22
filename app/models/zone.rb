@@ -5,18 +5,23 @@ class Zone < ActiveRecord::Base
 
 	# WHICH ZONE AM I IN?
 
-	def self.determine_zone_for(user)
+	def self.determine_zone_for(lat,lon)
 		response = nil
-		user_location = {lat:user.locations.first.lat,lon:user.locations.first.lon}
 		Zone.all.each do |zone|
-			zone_center = [zone.lat,zone.lon]
-			distance = GeoCalc::distance(zone.lat,zone.lon,user_location[:lat],user_location[:lon])
-			if distance <= zone.range
+			if zone.contains?(lat,lon)
 				response = zone
 				break
 			end
 		end
 		return response
+	end
+
+	def self.determine_nearest_zone_for(lat,lon)
+		nearest_zone = nil
+		Zone.all.each do |zone|
+			nearest_zone = zone if nearest_zone == nil || nearest_zone.range > zone.range
+		end
+		return nearest_zone
 	end
 
 	def self.create_or_grow(user)
@@ -39,6 +44,11 @@ class Zone < ActiveRecord::Base
 			end
 			return expanded_zone
 		end
+	end
+
+	def contains?(lat,lon)
+		distance = GeoCalc::distance(lat,lon,self.lat,self.lon)
+		return true if distance <= self.range
 	end
 
 	def remove_user(user)

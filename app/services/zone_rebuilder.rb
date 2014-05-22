@@ -29,8 +29,7 @@ class ZoneRebuilder
 	def get_users_not_in_zone(list,zone)
 		response = []
 		list.each do |user|
-			distance = GeoCalc::distance(user.locations.first.lat,user.locations.first.lon,zone.lat,zone.lon)
-			response += [user] if distance > DEFAULT_MAX_DISTANCE
+			response += [user] if !zone.contains?(user.lat,user.lon)
 		end
 		return response
 	end

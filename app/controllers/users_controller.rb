@@ -41,11 +41,9 @@ class UsersController < ApplicationController
 			render json: web_without_targets
 		elsif params[:targets]
 			render json: @current_user.targets, each_serializer: UserWithLocationsSerializer
-		elsif params[:intro_map]
-			render json: User.active, each_serializer: IntroMapUserSerializer
 		elsif params[:inactive_map]
-			users = User.active - [@current_user]
-			render json: users, each_serializer: IntroMapUserSerializer
+			nearest_zone = Zone.determine_nearest_zone_for(params[:lat],params[:lon])
+			render json: nearest_zone.users, each_serializer: InactiveMapUserSerializer
 		end
 	end
 
