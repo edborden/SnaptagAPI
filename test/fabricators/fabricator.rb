@@ -10,6 +10,7 @@ Fabricator(:user) do
 85049906_64496435_s.jpg"
 	largepic "https://scontent-a.xx.fbcdn.net/hphotos-prn1/t1.0-9/s720x720/75022_101521355
 85049906_64496435_n.jpg"
+	activated_at {Time.now}
 end
 
 Fabricator(:location) do
