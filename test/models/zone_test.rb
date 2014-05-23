@@ -2,13 +2,13 @@ require 'test_helper'
 
 class ZoneTest < ActiveSupport::TestCase
 
-	test "determine_zone_for_user" do
+	test "determine_zone_for" do
 		10.times {Fabricate(:zone)}
 		nycuser = Fabricate(:user_in_nyc)
 		nyczone = Fabricate(:zone_in_nyc, range:200000)
-		assert_equal nyczone,Zone.determine_zone_for_user(nycuser)
+		assert_equal nyczone,Zone.determine_zone_for(nycuser.locations.first.lat,nycuser.locations.first.lon)
 		user = Fabricate(:user_with_location)
-		assert_nil Zone.determine_zone_for_user(user)
+		assert_nil Zone.determine_zone_for(user.locations.first.lat,user.locations.first.lon)
 	end
 
 	test "create_or_grow with no intersecting" do

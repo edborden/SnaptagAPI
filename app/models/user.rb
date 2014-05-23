@@ -80,7 +80,7 @@ class User < ActiveRecord::Base
 	end
 
 	def set_zone
-		zone = Zone.determine_zone_for(self)
+		zone = Zone.determine_zone_for(locations.first.lat,locations.first.lon)
 		if zone
 			self.zone = zone
 		else

@@ -26,8 +26,8 @@ Fabricator(:zone) do
 end
 
 Fabricator(:location_in_nyc, from: :location) do
-	lat {rand(0.16) + 40.65}
-	lon {rand(0.16) - 74.05}
+	lat {(rand(0.2) -0.16) + 40.65}
+	lon {(rand(0.2) -0.16) - 74.05}
 end
 
 Fabricator(:location_in_boonton, from: :location) do
