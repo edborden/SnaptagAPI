@@ -19,11 +19,15 @@ class ZoneRebuilder
 			users_not_in_zone = get_users_not_in_zone(users_not_in_zone,new_zone)
 	# KEEP CHECKING THE REST OF THE USERS AND GROWING THE ZONE UNTIL THEY ARE ALL CONTAINED.
 		end
-		@z.lat = new_zone.lat
-		@z.lon = new_zone.lon
-		@z.range = new_zone.range
-		@z.grow_id = random_user.id
-		@z.save
+		if new_zone.nil?
+			@z.save 
+		else
+			@z.lat = new_zone.lat
+			@z.lon = new_zone.lon
+			@z.range = new_zone.range
+			@z.grow_id = random_user.id
+			@z.save
+		end
 		return @z
 	end
 

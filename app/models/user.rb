@@ -27,16 +27,18 @@ class User < ActiveRecord::Base
 	end
 
 	def allwebs
-		allwebs = self.webs + self.antiwebs
+		allwebs = webs + antiwebs
 	end
 
 	def activate
 		set_zone
+		self.activated_at = Time.now
+		save
 	end
 
 	def disavow
 		# WHERE DOES THE INFLUENCE GO?
-		self.increment!(:disavowed_count)
+		increment!(:disavowed_count)
 		deactivate
 	end
 
@@ -80,12 +82,12 @@ class User < ActiveRecord::Base
 	end
 
 	def set_zone
-		zone = Zone.determine_zone_for(locations.first.lat,locations.first.lon)
-		if zone
-			self.zone = zone
+		z = Zone.determine_zone_for(locations.first.lat,locations.first.lon)
+		if z
+			self.zone= z
 		else
-			zone = Zone.create_or_grow(self)
-			self.zone = zone
+			z = Zone.create_or_grow(self)
+			self.zone= z
 		end
 	end
 

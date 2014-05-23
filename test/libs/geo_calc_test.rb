@@ -21,6 +21,9 @@ class GeoCalcTest < ActiveSupport::TestCase
 	end
 
 	test "compute_containg_zone" do
+		response = GeoCalc.compute_containing_zone(@z2,@z1)
+		assert_instance_of Zone, response
+		assert response.lat.present?
 	end
 
 end

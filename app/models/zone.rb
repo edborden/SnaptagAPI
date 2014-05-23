@@ -61,7 +61,7 @@ class Zone < ActiveRecord::Base
 				ZoneRebuilder.new(self).run
 			elsif self.grow_id == nil
 				uloc = user.locations.first
-				ZoneRebuilder.new(self).run if GeoCalc::distance(self.lat,self.lon,uloc.lat,uloc.lon) < self.range / 2
+				ZoneRebuilder.new(self).run if GeoCalc::distance(self.lat,self.lon,uloc.lat,uloc.lon) > (self.range / 2)
 			end
 		else
 			self.destroy

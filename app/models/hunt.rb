@@ -36,8 +36,10 @@ class Hunt < ActiveRecord::Base
 	end
 
 	def minus_one
-		hunter.decrement!(:targets_count)
-		target.decrement!(:hunters_count)
+		if self.active
+			hunter.decrement!(:targets_count)
+			target.decrement!(:hunters_count)
+		end
 	end
 
 end

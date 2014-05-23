@@ -55,6 +55,8 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer  "receivers_count",          default: 0,  null: false		
 		t.datetime "created_at"
 		t.datetime "updated_at"
+		t.datetime "activated_at"
+		t.datetime "seen_at"
 	end
 
 	add_index "users", ["activationqueue_id"], name: "index_users_on_activationqueue_id"
