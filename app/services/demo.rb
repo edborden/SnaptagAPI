@@ -18,7 +18,7 @@ class Demo
 
 	def create_active_users_in zone
 		Fabricate.times(30, :user, zone_id:zone.id) do
-			after_create { |attrs| Fabricate(:location, user_id: attrs[:id], lat: random + zone.lat, lon: random + zone.lon)}
+			after_create { |attrs| Fabricate(:location, user_id: attrs[:id], lat: Demo.new.random + zone.lat, lon: Demo.new.random + zone.lon)}
 		end
 	end
 
