@@ -11,6 +11,10 @@ Fabricator(:user) do
 	largepic "https://scontent-a.xx.fbcdn.net/hphotos-prn1/t1.0-9/s720x720/75022_101521355
 85049906_64496435_n.jpg"
 	activated_at {Time.now}
+	exposed_count {Faker::Number.number(2)}
+	counteract_count {Faker::Number.number(2)}
+	disavowed_count {Faker::Number.number(2)}
+	compromised_count {Faker::Number.number(2)}
 end
 
 Fabricator(:location) do
