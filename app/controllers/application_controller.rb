@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
 
 	# Renders a 401 status code if the current user is not authorized
 	def ensure_authenticated_user
-		head :unauthorized unless params[:intro_map] || current_user
+		head :unauthorized unless params[:inactive_map] || current_user
 	end
 
 	# Returns the user associated with the access token if available
