@@ -2,7 +2,7 @@ require 'geo_calc'
 
 class ZoneRebuilder
 
-	def initalize(zone=nil)
+	def initialize(zone=nil)
 		@z = zone
 	end
 
