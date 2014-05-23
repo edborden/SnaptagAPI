@@ -5,7 +5,7 @@ class Demo
 		unless zone
 			zone = Zone.create(lat:lat,lon:lon)
 			create_active_users_in zone
-			ZoneRebuilder.new(zone).run
+#			ZoneRebuilder.new(zone).run
 		end
 	end
 
