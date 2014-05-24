@@ -89,3 +89,9 @@ Fabricator(:active_test_user, from: :user_with_location) do
 	receivers_count 6
 end
 
+Fabricator(:active_demo_user, from: :user) do
+	hunters_count 3
+	targets_count 3
+	givers_count 5
+	receivers_count 6
+end
