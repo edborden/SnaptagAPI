@@ -10,13 +10,13 @@ class UsersController < ApplicationController
 		if user == nil
 			if profile
 				User.create_from_facebook(token,profile)
-				render text: token
+				render json: {token: token, status: user.status}
 			else
 				head :unauthorized
 			end
 		else
 			user.set_token(token)
-			render text: token
+			render json: {token: token, status: user.status}
 		end
 	end
 
@@ -25,13 +25,7 @@ class UsersController < ApplicationController
 	end
 
 	def status
-		if @current_user.active? && @current_user.activationqueue_id.present?
-			render text: "queue" 
-		elsif @current_user.active?
-			render text: "active"
-		else 
-			render text: "inactive"
-		end
+			render text: @current_user.status
 	end
 
 	def find

@@ -91,4 +91,14 @@ class User < ActiveRecord::Base
 		end
 	end
 
+	def status
+		if self.activationqueue_id.present?
+			return "queue" 
+		elsif self.active?
+			return "active"
+		else 
+			return "inactive"
+		end
+	end
+
 end
