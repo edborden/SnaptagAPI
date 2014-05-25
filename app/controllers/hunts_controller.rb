@@ -1,8 +1,8 @@
 class HuntsController < ApplicationController
 
 	def counteract
-		hunt = Hunt.find_by(hunter_id: params[:hunter_id], target_id: @current_user.id, active: true).exists?
-		if hunt.exists?
+		hunt = Hunt.find_by(hunter_id: params[:hunter_id], target_id: @current_user.id, active: true)
+		if hunt
 			HuntEnder.new(hunt).counteract_success
 			render text: "success"
 		else
