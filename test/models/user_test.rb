@@ -101,4 +101,15 @@ class UserTest < ActiveSupport::TestCase
 		@user0.set_zone
 	end
 
+	test "status" do
+		assert_equal "active",@user0.status
+		@user0.zone_id = nil
+		@user0.activationqueue_id = 1
+		@user0.save
+		assert_equal "queue",@user0.status
+		@user0.activationqueue_id = nil
+		@user0.save
+		assert_equal "inactive",@user0.status
+	end
+
 end

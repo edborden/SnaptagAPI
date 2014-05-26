@@ -2,10 +2,10 @@ require 'test_helper'
 
 class UsersControllerTest < ActionController::TestCase
 
-	#test "api call with unmatching token" do
-	#	get(:me, {"token" => "faketoken"})
-	#	assert_equal 401,response.status
-	#end
+	test "api call with unmatching token" do
+		get(:me, {"token" => "faketoken"})
+		assert_equal 401,response.status
+	end
 
 	test "me with valid token" do
 		user = Fabricate(:user)
@@ -19,10 +19,17 @@ class UsersControllerTest < ActionController::TestCase
 		User.expects(:find_by).with(facebookid: @@fbhash["id"]).returns(nil)
 		Facebook.any_instance.expects(:exchange_token).returns("newtoken")
 		Facebook.any_instance.expects(:get_profile).returns(@@fbhash)
-		User.expects(:create_from_facebook).with("newtoken",@@fbhash)
+		User.expects(:create_from_facebook).with("newtoken",@@fbhash).returns(stub(status: "active"))
 		get(:login, {"token" => @@fbhash["access_token"]})
 		assert_equal 200,@response.status
+		assert_equal "active",json_response["status"]
+		assert_equal "newtoken",json_response["token"]
 	end
+
+	test "login existing user" do
+		
+	end
+
 
 	test "find" do
 	end

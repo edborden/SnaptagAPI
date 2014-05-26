@@ -92,7 +92,7 @@ class User < ActiveRecord::Base
 	end
 
 	def status
-		if self.activationqueue_id.present?
+		if self.activationqueue_id
 			return "queue" 
 		elsif self.active?
 			return "active"

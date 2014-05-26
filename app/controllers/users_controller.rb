@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
 		if user == nil
 			if profile
-				User.create_from_facebook(token,profile)
+				user = User.create_from_facebook(token,profile)
 				render json: {token: token, status: user.status}
 			else
 				head :unauthorized
@@ -24,8 +24,8 @@ class UsersController < ApplicationController
 		render json: @current_user
 	end
 
-	def status
-			render text: @current_user.status
+	def user_status
+		render text: @current_user.status
 	end
 
 	def find

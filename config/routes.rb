@@ -2,7 +2,7 @@ Gridwebclient::Application.routes.draw do
 
 	get 'users/login', to: 'users#login'
 	get 'users/me', to: 'users#me'
-	get 'users/status', to: 'users#status'
+	get 'users/status', to: 'users#user_status'
 	get 'users', to: 'users#find'
 
 	get 'locations/update', to: 'locations#update'
