@@ -11,7 +11,7 @@ class HuntsController < ApplicationController
 		end
 	end
 
-	def success
+	def expose
 		hunt = Hunt.find_by(hunter_id: @current_user.id, target_id: params[:target_id])
 		HuntEnder.new(hunt).expose_success
 		render text: "success"

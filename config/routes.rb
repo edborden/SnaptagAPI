@@ -8,6 +8,6 @@ Gridwebclient::Application.routes.draw do
 	get 'locations/update', to: 'locations#update'
 
 	get 'hunts/join', to: 'hunts#join'
-	get 'hunts/success', to: 'hunts#success'
+	get 'hunts/expose', to: 'hunts#expose'
 	get 'hunts/counteract', to: 'hunts#counteract'
 end
