@@ -44,12 +44,12 @@ class User < ActiveRecord::Base
 
 	def deactivate
 		#THIS CAUSES WAY TOO MANY DATABASE WRITES THRU MINUS_ONE'S
+		zone.remove_user(self)
 		hunts.destroy_all
 		flights.destroy_all
 		webs.destroy_all
 		antiwebs.destroy_all
 		locations.destroy_all
-		zone.remove_user(self)
 	end
 
 	def remove_nonhunt_web

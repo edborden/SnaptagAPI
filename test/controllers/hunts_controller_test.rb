@@ -16,4 +16,8 @@ class HuntsControllerTest < ActionController::TestCase
 		assert_equal "active",@response.body
 	end
 
+	test "counteract" do
+		
+	end
+
 end
