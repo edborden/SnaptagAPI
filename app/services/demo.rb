@@ -26,7 +26,7 @@ class Demo
 		zone = Zone.determine_zone_for(lat,lon)
 		queue = Activationqueue.create
 		Fabricate.times(11, :user, zone_id:zone.id, activationqueue_id:queue.id) do
-			after_create { |attrs| Fabricate(:location, user_id: attrs[:id], lat: (rand*0.15 -0.075) + zone.lat, lon: (rand*0.15 -0.075) + zone.lon)}
+			after_create { |attrs| Fabricate.times(25,:location, user_id: attrs[:id], lat: (rand*0.15 -0.075) + zone.lat, lon: (rand*0.15 -0.075) + zone.lon)}
 		end
 	end
 
