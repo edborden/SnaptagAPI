@@ -21,7 +21,7 @@ Fabricator(:location) do
 	lat {Faker::Address.latitude}
 	lon {Faker::Address.longitude}
 	accuracy 40
-	timestamp 1236
+	timestamp Time.now
 end
 
 Fabricator(:zone) do
