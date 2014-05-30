@@ -18,7 +18,7 @@ class Demo
 
 	def create_active_users_in zone
 		Fabricate.times(30, :active_demo_user, zone_id:zone.id) do
-			after_create { |attrs| Fabricate(:location, user_id: attrs[:id], lat: (rand*0.75 -0.0375) + zone.lat, lon: (rand*0.75 -0.0375) + zone.lon)}
+			after_create { |attrs| Fabricate(:location, user_id: attrs[:id], lat: (rand*0.075 -0.0375) + zone.lat, lon: (rand*rand*0.075 -0.0375) + zone.lon)}
 		end
 	end
 
@@ -26,7 +26,7 @@ class Demo
 		zone = Zone.determine_zone_for(lat,lon)
 		queue = Activationqueue.create
 		Fabricate.times(11, :user, zone_id:zone.id, activationqueue_id:queue.id) do
-			after_create { |attrs| 25.times { Fabricate(:location, user_id: attrs[:id], lat: (rand*0.15 -0.075) + zone.lat, lon: (rand*0.15 -0.075) + zone.lon)}}
+			after_create { |attrs| 25.times { Fabricate(:location, user_id: attrs[:id], lat: (rand*rand*0.075 -0.0375) + zone.lat, lon: (rand*rand*0.075 -0.0375) + zone.lon)}}
 		end
 	end
 
