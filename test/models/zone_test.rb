@@ -15,6 +15,9 @@ class ZoneTest < ActiveSupport::TestCase
 	end
 
 	test "determine_nearest_zone_for" do
+		10.times {Fabricate(:zone)}
+		assert_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.locations.first.lat,@nycuser.locations.first.lon)
+		assert_not_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.locations.first.lat,@nycuser.locations.first.lon,[@nyczone])
 	end
 
 	test "create_or_grow with no intersecting" do
@@ -57,6 +60,19 @@ class ZoneTest < ActiveSupport::TestCase
 		Fabricate(:user_in_nyc, zone_id: @nyczone.id)
 		ZoneRebuilder.expects(:new).with(@nyczone).returns(stub(:run))
 		@nyczone.remove_user(@nycuser)
+	end
+
+	test "active?" do
+		assert @nyczone.active?
+		@nycuser.activationqueue_id = 1
+		@nycuser.save
+		assert_not @nyczone.active?
+	end
+
+	test "within 50km of" do
+		assert @nyczone.within_50km_of @nycuser.locations.last.lat,@nycuser.locations.last.lon
+		londonuser = Fabricate(:user_in_london)
+		assert_not @nyczone.within_50km_of londonuser.locations.last.lat,londonuser.locations.last.lon
 	end
 
 end

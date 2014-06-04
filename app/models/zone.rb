@@ -16,10 +16,20 @@ class Zone < ActiveRecord::Base
 		return response
 	end
 
-	def self.determine_nearest_zone_for(lat,lon)
+	def self.determine_nearest_zone_for(lat,lon,exclude_zones = nil)
 		nearest_zone = nil
-		Zone.all.each do |zone|
-			nearest_zone = zone if nearest_zone == nil || nearest_zone.range > zone.range
+		nearest_zone_distance = nil
+		if exclude_zones
+			zones = Zone.all - exclude_zones 
+		else
+			zones = Zone.all
+		end
+		zones.each do |zone|
+			distance = GeoCalc::distance(zone.lat,zone.lon,lat,lon)
+			if nearest_zone == nil || distance < nearest_zone_distance
+				nearest_zone = zone
+				nearest_zone_distance = distance
+			end
 		end
 		return nearest_zone
 	end
@@ -66,6 +76,15 @@ class Zone < ActiveRecord::Base
 		else
 			self.destroy
 		end
+	end
+
+	# zone is active if it contains users that are not in a queue
+	def active?
+		return true if self.users.where(activationqueue_id: nil).exists?
+	end
+
+	def within_50km_of lat,lon
+		return true if GeoCalc::distance(self.lat,self.lon,lat,lon) < 50000
 	end
 
 end

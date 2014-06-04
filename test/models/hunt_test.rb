@@ -27,9 +27,7 @@ class HuntTest < ActiveSupport::TestCase
 
 	test "make_room" do
 		13.times {Fabricate(:user)}
-		users = User.all
-		users.delete_at(0)
-		users.delete_at(0)
+		users = User.all - [@user0] - [@user1]
 		users.each do |user|
 			Web.create(giver_id: @user0.id, receiver_id: user.id)
 		end

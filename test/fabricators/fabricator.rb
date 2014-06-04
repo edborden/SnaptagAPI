@@ -24,15 +24,9 @@ Fabricator(:location) do
 	timestamp Time.now
 end
 
-Fabricator(:zone) do
-	lat {Faker::Address.latitude}
-	lon {Faker::Address.longitude}
-	range 1200
-end
-
 Fabricator(:location_in_nyc, from: :location) do
-	lat {(rand*0.1 -0.05) + 40.7127}
-	lon {(rand*0.1 -0.05) - 74.0059}
+	lat {(rand*0.05 -0.025) + 40.7127}
+	lon {(rand*0.05 -0.025) - 74.0059}
 end
 
 Fabricator(:location_in_boonton, from: :location) do
@@ -55,22 +49,6 @@ end
 
 Fabricator(:user_in_london, from: :user) do
 	after_create { |attrs| Fabricate(:location_in_london, user_id: attrs[:id] )}
-end
-
-Fabricator(:zone_in_nyc, from: :zone) do
-	lat 40.7127
-	lon -74.0059
-	range 15000
-end
-
-Fabricator(:zone_in_boonton, from: :zone) do
-	lat 40.920059
-	lon -74.408684
-end
-
-Fabricator(:zone_in_london, from: :zone) do
-	lat 51.522903
-	lon -0.1275
 end
 
 Fabricator(:webbed_user, from: :user) do
