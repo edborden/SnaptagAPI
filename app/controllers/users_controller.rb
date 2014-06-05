@@ -50,7 +50,7 @@ class UsersController < ApplicationController
 			# If it's a queue zone, show it + users, and the next zone, until an active zone is reached or 30 miles
 				else
 					nearest_zones = [nearest_zone]
-					until nearest_zone.active? || !nearest_zone.within_50km_of(params[:lat].to_f,params[:lon].to_f)
+					until !nearest_zone.within_50km_of(params[:lat].to_f,params[:lon].to_f) || nearest_zone.active?
 						nearest_zone = Zone.determine_nearest_zone_for(params[:lat].to_f,params[:lon].to_f,nearest_zones)
 						nearest_zones += [nearest_zone]
 					end

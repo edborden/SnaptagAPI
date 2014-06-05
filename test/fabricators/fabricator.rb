@@ -1,7 +1,7 @@
 Fabricator(:user) do
 	name { Faker::Name.first_name }
 	email "#{Faker::Lorem.characters(10)}@example.com" 
-	zone_id 1
+	zone_id 1000
 	token {Faker::Lorem.characters(10)}
 	facebookid {Faker::Lorem.characters(10)}
 	smallpic "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/t1.0-1/p50x50/75022_10
