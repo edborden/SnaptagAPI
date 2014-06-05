@@ -9,15 +9,15 @@ class ZoneTest < ActiveSupport::TestCase
 
 	test "determine_zone_for" do
 		10.times {Fabricate(:zone)}
-		assert_equal @nyczone,Zone.determine_zone_for(@nycuser.locations.first.lat,@nycuser.locations.first.lon)
+		assert_equal @nyczone,Zone.determine_zone_for(@nycuser.flat,@nycuser.flon)
 		user = Fabricate(:user_with_location)
-		assert_nil Zone.determine_zone_for(user.locations.first.lat,user.locations.first.lon)
+		assert_nil Zone.determine_zone_for(user.flat,user.flon)
 	end
 
 	test "determine_nearest_zone_for" do
 		10.times {Fabricate(:zone)}
-		assert_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.locations.first.lat,@nycuser.locations.first.lon)
-		assert_not_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.locations.first.lat,@nycuser.locations.first.lon,[@nyczone])
+		assert_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.flat,@nycuser.flon)
+		assert_not_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.flat,@nycuser.flon,[@nyczone])
 	end
 
 	test "create_or_grow with no intersecting" do
@@ -50,7 +50,7 @@ class ZoneTest < ActiveSupport::TestCase
 
 	test "remove_user, no grow_id" do
 		Fabricate(:user_in_nyc, zone_id: @nyczone.id)
-		GeoCalc.expects(:distance).with(@nyczone.lat,@nyczone.lon,@nycuser.locations.first.lat,@nycuser.locations.first.lon).returns(7501)
+		GeoCalc.expects(:distance).with(@nyczone.lat,@nyczone.lon,@nycuser.flat,@nycuser.flon).returns(7501)
 		ZoneRebuilder.expects(:new).with(@nyczone).returns(stub(:run))
 		@nyczone.remove_user(@nycuser)
 	end
@@ -70,9 +70,9 @@ class ZoneTest < ActiveSupport::TestCase
 	end
 
 	test "within 50km of" do
-		assert @nyczone.within_50km_of @nycuser.locations.last.lat,@nycuser.locations.last.lon
+		assert @nyczone.within_50km_of @nycuser.lat,@nycuser.lon
 		londonuser = Fabricate(:user_in_london)
-		assert_not @nyczone.within_50km_of londonuser.locations.last.lat,londonuser.locations.last.lon
+		assert_not @nyczone.within_50km_of londonuser.lat,londonuser.lon
 	end
 
 end

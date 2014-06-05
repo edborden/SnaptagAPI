@@ -6,8 +6,6 @@ class Location < ActiveRecord::Base
 			location.user_id = user.id
 			location.lat = params[:lat]
 			location.lon = params[:lon]
-			location.accuracy = params[:accuracy]
-			location.timestamp = params[:timestamp]
 		end
 	end
 

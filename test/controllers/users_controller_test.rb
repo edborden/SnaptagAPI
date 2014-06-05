@@ -50,43 +50,43 @@ class UsersControllerTest < ActionController::TestCase
 	test "find, inactive map, no zone" do
 		testuser = Fabricate(:user_in_nyc)
 		Fabricate(:zone)
-		get(:find, {token: testuser.token,lat: testuser.locations.last.lat,lon: testuser.locations.last.lon,inactive_map: true})
+		get(:find, {token: testuser.token,lat: testuser.lat,lon: testuser.lon,inactive_map: true})
 		assert_equal "none",@response.body
 	end
 
 	test "find, inactive map, active zone, mocked" do
 		nyczone = Fabricate(:zone_in_nyc)
-		Fabricate(:user, zone_id: nyczone.id)
+		Fabricate(:user_in_nyc, zone_id: nyczone.id)
 		testuser = Fabricate(:user_in_nyc)
-		Zone.expects(:determine_nearest_zone_for).with(testuser.locations.last.lat,testuser.locations.last.lon).returns(nyczone)
-		nyczone.expects(:within_50km_of).with(testuser.locations.last.lat,testuser.locations.last.lon).returns(true)
+		Zone.expects(:determine_nearest_zone_for).with(testuser.lat,testuser.lon).returns(nyczone)
+		nyczone.expects(:within_50km_of).with(testuser.lat,testuser.lon).returns(true)
 		nyczone.expects(:active?).with(nil).returns(true).twice
-		get(:find, {token: testuser.token,lat: testuser.locations.last.lat,lon: testuser.locations.last.lon,inactive_map: true})
+		get(:find, {token: testuser.token,lat: testuser.lat,lon: testuser.lon,inactive_map: true})
 		assert_equal nyczone.id,json_response["zones"][0]["id"]
 		assert_equal true,json_response["zones"][0]["active"]	
 	end	
 
 	test "find, inactive map, active zone" do
 		nyczone = Fabricate(:zone_in_nyc)
-		Fabricate(:user, zone_id: nyczone.id)
+		Fabricate(:user_in_nyc, zone_id: nyczone.id)
 		testuser = Fabricate(:user_in_nyc)
-		get(:find, {token: testuser.token,lat: testuser.locations.last.lat,lon: testuser.locations.last.lon,inactive_map: true})
+		get(:find, {token: testuser.token,lat: testuser.lat,lon: testuser.lon,inactive_map: true})
 		assert_equal nyczone.id,json_response["zones"][0]["id"]
 		assert_equal nyczone.active?,json_response["zones"][0]["active"]	
 	end
 
 	test "find,inactive map, queue zones before active zone,mocked" do
 		nyczone = Fabricate(:zone_in_nyc)
-		Fabricate(:user, zone_id: nyczone.id)
+		Fabricate(:user_in_nyc, zone_id: nyczone.id)
 		boontonzone = Fabricate(:zone_in_boonton)
-		Fabricate(:user, zone_id: boontonzone.id)
+		Fabricate(:user_in_boonton, zone_id: boontonzone.id)
 		testuser = Fabricate(:user_in_nyc)
-		Zone.expects(:determine_nearest_zone_for).with(testuser.locations.last.lat,testuser.locations.last.lon).returns(nyczone)
-		nyczone.expects(:within_50km_of).with(testuser.locations.last.lat,testuser.locations.last.lon).returns(true).twice
+		Zone.expects(:determine_nearest_zone_for).with(testuser.lat,testuser.lon).returns(nyczone)
+		nyczone.expects(:within_50km_of).with(testuser.lat,testuser.lon).returns(true).twice
 		nyczone.expects(:active?).with(nil).returns(false).times(3)
-		Zone.expects(:determine_nearest_zone_for).with(testuser.locations.last.lat,testuser.locations.last.lon,[nyczone]).returns(boontonzone)
+		Zone.expects(:determine_nearest_zone_for).with(testuser.lat,testuser.lon,[nyczone]).returns(boontonzone)
 		boontonzone.expects(:active?).with(nil).returns(true).twice
-		get(:find, {token: testuser.token,lat: testuser.locations.last.lat,lon: testuser.locations.last.lon,inactive_map: true})
+		get(:find, {token: testuser.token,lat: testuser.lat,lon: testuser.lon,inactive_map: true})
 		assert_equal 2,json_response["zones"].count
 		assert_equal nyczone.id,json_response["zones"][0]["id"]
 		assert_equal true,json_response["zones"][1]["active"]
@@ -94,11 +94,11 @@ class UsersControllerTest < ActionController::TestCase
 
 	test "find,inactive map, queue zones before active zone,integration" do
 		nyczone = Fabricate(:zone_in_nyc)
-		Fabricate(:user, zone_id: nyczone.id,activationqueue_id: 1)
+		Fabricate(:user_in_nyc, zone_id: nyczone.id,activationqueue_id: 1)
 		boontonzone = Fabricate(:zone_in_boonton)
-		Fabricate(:user, zone_id: boontonzone.id)
+		Fabricate(:user_in_boonton, zone_id: boontonzone.id)
 		testuser = Fabricate(:user_in_nyc)
-		get(:find, {token: testuser.token,lat: testuser.locations.last.lat,lon: testuser.locations.last.lon,inactive_map: true})
+		get(:find, {token: testuser.token,lat: testuser.lat,lon: testuser.lon,inactive_map: true})
 		assert_equal 2,json_response["zones"].count
 		assert_equal nyczone.id,json_response["zones"][0]["id"]
 		assert_equal true,json_response["zones"][1]["active"]
@@ -106,12 +106,12 @@ class UsersControllerTest < ActionController::TestCase
 
 	test "find,inactive map, only queue zones" do
 		nyczone = Fabricate(:zone_in_nyc)
-		Fabricate(:user, zone_id: nyczone.id,activationqueue_id: 1)
+		Fabricate(:user_in_nyc, zone_id: nyczone.id,activationqueue_id: 1)
 		boontonzone = Fabricate(:zone_in_boonton)
-		Fabricate(:user, zone_id: boontonzone.id,activationqueue_id: 10)
+		Fabricate(:user_in_boonton, zone_id: boontonzone.id,activationqueue_id: 10)
 		Fabricate(:zone)
 		testuser = Fabricate(:user_in_nyc)
-		get(:find, {token: testuser.token,lat: testuser.locations.last.lat,lon: testuser.locations.last.lon,inactive_map: true})
+		get(:find, {token: testuser.token,lat: testuser.lat,lon: testuser.lon,inactive_map: true})
 		assert_equal 2,json_response["zones"].count
 		assert_equal nyczone.id,json_response["zones"][0]["id"]
 		assert_equal false,json_response["zones"][1]["active"]

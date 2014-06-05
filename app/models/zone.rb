@@ -36,7 +36,7 @@ class Zone < ActiveRecord::Base
 
 	def self.create_or_grow(user)
 	# IF I'M NOT IN A ZONE, THEN I CREATE A NEW ONE.
-		created_zone = Zone.create(lat: user.locations.first.lat,lon: user.locations.first.lon,grow_id:user.id)
+		created_zone = Zone.create(lat: user.flat,lon: user.flon,grow_id:user.id)
 	# DOES IT INTERSECT WITH ANY EXISTING ZONES? 
 		intersecting_zone = ZoneIntersectionChecker.new(created_zone).run
 		if intersecting_zone.nil?
@@ -70,8 +70,7 @@ class Zone < ActiveRecord::Base
 			if self.grow_id == user.id
 				ZoneRebuilder.new(self).run
 			elsif self.grow_id == nil
-				uloc = user.locations.first
-				ZoneRebuilder.new(self).run if GeoCalc::distance(self.lat,self.lon,uloc.lat,uloc.lon) > (self.range / 2)
+				ZoneRebuilder.new(self).run if GeoCalc::distance(self.lat,self.lon,user.flat,user.flon) > (self.range / 2)
 			end
 		else
 			self.destroy

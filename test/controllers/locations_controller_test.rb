@@ -7,13 +7,11 @@ class LocationsControllerTest < ActionController::TestCase
 		params = {}
 		params[:lat] = Faker::Address.latitude
 		params[:lon] = Faker::Address.longitude
-		params[:accuracy] = 40
-		params[:timestamp] = "1236"
 		params[:token] = user.token
 		get(:update, params)
 		assert_equal 1,Location.count
 		location = Location.first
-		assert_equal location.timestamp,params[:timestamp]
+		assert_equal location.lon.to_f,params[:lon].to_f
 		assert_equal 1,user.reload.influence
 	end
 

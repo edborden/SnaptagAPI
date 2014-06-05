@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
 	end
 
 	def set_zone
-		z = Zone.determine_zone_for(locations.first.lat,locations.first.lon)
+		z = Zone.determine_zone_for(lat,lon)
 		if z
 			self.zone= z
 		else
@@ -99,6 +99,22 @@ class User < ActiveRecord::Base
 		else 
 			return "inactive"
 		end
+	end
+
+	def lat
+		self.locations.last.lat
+	end
+
+	def lon
+		self.locations.last.lon
+	end
+
+	def flat
+		self.locations.first.lat
+	end
+
+	def flon
+		self.locations.first.lon
 	end
 
 end

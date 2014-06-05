@@ -1,3 +1,3 @@
 class LocationSerializer < ActiveModel::Serializer
-	attributes :id,:lat, :lon, :timestamp, :accuracy
+	attributes :id,:lat, :lon, :created_at
 end

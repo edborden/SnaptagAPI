@@ -81,10 +81,8 @@ class UserTest < ActiveSupport::TestCase
 	test "set_zone, match" do
 		testobject = "testobject"
 		Zone.expects(:determine_zone_for).with(testobject,testobject).returns(testobject)
-		@user0.expects(:locations).twice.returns(testobject)
-		testobject.expects(:first).twice.returns(testobject)
-		testobject.expects(:lat).returns(testobject)
-		testobject.expects(:lon).returns(testobject)
+		@user0.expects(:lat).returns(testobject)
+		@user0.expects(:lon).returns(testobject)
 		@user0.expects(:zone=)
 		@user0.set_zone
 	end
@@ -92,10 +90,8 @@ class UserTest < ActiveSupport::TestCase
 	test "set_zone, no match" do
 		testobject = "testobject"
 		Zone.expects(:determine_zone_for).with(testobject,testobject).returns(nil)
-		@user0.expects(:locations).twice.returns(testobject)
-		testobject.expects(:first).twice.returns(testobject)
-		testobject.expects(:lat).returns(testobject)
-		testobject.expects(:lon).returns(testobject)
+		@user0.expects(:lat).returns(testobject)
+		@user0.expects(:lon).returns(testobject)
 		Zone.expects(:create_or_grow).with(@user0)
 		@user0.expects(:zone=)
 		@user0.set_zone
