@@ -8,17 +8,18 @@ class User < ActiveRecord::Base
 
 	scope :active, -> {where.not(zone_id: nil).where(activationqueue_id: nil)}
 
-	has_many :hunts, -> { where active: true }, :foreign_key => "hunter_id"
-	has_many :targets, :through => :hunts, :source => :target
-	has_many :flights, -> { where active: true }, :class_name => "Hunt", :foreign_key => "target_id"
-	has_many :hunters, :through => :flights, :source => :hunter
+	has_many :hunts, -> { where active: true }, foreign_key: "hunter_id"
+	has_many :targets, through: :hunts, source: :target
+	has_many :flights, -> { where active: true }, class_name: "Hunt", foreign_key: "target_id"
+	has_many :hunters, through: :flights, source: :hunter
 	scope :need_hunters, -> { where("hunters_count < 3").active.where(activationqueue_id: nil).order(hunters_count: :asc) }
 	scope :need_targets, -> { where("targets_count < 3").active.where(activationqueue_id: nil).order(targets_count: :asc) }
 
-	has_many :webs, :foreign_key => "giver_id"
-	has_many :receivers, :through => :webs, :source => :receiver
-	has_many :antiwebs, :class_name => "Web", :foreign_key => "receiver_id"
-	has_many :givers, :through => :antiwebs, :source => :giver
+	has_many :webs, foreign_key: "giver_id"
+	has_many :receivers, through: :webs, source: :receiver
+	has_many :antiwebs, class_name: "Web", foreign_key: "receiver_id"
+	has_many :givers, through: :antiwebs, source: :giver
+	# I don't need to pass an ID in here, do I? Just reference self.id directly
 	scope :need_givers, ->(id) { where("givers_count < 6").where("receivers_count < 6").active.where.not(id: id).order(givers_count: :asc) }
 	scope :need_receivers, ->(id) { where("givers_count < 6").where("receivers_count < 6").active.where.not(id: id).order(receivers_count: :asc) }
 
@@ -58,12 +59,7 @@ class User < ActiveRecord::Base
 	end
 
 	def active?
-		true if !self.zone_id.nil?
-	end
-
-	def set_token(token)
-		self.token = token
-		save
+		self.zone_id.present?
 	end
 
 	def self.create_from_facebook(token,profile)
@@ -71,7 +67,6 @@ class User < ActiveRecord::Base
 		create! do |user|
 			user.facebookid = profile["id"]
 			user.name = profile["first_name"]
-			user.token = token
 			user.email = profile["email"]
 			user.gender = profile["gender"]
 			user.birthday = profile["birthday"]
@@ -102,19 +97,19 @@ class User < ActiveRecord::Base
 	end
 
 	def lat
-		self.locations.last.lat
+		locations.last.lat
 	end
 
 	def lon
-		self.locations.last.lon
+		locations.last.lon
 	end
 
 	def flat
-		self.locations.first.lat
+		locations.first.lat
 	end
 
 	def flon
-		self.locations.first.lon
+		locations.first.lon
 	end
 
 end

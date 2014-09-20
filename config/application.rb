@@ -7,6 +7,9 @@ Bundler.require(:default, Rails.env)
 
 module Gridwebclient
 	class Application < Rails::Application
-		I18n.config.enforce_available_locales = false
+		ActiveModel::Serializer.setup do |config|
+			config.embed = :ids
+			config.embed_in_root = false
+		end
 	end
 end

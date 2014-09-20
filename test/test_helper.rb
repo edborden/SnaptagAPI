@@ -4,8 +4,6 @@ require 'rails/test_help'
 require 'mocha/mini_test'
 
 class ActiveSupport::TestCase
-	ActiveRecord::Migration.check_pending!
-	fixtures :all
 
 	def fb_hash
 		test_user_api ||= Koala::Facebook::TestUsers.new(:app_id => 726528350693125, :secret => "96ec2c1f6e53d6d1b4607164c190109c")

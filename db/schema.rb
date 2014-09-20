@@ -17,7 +17,6 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.decimal "lat",  precision: 8, scale: 6
 		t.decimal "lon", precision: 9, scale: 6
 	end
-
 	add_index "hunts", ["hunter_id"], name: "index_hunts_on_hunter_id"
 	add_index "hunts", ["target_id"], name: "index_hunts_on_target_id"
 
@@ -27,15 +26,18 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.decimal "lon", precision: 9, scale: 6, null: false	
 		t.datetime "created_at"
 	end
-
 	add_index "locations", ["user_id"], name: "index_locations_on_user_id"
 
+	create_table "sessions", force: true do |t|
+		t.string   "token"
+		t.integer "user_id"
+	end
+	add_index "sessions", ["token"], name: "index_sessions_on_token"
 
 	create_table "users", force: true do |t|
 		t.string   "email"
 		t.string   "gender"
 		t.string   "name"
-		t.string   "token"
 		t.string  "facebookid"
 		t.string   "smallpic"
 		t.string   "mediumpic"
@@ -57,7 +59,6 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.datetime "activated_at"
 		t.datetime "seen_at"
 	end
-
 	add_index "users", ["activationqueue_id"], name: "index_users_on_activationqueue_id"
 	add_index "users", ["facebookid"], name: "index_users_on_facebookid"
 	add_index "users", ["token"], name: "index_users_on_token"
@@ -67,7 +68,6 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.integer  "giver_id"
 		t.integer  "receiver_id"
 	end
-
 	add_index "webs", ["giver_id"], name: "index_webs_on_giver_id"
 	add_index "webs", ["receiver_id"], name: "index_webs_on_receiver_id"
 

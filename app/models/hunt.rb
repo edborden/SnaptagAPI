@@ -1,6 +1,6 @@
 class Hunt < ActiveRecord::Base
-	belongs_to :hunter, :class_name => "User"
-	belongs_to :target, :class_name => "User"
+	belongs_to :hunter, class_name: "User"
+	belongs_to :target, class_name: "User"
 
 	after_create :plus_one, :ensure_matching_web
 	before_destroy :minus_one
@@ -31,14 +31,15 @@ class Hunt < ActiveRecord::Base
 	end
 
 	def plus_one
-		hunter.increment!(:targets_count)
-		target.increment!(:hunters_count)
+		hunter.increment! :targets_count
+		target.increment! :hunters_count
 	end
 
 	def minus_one
+		# when deactivated, counts get set to 0, don't need to decrement
 		if self.active
-			hunter.decrement!(:targets_count)
-			target.decrement!(:hunters_count)
+			hunter.decrement! :targets_count
+			target.decrement! :hunters_count
 		end
 	end
 

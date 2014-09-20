@@ -20,7 +20,7 @@ class GeoCalcTest < ActiveSupport::TestCase
 		assert (result[:lon].to_f - (result[:lon].to_f * 0.005).abs <= @z1.lon.to_f) && (@z1.lon.to_f <= result[:lon].to_f + (result[:lon].to_f * 0.005).abs)
 	end
 
-	test "compute_containg_zone" do
+	test "compute_containing_zone" do
 		response = GeoCalc.compute_containing_zone(@z2,@z1)
 		assert_instance_of Zone, response
 		assert response.lat.present?
