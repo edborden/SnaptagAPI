@@ -61,7 +61,6 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 	end
 	add_index "users", ["activationqueue_id"], name: "index_users_on_activationqueue_id"
 	add_index "users", ["facebookid"], name: "index_users_on_facebookid"
-	add_index "users", ["token"], name: "index_users_on_token"
 	add_index "users", ["zone_id"], name: "index_users_on_zone_id"
 
 	create_table "webs", force: true do |t|
