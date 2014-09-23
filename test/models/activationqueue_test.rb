@@ -16,7 +16,7 @@ class ActivationqueueTest < ActiveSupport::TestCase
 
 	test "activationqueue runs blastoff when full" do
 		12.times {Fabricate(:user)}
-		Blastoff.expects(:new).with(User.all).returns(stub(:run))
+		Blastoff.expects(:new).returns(stub(:run))
 		User.all.each do |user|
 			@queue.users<<(user)
 		end

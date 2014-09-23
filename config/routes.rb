@@ -1,9 +1,7 @@
-Gridwebclient::Application.routes.draw do
+Rails.application.routes.draw do
 	resources :sessions, only: [:show, :destroy]
-
-	get 'users', to: 'users#find'
-
-	get 'locations/update', to: 'locations#update'
+	resources :locations, only: :create
+	resources :users, only: :index
 
 	get 'hunts/join', to: 'hunts#join'
 	get 'hunts/expose', to: 'hunts#expose'

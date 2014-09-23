@@ -18,8 +18,12 @@ class HuntsController < ApplicationController
 	end
 
 	def join
+		########
+		########
 		Demo.new.create_activationqueue_around params[:lat].to_f,params[:lon].to_f
-		Location.create_from_client(@current_user,params)
+		########
+		########
+		current_user.locations.create params.require(:location).permit(:lat,:lon)
 		@current_user.activate
 		if !Activationqueue.exists?
 			queue = Activationqueue.create

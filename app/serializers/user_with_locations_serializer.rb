@@ -1,4 +1,3 @@
 class UserWithLocationsSerializer < UserSerializer
-	embed :ids, include: true
-	has_many :locations, key: :locations
+	has_many :locations, embed_in_root: true
 end

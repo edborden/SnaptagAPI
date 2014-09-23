@@ -5,22 +5,25 @@ require 'mocha/mini_test'
 
 class ActiveSupport::TestCase
 
-	def fb_hash
-		test_user_api ||= Koala::Facebook::TestUsers.new(:app_id => 726528350693125, :secret => "96ec2c1f6e53d6d1b4607164c190109c")
-		@@fbhash ||= test_user_api.create(true)
-		@@fbprofile ||= Facebook.new(@@fbhash["access_token"]).get_profile
+	def fbhash
+		@@testuserapi ||= Koala::Facebook::TestUsers.new(app_id: 726528350693125, secret: "96ec2c1f6e53d6d1b4607164c190109c")
+		@@fbhash ||= @@testuserapi.create(true)
+	end
+
+	def fbprofile
+		@@fbprofile ||= Facebook.new(fbhash["access_token"]).get_profile
 	end
 
 	# create a test user that can be used across tests with gobal variable and doesn't keep pinging facebook
-	def fb_user
-		fb_hash
-		User.create! do |user|
-			user.facebookid = @@fbprofile["id"]
-			user.name = @@fbprofile["first_name"]
-			user.token = @@fbhash["access_token"]
-			user.email = @@fbprofile["email"]
-			user.gender = @@fbprofile["gender"]
+	def fbuser
+		user = User.create! do |user|
+			user.facebookid = fbprofile["id"]
+			user.name = fbprofile["first_name"]
+			user.email = fbprofile["email"]
+			user.gender = fbprofile["gender"]
 		end
+		user.create_session token: fbhash["access_token"]
+		user
 	end
 
 	#parses full json response into hash

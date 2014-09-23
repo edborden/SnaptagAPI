@@ -63,19 +63,13 @@ class UserTest < ActiveSupport::TestCase
 		assert_not @user0.active?
 	end
 
-	test "set_token" do
-		@user0.set_token("123abc")
-		assert_equal "123abc",@user0.token
-	end
-
 	test "create_from_facebook" do
-		fb_hash
 		assert_equal 3,User.count
 		Facebook.any_instance.expects(:get_pics).returns({smallpic: "smallpic",mediumpic: "mediumpic",largepic: "largepic"})
-		user = User.create_from_facebook(@@fbhash["access_token"],fb_hash)
+		user = User.create_from_facebook(fbhash["access_token"],fbhash)
 		assert_equal 4,User.count
 		assert_instance_of User,user
-		assert_equal user.facebookid,@@fbhash["id"]
+		assert_equal user.facebookid,fbhash["id"]
 	end  
 
 	test "set_zone, match" do

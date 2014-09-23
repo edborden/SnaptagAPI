@@ -3,7 +3,7 @@ require 'test_helper'
 class FacebookTest < ActiveSupport::TestCase
 
 	test "get_profile works" do
-		user = fb_user
+		user = fbuser
 		profile = Facebook.new(user.token).get_profile
 		#test the above call returns data
 		assert profile["gender"] == "male" || profile["gender"] == "female"

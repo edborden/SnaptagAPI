@@ -2,19 +2,11 @@ require 'test_helper'
 
 class LocationsControllerTest < ActionController::TestCase
 
-	test "update" do
+	test "create" do
 		user = Fabricate(:user)
-		params = {}
-		params[:lat] = Faker::Address.latitude
-		params[:lon] = Faker::Address.longitude
-		params[:token] = user.token
-		get(:update, params)
+		post(:create, {location: {lat: Faker::Address.latitude, lon: Faker::Address.longitude}},{'Authorization' => 'Bearer ' + user.token})
 		assert_equal 1,Location.count
-		location = Location.first
-		assert_equal location.lon.to_f,params[:lon].to_f
 		assert_equal 1,user.reload.influence
 	end
-
-
-
+	
 end

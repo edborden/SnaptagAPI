@@ -2,7 +2,6 @@ Fabricator(:user) do
 	name { Faker::Name.name }
 	email { |attrs| "#{attrs[:name].parameterize}@example.com" }
 	zone_id 1000
-	token {Faker::Lorem.characters(10)}
 	facebookid {Faker::Lorem.characters(10)}
 	smallpic "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn1/t1.0-1/p50x50/75022_10
 152135585049906_64496435_t.jpg" 
@@ -15,6 +14,7 @@ Fabricator(:user) do
 	counteract_count {Faker::Number.number(2)}
 	disavowed_count {Faker::Number.number(2)}
 	compromised_count {Faker::Number.number(2)}
+	after_create { |attrs| User.find(attrs[:id]).create_session token: Faker::Lorem.characters(10)}
 end
 
 Fabricator(:location) do

@@ -9,6 +9,7 @@ gem 'fabrication'
 gem "faker"
 gem "pusher"
 gem "mailboxer"
+gem "koala", "~> 1.10.0rc"
 
 group :test do
 	gem 'mocha', "~> 1.0.0"

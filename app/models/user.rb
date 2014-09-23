@@ -1,8 +1,9 @@
 class User < ActiveRecord::Base
 	belongs_to :activationqueue, counter_cache: true
 	belongs_to :zone
+	has_one :session
 
-	has_many :locations
+	has_many :locations, after_add: :increment_influence
 
 	validates :facebookid, uniqueness: true
 
@@ -35,6 +36,14 @@ class User < ActiveRecord::Base
 		set_zone
 		self.activated_at = Time.now
 		save
+	end
+
+	def increment_influence location
+		increment! :influence
+	end
+
+	def token
+		session.present? ? session.token : nil
 	end
 
 	def disavow
