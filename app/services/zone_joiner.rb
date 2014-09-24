@@ -37,7 +37,6 @@ class ZoneJoiner
 			@larger_zone = @z2
 			@smaller_zone = @z1
 		end
-		return self
 	end
 
 	def set_engulfing_variables

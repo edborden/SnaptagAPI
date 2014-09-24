@@ -8,7 +8,7 @@ class ZoneIntersectionChecker
 		response = nil
 		Zone.all.each do |zone|
 			next if zone == @test_zone
-			if zones_intersect?(zone)
+			if zones_intersect? zone
 				response = zone
 				break
 			end
@@ -24,11 +24,7 @@ class ZoneIntersectionChecker
 		eq2 = GeoCalc::distance(@test_zone.lat,@test_zone.lon,zone.lat,zone.lon)
 		eq3 = r1+r2
 
-		if eq1 <= eq2 && eq2 <= eq3
-			return true
-		else 
-			return false
-		end
+		eq1 <= eq2 && eq2 <= eq3
 	end
 
 end

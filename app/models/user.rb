@@ -46,6 +46,10 @@ class User < ActiveRecord::Base
 		session.present? ? session.token : nil
 	end
 
+	def suspects
+		suspects = receivers + givers
+	end
+
 	def disavow
 		# WHERE DOES THE INFLUENCE GO?
 		increment!(:disavowed_count)
@@ -67,7 +71,7 @@ class User < ActiveRecord::Base
 		nonhunt_webs[0].destroy
 	end
 
-	def active?
+	def active
 		self.zone_id.present?
 	end
 
@@ -98,7 +102,7 @@ class User < ActiveRecord::Base
 	def status
 		if self.activationqueue_id
 			return "queue" 
-		elsif self.active?
+		elsif active
 			return "active"
 		else 
 			return "inactive"

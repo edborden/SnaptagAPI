@@ -18,7 +18,7 @@ class ZoneTest < ActiveSupport::TestCase
 		10.times {Fabricate(:zone)}
 		assert_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.flat,@nycuser.flon)
 		assert_not_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.flat,@nycuser.flon,[@nyczone])
-	end
+	end	
 
 	test "create_or_grow with no intersecting" do
 		testobject = "testobject"
@@ -62,11 +62,11 @@ class ZoneTest < ActiveSupport::TestCase
 		@nyczone.remove_user(@nycuser)
 	end
 
-	test "active?" do
-		assert @nyczone.active?
+	test "active" do
+		assert @nyczone.active
 		@nycuser.activationqueue_id = 1
 		@nycuser.save
-		assert_not @nyczone.active?
+		assert_not @nyczone.active
 	end
 
 	test "within 50km of" do

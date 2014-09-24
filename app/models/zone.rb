@@ -58,7 +58,7 @@ class Zone < ActiveRecord::Base
 
 	def contains?(lat,lon)
 		distance = GeoCalc::distance(lat,lon,self.lat,self.lon)
-		return true if distance <= self.range
+		distance <= self.range
 	end
 
 	def remove_user(user)
@@ -78,12 +78,12 @@ class Zone < ActiveRecord::Base
 	end
 
 	# zone is active if it contains users that are not in a queue
-	def active?
-		return true if self.users.where(activationqueue_id: nil).exists?
+	def active
+		users.where(activationqueue_id: nil).present?
 	end
 
 	def within_50km_of lat,lon
-		return true if GeoCalc::distance(self.lat,self.lon,lat,lon) < 50000
+		GeoCalc::distance(self.lat,self.lon,lat,lon) < 50000
 	end
 
 end

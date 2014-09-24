@@ -58,9 +58,9 @@ class UserTest < ActiveSupport::TestCase
 	end
 
 	test "active?" do
-		assert @user0.active?
+		assert @user0.active
 		@user0.zone_id = nil
-		assert_not @user0.active?
+		assert_not @user0.active
 	end
 
 	test "create_from_facebook" do

@@ -10,7 +10,7 @@ class HuntsControllerTest < ActionController::TestCase
 		get(:join, {location:{lat: 10,lon: 10}},{'Authorization' => 'Bearer ' + user12.token})
 		assert_equal 200,@response.status
 		assert_equal 0,Activationqueue.count
-		assert user12.reload.active?
+		assert user12.reload.active
 		assert_equal "active",@response.body
 	end
 

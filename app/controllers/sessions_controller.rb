@@ -16,7 +16,8 @@ class SessionsController < ApplicationController
 		end
 		user.session.destroy if user.session.present?
 		session = user.create_session token: token
-		render json: session
+		WebsHoleFiller.new(user).run if user.active
+		render json: session, scope: user
 	end
 
 	def destroy

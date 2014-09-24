@@ -24,8 +24,8 @@ class HuntsController < ApplicationController
 		########
 		########
 		current_user.locations.create params.require(:location).permit(:lat,:lon)
-		@current_user.activate
-		if !Activationqueue.exists?
+		current_user.activate
+		unless Activationqueue.exists?
 			queue = Activationqueue.create
 			queue.users<<@current_user
 		else
@@ -33,7 +33,7 @@ class HuntsController < ApplicationController
 			queue.users<<@current_user
 		end
 		HuntsHoleFiller.new.run
-		if @current_user.reload.activationqueue_id.present?
+		if current_user.reload.activationqueue_id.present?
 			render text: "queue" 
 		else 
 			render text: "active"

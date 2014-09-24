@@ -19,7 +19,7 @@ class ZoneRebuilder
 			users_not_in_zone = get_users_not_in_zone(users_not_in_zone,new_zone)
 	# KEEP CHECKING THE REST OF THE USERS AND GROWING THE ZONE UNTIL THEY ARE ALL CONTAINED.
 		end
-		if new_zone.nil?
+		unless new_zone
 			@z.save 
 		else
 			@z.lat = new_zone.lat
@@ -34,7 +34,7 @@ class ZoneRebuilder
 	def get_users_not_in_zone(list,zone)
 		response = []
 		list.each do |user|
-			response += [user] if !zone.contains?(user.locations.first.lat,user.locations.first.lon)
+			response += [user] unless zone.contains?(user.locations.first.lat,user.locations.first.lon)
 		end
 		return response
 	end
