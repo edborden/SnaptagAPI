@@ -33,11 +33,7 @@ class HuntsController < ApplicationController
 			queue.users<<@current_user
 		end
 		HuntsHoleFiller.new.run
-		if current_user.reload.activationqueue_id.present?
-			render text: "queue" 
-		else 
-			render text: "active"
-		end
+		render json: current_user.reload, serializer: MeSerializer, root: 'user'
 	end
 
 	def intro_map
