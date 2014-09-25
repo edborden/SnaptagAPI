@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-	resources :sessions, only: [:show, :destroy]
+	resources :sessions, only: [:index, :destroy]
 	resources :locations, only: :create
 	resources :zones, only: :index
 
