@@ -16,14 +16,14 @@ class ActiveSupport::TestCase
 
 	# create a test user that can be used across tests with gobal variable and doesn't keep pinging facebook
 	def fbuser
-		user = User.create! do |user|
+		@user ||= User.create! do |user|
 			user.facebookid = fbprofile["id"]
 			user.name = fbprofile["first_name"]
 			user.email = fbprofile["email"]
 			user.gender = fbprofile["gender"]
 		end
-		user.create_session token: fbhash["access_token"]
-		user
+		@user.create_session token: fbhash["access_token"] unless @user.session
+		@user
 	end
 
 	#parses full json response into hash

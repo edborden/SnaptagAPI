@@ -2,20 +2,16 @@ require 'test_helper'
 
 class FacebookTest < ActiveSupport::TestCase
 
-	test "get_profile works" do
-		user = fbuser
-		profile = Facebook.new(user.token).get_profile
-		#test the above call returns data
+	test "get_profile" do
+		profile = Facebook.new(fbuser.token).get_profile
 		assert profile["gender"] == "male" || profile["gender"] == "female"
 	end
 
-	#test "exchange_token doesn't return the same token and get_profile works" do
-	#	user = onetime_create_facebook_test_user
-	#	oldtoken = user.token
-	#	newtoken = Facebook.new.exchange_token(oldtoken)
-	#	assert_instance_of String,newtoken
-	#	assert_not_equal oldtoken,newtoken
-	#end
+	test "exchange_token" do
+		newtoken = Facebook.new(fbuser.token).exchange_token
+		assert_instance_of String,newtoken
+		assert_not_equal fbuser.token,newtoken
+	end
 
 	#test "verify_token works" do
 	#	fb_hash
