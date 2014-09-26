@@ -20,18 +20,14 @@ class HuntsController < ApplicationController
 	def join
 		########
 		########
-		Demo.new.create_activationqueue_around params[:location][:lat].to_f,params[:location][:lon].to_f
+		#Demo.new.create_activationqueue_around params[:location][:lat].to_f,params[:location][:lon].to_f
 		########
 		########
 		current_user.locations.create params.require(:location).permit(:lat,:lon)
 		current_user.activate
-		unless Activationqueue.exists?
-			queue = Activationqueue.create
-			queue.users<<@current_user
-		else
-			queue = Activationqueue.first
-			queue.users<<@current_user
-		end
+		current_user.reload
+		queue = Activationqueue.find_by(zone_id: current_user.zone_id) || Activationqueue.create(zone_id: current_user.zone_id)
+		queue.users<<@current_user
 		HuntsHoleFiller.new.run
 		render json: current_user.reload, serializer: MeSerializer, root: 'user'
 	end

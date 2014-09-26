@@ -4,6 +4,7 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.datetime "created_at"
 		t.datetime "updated_at"
 		t.integer  "users_count",          default: 0,  null: false
+		t.integer "zone_id"
 	end
 
 	create_table "hunts", force: true do |t|

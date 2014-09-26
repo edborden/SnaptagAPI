@@ -29,10 +29,6 @@ class UserTest < ActiveSupport::TestCase
 		assert_equal 2,@user0.allwebs.count
 	end
 
-	test "activate" do
-		@user0.expects(:set_zone)
-		@user0.activate
-	end
 
 	test "disavow" do
 		@user0.expects(:increment!)
@@ -57,7 +53,7 @@ class UserTest < ActiveSupport::TestCase
 		assert_not @user0.reload.allwebs.include?(nonhuntweb)
 	end
 
-	test "active?" do
+	test "active" do
 		assert @user0.active
 		@user0.zone_id = nil
 		assert_not @user0.active
@@ -71,25 +67,6 @@ class UserTest < ActiveSupport::TestCase
 		assert_instance_of User,user
 		assert_equal user.facebookid,fbhash["id"]
 	end  
-
-	test "set_zone, match" do
-		testobject = "testobject"
-		Zone.expects(:determine_zone_for).with(testobject,testobject).returns(testobject)
-		@user0.expects(:lat).returns(testobject)
-		@user0.expects(:lon).returns(testobject)
-		@user0.expects(:zone=)
-		@user0.set_zone
-	end
-
-	test "set_zone, no match" do
-		testobject = "testobject"
-		Zone.expects(:determine_zone_for).with(testobject,testobject).returns(nil)
-		@user0.expects(:lat).returns(testobject)
-		@user0.expects(:lon).returns(testobject)
-		Zone.expects(:create_or_grow).with(@user0)
-		@user0.expects(:zone=)
-		@user0.set_zone
-	end
 
 	test "status" do
 		assert_equal "active",@user0.status

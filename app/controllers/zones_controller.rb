@@ -4,7 +4,7 @@ class ZonesController < ApplicationController
 	def index
 		########
 		########
-		Demo.new.users_around(params[:lat].to_f,params[:lon].to_f)
+		#Demo.new.users_around(params[:lat].to_f,params[:lon].to_f)
 		########
 		########
 		nearest_zone = Zone.determine_nearest_zone_for params[:lat].to_f,params[:lon].to_f

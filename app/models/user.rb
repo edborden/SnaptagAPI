@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
 	end
 
 	def activate
-		set_zone
+		self.zone= Zone.determine_zone_for(lat,lon) || Zone.create_or_grow(self)
 		self.activated_at = Time.now
 		save
 	end
@@ -86,16 +86,6 @@ class User < ActiveRecord::Base
 			user.smallpic = pichash[:smallpic]
 			user.mediumpic = pichash[:mediumpic]
 			user.largepic = pichash[:largepic]
-		end
-	end
-
-	def set_zone
-		z = Zone.determine_zone_for(lat,lon)
-		if z
-			self.zone= z
-		else
-			z = Zone.create_or_grow(self)
-			self.zone= z
 		end
 	end
 
