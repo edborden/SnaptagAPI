@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-	skip_before_action :ensure_authenticated_user, only: :index
+	skip_before_action :ensure_authenticated_user, except: :destroy
 
 	def create
 		facebook = Facebook.new params[:session][:token]
