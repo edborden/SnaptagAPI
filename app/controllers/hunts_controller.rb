@@ -20,7 +20,7 @@ class HuntsController < ApplicationController
 	def join
 		########
 		########
-		#Demo.new.create_activationqueue_around params[:location][:lat].to_f,params[:location][:lon].to_f
+		Demo.new.create_activationqueue_around params[:location][:lat].to_f,params[:location][:lon].to_f
 		########
 		########
 		current_user.locations.create params.require(:location).permit(:lat,:lon)
