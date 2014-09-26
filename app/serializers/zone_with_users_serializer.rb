@@ -3,8 +3,8 @@ class ZoneWithUsersSerializer < ApplicationSerializer
 	has_many :users, embed_in_root: true
 
 	def users
-		if current_user
-			users = object.users -= [current_user]
+		if scope
+			users = object.users -= [scope]
 		else
 			object.users
 		end
