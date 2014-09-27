@@ -29,7 +29,7 @@ class HuntsController < ApplicationController
 		queue = Activationqueue.find_by(zone_id: current_user.zone_id) || Activationqueue.create(zone_id: current_user.zone_id)
 		queue.users<<current_user
 		HuntsHoleFiller.new.run
-		render json: current_user.reload, serializer: MeSerializer, root: 'user'
+		render json: current_user.reload.session, serializer: SessionSerializer
 	end
 
 	def intro_map
