@@ -29,6 +29,24 @@ class UserTest < ActiveSupport::TestCase
 		assert_equal 2,@user0.allwebs.count
 	end
 
+	test "activate, zone matches" do
+		zone = Fabricate :zone
+		@user0.locations.create lat:1,lon:1
+		Zone.expects(:determine_zone_for).returns zone
+		@user0.activate
+		assert_equal @user0.zone,zone
+		assert_not_nil @user0.activated_at
+	end
+
+	test "activate, no zone matches" do
+		zone = Fabricate :zone
+		@user0.locations.create lat:1,lon:1
+		Zone.expects(:determine_zone_for).returns nil
+		Zone.expects(:create_or_grow).returns zone
+		@user0.activate
+		assert_equal @user0.zone,zone
+		assert_not_nil @user0.activated_at
+	end
 
 	test "disavow" do
 		@user0.expects(:increment!)
