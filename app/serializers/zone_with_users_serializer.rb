@@ -4,7 +4,9 @@ class ZoneWithUsersSerializer < ApplicationSerializer
 
 	def users
 		if scope
-			users = object.users.delete scope
+			users = object.users
+			users.delete scope
+			users
 		else
 			object.users
 		end
