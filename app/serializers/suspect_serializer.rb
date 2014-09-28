@@ -4,7 +4,7 @@ class SuspectSerializer < ApplicationSerializer
 
 	# include locations if the user is a target
 	def filter(keys)
-		keys.delete :locations if scope.targets.include?(object)
+		keys.delete :locations unless scope.targets.include?(object)
 		keys
 	end
 end
