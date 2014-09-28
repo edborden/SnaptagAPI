@@ -3,7 +3,8 @@ class SuspectSerializer < ApplicationSerializer
 	has_many :locations, embed_in_root: true
 
 	# include locations if the user is a target
-	#def locations
-	#	scope.targets.include?(object) ? object.locations : []
-	#end
+	def filter(keys)
+		keys.delete :locations if scope.targets.include?(object)
+		keys
+	end
 end

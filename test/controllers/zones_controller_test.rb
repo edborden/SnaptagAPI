@@ -66,4 +66,10 @@ class ZonesControllerTest < ActionController::TestCase
 		assert_equal false,json_response["zones"][1]["active"]
 	end
 
+	#test "index from active user does not wipe zone_id and does not return self"
+	#	nyczone = Fabricate :zone_in_nyc
+	#	nycuser = Fabricate :user_in_nyc, zone_id: nyczone.id		
+	#	get :index, {lat: testuser.lat,lon: testuser.lon}
+	#end
+
 end
