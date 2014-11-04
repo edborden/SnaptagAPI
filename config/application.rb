@@ -5,7 +5,7 @@ require 'rails/all'
 
 Bundler.require(*Rails.groups)
 
-module Gridwebclient
+module Stalkers
 	class Application < Rails::Application
 		ActiveModel::Serializer.setup do |config|
 			config.embed = :ids

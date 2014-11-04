@@ -1,5 +1,5 @@
 Fabricator(:user) do
-	name { Faker::Name.name }
+	name { Faker::Name.first_name }
 	email { |attrs| "#{attrs[:name].parameterize}@example.com" }
 	zone_id 1000
 	facebookid {Faker::Lorem.characters(10)}
