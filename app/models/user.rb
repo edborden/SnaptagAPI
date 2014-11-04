@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
 			user.name = profile["first_name"]
 			user.email = profile["email"]
 			user.gender = profile["gender"]
-			user.birthday = profile["birthday"]
+			#user.birthday = profile["birthday"]
 			user.smallpic = pichash[:smallpic]
 			user.mediumpic = pichash[:mediumpic]
 			user.largepic = pichash[:largepic]
