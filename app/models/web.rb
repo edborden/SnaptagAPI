@@ -6,7 +6,7 @@ class Web < ActiveRecord::Base
 	before_destroy :minus_one
 
 	def matching_hunt
-		Hunt.find_by(hunter_id: self.giver_id, target_id: self.receiver_id) || Hunt.find_by(hunter_id: self.receiver_id, target_id: self.giver_id)
+		Hunt.find_by(stalker_id: self.giver_id, target_id: self.receiver_id) || Hunt.find_by(stalker_id: self.receiver_id, target_id: self.giver_id)
 	end
 
 	def plus_one

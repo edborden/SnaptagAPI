@@ -4,6 +4,6 @@ Rails.application.routes.draw do
 	resources :zones, only: :index
 
 	get 'hunts/join', to: 'hunts#join'
+	get 'hunts/found_target', to: 'hunts#found_target'
 	get 'hunts/expose', to: 'hunts#expose'
-	get 'hunts/counteract', to: 'hunts#counteract'
 end

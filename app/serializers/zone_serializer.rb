@@ -1,3 +1,3 @@
 class ZoneSerializer < ApplicationSerializer
-	attributes :lat, :lon, :range, :active
+	attributes :lat, :lng, :range, :active
 end

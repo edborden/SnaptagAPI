@@ -1,5 +1,5 @@
 class UserSerializer < ApplicationSerializer
-	attributes :exposed_count, :activated_at
+	attributes :targets_found_count, :activated_at
 	has_many :locations, embed_in_root: true
 
 	def locations

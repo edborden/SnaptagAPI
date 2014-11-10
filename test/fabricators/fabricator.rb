@@ -10,31 +10,31 @@ Fabricator(:user) do
 	largepic "https://scontent-a.xx.fbcdn.net/hphotos-prn1/t1.0-9/s720x720/75022_101521355
 85049906_64496435_n.jpg"
 	activated_at {Time.now}
+	targets_found_count {Faker::Number.number(2)}
+	found_count {Faker::Number.number(2)}
+	stalkers_exposed_count {Faker::Number.number(2)}
 	exposed_count {Faker::Number.number(2)}
-	counteract_count {Faker::Number.number(2)}
-	disavowed_count {Faker::Number.number(2)}
-	compromised_count {Faker::Number.number(2)}
 	after_create { |attrs| User.find(attrs[:id]).create_session token: Faker::Lorem.characters(10)}
 end
 
 Fabricator(:location) do
 	lat {Faker::Address.latitude}
-	lon {Faker::Address.longitude}
+	lng {Faker::Address.longitude}
 end
 
 Fabricator(:location_in_nyc, from: :location) do
 	lat {(rand*0.05 -0.025) + 40.7127}
-	lon {(rand*0.05 -0.025) - 74.0059}
+	lng {(rand*0.05 -0.025) - 74.0059}
 end
 
 Fabricator(:location_in_boonton, from: :location) do
 	lat 40.895929
-	lon -74.409714
+	lng -74.409714
 end
 
 Fabricator(:location_in_london, from: :location) do
 	lat 51.522503
-	lon -0.128
+	lng -0.128
 end
 
 Fabricator(:user_in_nyc, from: :user) do
@@ -59,14 +59,14 @@ Fabricator(:user_with_location, from: :user) do
 end
 
 Fabricator(:active_test_user, from: :user_with_location) do
-	hunters_count 3
+	stalkers_count 3
 	targets_count 3
 	givers_count 5
 	receivers_count 6
 end
 
 Fabricator(:active_demo_user, from: :user) do
-	hunters_count 3
+	stalkers_count 3
 	targets_count 3
 	givers_count 5
 	receivers_count 6

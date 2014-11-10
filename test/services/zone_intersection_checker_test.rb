@@ -4,8 +4,8 @@ require 'geo_calc'
 class ZoneIntersectionCheckerTest < ActiveSupport::TestCase
 
 	def setup
-		@z1 = Zone.create(lat:40.721923,lon:-74.007168,range:500)
-		@z2 = Zone.create(lat:40.726216,lon:-73.976955,range:600)
+		@z1 = Zone.create(lat:40.721923,lng:-74.007168,range:500)
+		@z2 = Zone.create(lat:40.726216,lng:-73.976955,range:600)
 	end
 
 	test "run" do
@@ -16,7 +16,7 @@ class ZoneIntersectionCheckerTest < ActiveSupport::TestCase
 
 	test "zones_intersect?" do
 		assert_not ZoneIntersectionChecker.new(@z1).zones_intersect?(@z2)
-		distance = GeoCalc::distance(@z1.lat,@z1.lon,@z2.lat,@z2.lon)
+		distance = GeoCalc::distance(@z1.lat,@z1.lng,@z2.lat,@z2.lng)
 		@z1.range = distance / 2 + 1
 		@z1.save
 		@z2.range = distance / 2 + 1

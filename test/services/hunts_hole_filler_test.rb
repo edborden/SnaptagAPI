@@ -7,7 +7,7 @@ class HuntsHoleFillerTest < ActiveSupport::TestCase
 	end
 
 	test "if is_it_time returning true and false correctly" do 
-		assert_equal 4,User.all.need_hunters.count
+		assert_equal 4,User.all.need_stalkers.count
 		assert_not HuntsHoleFiller.new.it_is_time?
 		Activationqueue.create
 		assert HuntsHoleFiller.new.it_is_time?
@@ -25,10 +25,10 @@ class HuntsHoleFillerTest < ActiveSupport::TestCase
 		activationqueue = Activationqueue.create
 		activationqueue.users<<(@user3)
 		assert_equal 4,User.count
-		assert_equal 3,User.need_hunters.count
+		assert_equal 3,User.need_stalkers.count
 		HuntsHoleFiller.new.fill_hunt_holes(@user3)
 		assert_equal 6,Hunt.count
-		assert_equal 3,@user3.hunters.count
+		assert_equal 3,@user3.stalkers.count
 	end
 
 	test "the whole enchilada" do

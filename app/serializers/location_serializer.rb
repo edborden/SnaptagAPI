@@ -1,4 +1,4 @@
 class LocationSerializer < ApplicationSerializer
-	attributes :lat, :lon, :created_at
+	attributes :lat, :lng, :created_at
 	has_one :user
 end

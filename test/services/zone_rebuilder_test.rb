@@ -16,22 +16,22 @@ class ZoneRebuilderTest < ActiveSupport::TestCase
 	test "integration, all users tight together within defaultmaxdistance" do
 		Fabricate.times(25,:user_in_nyc, zone_id:@zone.id)
 		original_lat = @zone.lat
-		original_lon = @zone.lon
+		original_lng = @zone.lng
 		original_range = @zone.range
 		response = ZoneRebuilder.new(@zone).run
 		assert_equal original_lat,response.lat
-		assert_equal original_lon,response.lon
+		assert_equal original_lng,response.lng
 		assert_not_equal original_range,response.range
 	end
 
 	test "integration" do
 		Fabricate.times(25,:user_with_location, zone_id:@zone.id)
 		original_lat = @zone.lat
-		original_lon = @zone.lon
+		original_lng = @zone.lng
 		original_range = @zone.range
 		response = ZoneRebuilder.new(@zone).run
 		assert_not_equal original_lat,response.lat
-		assert_not_equal original_lon,response.lon
+		assert_not_equal original_lng,response.lng
 		assert_not_equal original_range,response.range
 	end
 

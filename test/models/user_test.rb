@@ -4,16 +4,16 @@ class UserTest < ActiveSupport::TestCase
 
 	def setup
 		3.times { |n| instance_variable_set("@user" + n.to_s, Fabricate(:user)) }
-		Hunt.create(hunter_id: @user0.id, target_id: @user1.id)
+		Hunt.create(stalker_id: @user0.id, target_id: @user1.id)
 	end
 
-	test "user can list current hunters and targets" do
+	test "user can list current stalkers and targets" do
 		assert @user0.targets.include?(@user1)
-		assert @user1.hunters.include?(@user0)
+		assert @user1.stalkers.include?(@user0)
 		hunt = Hunt.find_by(target_id: @user1.id)
 		hunt.active = false
 		hunt.save
-		assert_not @user1.hunters.include?(@user0)
+		assert_not @user1.stalkers.include?(@user0)
 	end
 
 	test "allwebs_count" do
@@ -31,7 +31,7 @@ class UserTest < ActiveSupport::TestCase
 
 	test "activate, zone matches" do
 		zone = Fabricate :zone
-		@user0.locations.create lat:1,lon:1
+		@user0.locations.create lat:1,lng:1
 		Zone.expects(:determine_zone_for).returns zone
 		@user0.activate
 		assert_equal @user0.zone,zone
@@ -40,7 +40,7 @@ class UserTest < ActiveSupport::TestCase
 
 	test "activate, no zone matches" do
 		zone = Fabricate :zone
-		@user0.locations.create lat:1,lon:1
+		@user0.locations.create lat:1,lng:1
 		Zone.expects(:determine_zone_for).returns nil
 		Zone.expects(:create_or_grow).returns zone
 		@user0.activate
@@ -48,15 +48,15 @@ class UserTest < ActiveSupport::TestCase
 		assert_not_nil @user0.activated_at
 	end
 
-	test "disavow" do
+	test "expose_self" do
 		@user0.expects(:increment!)
 		@user0.expects(:deactivate)
-		@user0.disavow
+		@user0.expose_self
 	end
 
 	test "deactivate deletes only active hunts" do
 		testobject = "testobject"
-		hunt_inactive = Hunt.create(hunter_id: @user0.id, target_id: @user2.id, active: false)
+		hunt_inactive = Hunt.create(stalker_id: @user0.id, target_id: @user2.id, active: false)
 		assert_equal 2,Hunt.count
 		@user0.expects(:zone).returns(testobject)
 		testobject.expects(:remove_user).with(@user0)

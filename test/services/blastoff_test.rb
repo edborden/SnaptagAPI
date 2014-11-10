@@ -7,7 +7,7 @@ class BlastoffTest < ActiveSupport::TestCase
 	end
 
 	test "find_a_valid_target_in_list" do
-		Hunt.create(hunter_id: @user0.id, target_id: @user1.id)
+		Hunt.create(stalker_id: @user0.id, target_id: @user1.id)
 		assert_equal @user2,Blastoff.new.find_a_valid_target_in_list(@user0,@queue),"Did not return third user"
 		assert_equal @user0,Blastoff.new.find_a_valid_target_in_list(@user2,@queue),"Did not return first user"
 	end
@@ -38,7 +38,7 @@ class BlastoffTest < ActiveSupport::TestCase
 		assert_equal 36,Hunt.count
 		assert_equal 66,Web.count
 		mock_activation_queue.each do |user|
-			assert_equal 3, user.reload.hunters_count
+			assert_equal 3, user.reload.stalkers_count
 			assert_equal 3, user.targets_count
 			assert user.givers_count == 5 || user.givers_count == 6
 			assert user.receivers_count == 5 || user.receivers_count == 6

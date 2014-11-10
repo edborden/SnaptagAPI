@@ -3,17 +3,17 @@ class User < ActiveRecord::Base
 	belongs_to :zone
 	has_one :session
 
-	has_many :locations, after_add: :increment_influence
+	has_many :locations, after_add: :increment_stealth
 
 	validates :facebookid, uniqueness: true
 
 	scope :active, -> {where.not(zone_id: nil).where(activationqueue_id: nil)}
 
-	has_many :hunts, -> { where active: true }, foreign_key: "hunter_id"
+	has_many :hunts, -> { where active: true }, foreign_key: "stalker_id"
 	has_many :targets, through: :hunts, source: :target
 	has_many :flights, -> { where active: true }, class_name: "Hunt", foreign_key: "target_id"
-	has_many :hunters, through: :flights, source: :hunter
-	scope :need_hunters, -> { where("hunters_count < 3").active.where(activationqueue_id: nil).order(hunters_count: :asc) }
+	has_many :stalkers, through: :flights, source: :stalker
+	scope :need_stalkers, -> { where("stalkers_count < 3").active.where(activationqueue_id: nil).order(stalkers_count: :asc) }
 	scope :need_targets, -> { where("targets_count < 3").active.where(activationqueue_id: nil).order(targets_count: :asc) }
 
 	has_many :webs, foreign_key: "giver_id"
@@ -33,13 +33,14 @@ class User < ActiveRecord::Base
 	end
 
 	def activate
-		self.zone= Zone.determine_zone_for(lat,lon) || Zone.create_or_grow(self)
+		self.zone= Zone.determine_zone_for(lat,lng) || Zone.create_or_grow(self)
 		self.activated_at = Time.now
 		save
 	end
 
-	def increment_influence location
-		increment! :influence
+	def increment_stealth location
+		#location doesn't get used, but must handle getting passed in automatically
+		increment! :stealth
 	end
 
 	def token
@@ -50,9 +51,9 @@ class User < ActiveRecord::Base
 		suspects = receivers + givers
 	end
 
-	def disavow
-		# WHERE DOES THE INFLUENCE GO?
-		increment!(:disavowed_count)
+	def expose_self
+		# WHERE DOES THE STEALTH GO?
+		increment!(:exposed_count)
 		deactivate
 	end
 
@@ -103,16 +104,16 @@ class User < ActiveRecord::Base
 		locations.last.lat
 	end
 
-	def lon
-		locations.last.lon
+	def lng
+		locations.last.lng
 	end
 
 	def flat
 		locations.first.lat
 	end
 
-	def flon
-		locations.first.lon
+	def flng
+		locations.first.lng
 	end
 
 end

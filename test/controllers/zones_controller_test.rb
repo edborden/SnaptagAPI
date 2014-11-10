@@ -11,7 +11,7 @@ class ZonesControllerTest < ActionController::TestCase
 	test "index, no zone" do
 		testuser = Fabricate :user_in_nyc
 		Fabricate :zone
-		get :index, {lat: testuser.lat,lon: testuser.lon}
+		get :index, {lat: testuser.lat,lng: testuser.lng}
 		assert_equal 200,@response.status
 		assert_equal "{}",@response.body
 	end
@@ -20,7 +20,7 @@ class ZonesControllerTest < ActionController::TestCase
 		nyczone = Fabricate :zone_in_nyc
 		Fabricate :user_in_nyc, zone_id: nyczone.id
 		testuser = Fabricate :user_in_nyc
-		get :index, {lat: testuser.lat,lon: testuser.lon}
+		get :index, {lat: testuser.lat,lng: testuser.lng}
 		assert_equal 200,@response.status
 		assert_equal nyczone.id,json_response["zones"][0]["id"]
 		assert_equal nyczone.active,json_response["zones"][0]["active"]	
@@ -32,7 +32,7 @@ class ZonesControllerTest < ActionController::TestCase
 		boontonzone = Fabricate :zone_in_boonton
 		Fabricate :user_in_boonton, zone_id: boontonzone.id
 		testuser = Fabricate :user_in_nyc
-		get :index, {lat: testuser.lat,lon: testuser.lon}
+		get :index, {lat: testuser.lat,lng: testuser.lng}
 		assert_equal 200,@response.status
 		assert_equal 2,json_response["zones"].count
 		assert_equal nyczone.id,json_response["zones"][0]["id"]
@@ -46,7 +46,7 @@ class ZonesControllerTest < ActionController::TestCase
 		Fabricate :user_in_boonton, zone_id: boontonzone.id,activationqueue_id: 10
 		Fabricate :zone
 		testuser = Fabricate :user_in_nyc
-		get :index, {lat: testuser.lat,lon: testuser.lon}
+		get :index, {lat: testuser.lat,lng: testuser.lng}
 		assert_equal 200,@response.status
 		assert_equal 2,json_response["zones"].count
 		assert_equal nyczone.id,json_response["zones"][0]["id"]
@@ -59,7 +59,7 @@ class ZonesControllerTest < ActionController::TestCase
 		boontonzone = Fabricate :zone_in_boonton
 		Fabricate :user_in_boonton, zone_id: boontonzone.id,activationqueue_id: 10
 		testuser = Fabricate :user_in_nyc
-		get :index, {lat: testuser.lat,lon: testuser.lon}
+		get :index, {lat: testuser.lat,lng: testuser.lng}
 		assert_equal 200,@response.status
 		assert_equal 2,json_response["zones"].count
 		assert_equal nyczone.id,json_response["zones"][0]["id"]
@@ -69,7 +69,7 @@ class ZonesControllerTest < ActionController::TestCase
 	#test "index from active user does not wipe zone_id and does not return self"
 	#	nyczone = Fabricate :zone_in_nyc
 	#	nycuser = Fabricate :user_in_nyc, zone_id: nyczone.id		
-	#	get :index, {lat: testuser.lat,lon: testuser.lon}
+	#	get :index, {lat: testuser.lat,lng: testuser.lng}
 	#end
 
 end

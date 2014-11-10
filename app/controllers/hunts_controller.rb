@@ -1,24 +1,24 @@
 class HuntsController < ApplicationController
 
-	def counteract
-		hunt = Hunt.find_by(hunter_id: params[:hunter_id], target_id: @current_user.id, active: true)
+	def expose
+		hunt = Hunt.find_by(stalker_id: params[:stalker_id], target_id: @current_user.id, active: true)
 		if hunt
-			HuntEnder.new(hunt).counteract_success
+			HuntEnder.new(hunt).expose
 			render text: "success"
 		else
-			@current_user.disavow
+			@current_user.expose_self
 			render text: "failure"
 		end
 	end
 
-	def expose
-		hunt = Hunt.find_by(hunter_id: @current_user.id, target_id: params[:target_id])
-		HuntEnder.new(hunt).expose_success
+	def found_target
+		hunt = Hunt.find_by(stalker_id: @current_user.id, target_id: params[:target_id])
+		HuntEnder.new(hunt).found_target
 		render text: "success"
 	end
 
 	def join
-		current_user.locations.create params.require(:location).permit(:lat,:lon)
+		current_user.locations.create params.require(:location).permit(:lat,:lng)
 		current_user.activate
 		current_user.reload
 		########
@@ -32,8 +32,8 @@ class HuntsController < ApplicationController
 		render json: current_user.reload, serializer: MeSerializer, root: 'user'
 	end
 
-	def intro_map
-		render json: Hunt.completed, each_serializer: HuntLocationOnlySerializer
-	end
+	#def intro_map
+	#	render json: Hunt.completed, each_serializer: HuntLocationOnlySerializer
+	#end
 
 end

@@ -4,7 +4,6 @@ class Blastoff
 		@master_list = activationqueue.shuffle
 		@master_list_split = @master_list.in_groups(2)
 		@master_list_hunts = activationqueue.shuffle
-		@need_hunters_list = activationqueue.shuffle
 	end
 
 	def run
@@ -22,36 +21,36 @@ class Blastoff
 
 		@master_list_hunts.each do |user|
 			assign_target(user,@master_list_hunts) until user.reload.targets_count == 3
-			assign_hunter(user,@master_list_hunts) until user.reload.hunters_count == 3
+			assign_stalker(user,@master_list_hunts) until user.reload.stalkers_count == 3
 			@master_list_hunts -= [user]
 		end
 	end
 
-	def assign_target(hunter,list)
-		validated_target = find_a_valid_target_in_list(hunter,list)
-		Hunt.create(hunter_id: hunter.id, target_id: validated_target.id)
-		list -= [validated_target] if validated_target.reload.hunters_count == 3
+	def assign_target(stalker,list)
+		validated_target = find_a_valid_target_in_list(stalker,list)
+		Hunt.create(stalker_id: stalker.id, target_id: validated_target.id)
+		list -= [validated_target] if validated_target.reload.stalkers_count == 3
 		return list
 	end
 
-	def assign_hunter(target,list)
-		validated_hunter = find_a_valid_hunter_in_list(target,list)
-		Hunt.create(hunter_id: validated_hunter.id, target_id: target.id)
-		list -= [validated_hunter] if validated_hunter.reload.targets_count == 3
+	def assign_stalker(target,list)
+		validated_stalker = find_a_valid_stalker_in_list(target,list)
+		Hunt.create(stalker_id: validated_stalker.id, target_id: target.id)
+		list -= [validated_stalker] if validated_stalker.reload.targets_count == 3
 		return list
 	end
 
-	def find_a_valid_target_in_list(hunter,list)
+	def find_a_valid_target_in_list(stalker,list)
 		position = 0
-		## target can't be same as hunter and no duplicate targets
-		position += 1 until hunter != list[position] && !hunter.targets.include?(list[position])
+		## target can't be same as stalker and no duplicate targets
+		position += 1 until stalker != list[position] && !stalker.targets.include?(list[position])
 		return list[position]
 	end
 
-	def find_a_valid_hunter_in_list(target,list)
+	def find_a_valid_stalker_in_list(target,list)
 		position = 0
-		## target can't be same as hunter and no duplicate targets
-		position += 1 until target != list[position] && !target.hunters.include?(list[position])
+		## target can't be same as stalker and no duplicate targets
+		position += 1 until target != list[position] && !target.stalkers.include?(list[position])
 		return list[position]
 	end
 

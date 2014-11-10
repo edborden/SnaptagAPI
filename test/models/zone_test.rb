@@ -9,15 +9,15 @@ class ZoneTest < ActiveSupport::TestCase
 
 	test "determine_zone_for" do
 		10.times {Fabricate(:zone)}
-		assert_equal @nyczone,Zone.determine_zone_for(@nycuser.flat,@nycuser.flon)
+		assert_equal @nyczone,Zone.determine_zone_for(@nycuser.flat,@nycuser.flng)
 		user = Fabricate(:user_with_location)
-		assert_nil Zone.determine_zone_for(user.flat,user.flon)
+		assert_nil Zone.determine_zone_for(user.flat,user.flng)
 	end
 
 	test "determine_nearest_zone_for" do
 		10.times {Fabricate(:zone)}
-		assert_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.flat,@nycuser.flon)
-		assert_not_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.flat,@nycuser.flon,[@nyczone])
+		assert_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.flat,@nycuser.flng)
+		assert_not_equal @nyczone,Zone.determine_nearest_zone_for(@nycuser.flat,@nycuser.flng,[@nyczone])
 	end	
 
 	test "create_or_grow with no intersecting" do
@@ -39,7 +39,7 @@ class ZoneTest < ActiveSupport::TestCase
 	end
 
 	test "contains?" do
-		GeoCalc.expects(:distance).with(10,10,@nyczone.lat,@nyczone.lon).returns(100)
+		GeoCalc.expects(:distance).with(10,10,@nyczone.lat,@nyczone.lng).returns(100)
 		@nyczone.contains?(10,10)
 	end
 
@@ -50,7 +50,7 @@ class ZoneTest < ActiveSupport::TestCase
 
 	test "remove_user, no grow_id" do
 		Fabricate(:user_in_nyc, zone_id: @nyczone.id)
-		GeoCalc.expects(:distance).with(@nyczone.lat,@nyczone.lon,@nycuser.flat,@nycuser.flon).returns(7501)
+		GeoCalc.expects(:distance).with(@nyczone.lat,@nyczone.lng,@nycuser.flat,@nycuser.flng).returns(7501)
 		ZoneRebuilder.expects(:new).with(@nyczone).returns(stub(:run))
 		@nyczone.remove_user(@nycuser)
 	end
@@ -70,9 +70,9 @@ class ZoneTest < ActiveSupport::TestCase
 	end
 
 	test "within 50km of" do
-		assert @nyczone.within_50km_of @nycuser.lat,@nycuser.lon
+		assert @nyczone.within_50km_of @nycuser.lat,@nycuser.lng
 		londonuser = Fabricate(:user_in_london)
-		assert_not @nyczone.within_50km_of londonuser.lat,londonuser.lon
+		assert_not @nyczone.within_50km_of londonuser.lat,londonuser.lng
 	end
 
 end

@@ -14,7 +14,7 @@ class ZoneJoiner
 		new_zone = GeoCalc::compute_containing_zone(@larger_zone,@smaller_zone)
 		set_engulfing_variables
 		@engulfing_zone.lat = new_zone.lat
-		@engulfing_zone.lon = new_zone.lon
+		@engulfing_zone.lng = new_zone.lng
 		@engulfing_zone.range = new_zone.range
 		if @set_grow_id
 			@engulfing_zone.grow_id = @zone_to_be_engulfed.grow_id 

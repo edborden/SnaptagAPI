@@ -5,10 +5,10 @@ class Zone < ActiveRecord::Base
 
 	# WHICH ZONE AM I IN?
 
-	def self.determine_zone_for(lat,lon)
+	def self.determine_zone_for(lat,lng)
 		response = nil
 		Zone.all.each do |zone|
-			if zone.contains?(lat,lon)
+			if zone.contains?(lat,lng)
 				response = zone
 				break
 			end
@@ -16,7 +16,7 @@ class Zone < ActiveRecord::Base
 		return response
 	end
 
-	def self.determine_nearest_zone_for(lat,lon,exclude_zones = nil)
+	def self.determine_nearest_zone_for(lat,lng,exclude_zones = nil)
 		nearest_zone = nil
 		nearest_zone_distance = nil
 		if exclude_zones
@@ -25,7 +25,7 @@ class Zone < ActiveRecord::Base
 			zones = Zone.all
 		end
 		zones.each do |zone|
-			distance = GeoCalc::distance(zone.lat,zone.lon,lat,lon)
+			distance = GeoCalc::distance(zone.lat,zone.lng,lat,lng)
 			if nearest_zone == nil || distance < nearest_zone_distance
 				nearest_zone = zone
 				nearest_zone_distance = distance
@@ -36,7 +36,7 @@ class Zone < ActiveRecord::Base
 
 	def self.create_or_grow(user)
 	# IF I'M NOT IN A ZONE, THEN I CREATE A NEW ONE.
-		created_zone = Zone.create(lat: user.flat,lon: user.flon,grow_id:user.id)
+		created_zone = Zone.create(lat: user.flat,lng: user.flng,grow_id:user.id)
 	# DOES IT INTERSECT WITH ANY EXISTING ZONES? 
 		intersecting_zone = ZoneIntersectionChecker.new(created_zone).run
 		if intersecting_zone.nil?
@@ -56,8 +56,8 @@ class Zone < ActiveRecord::Base
 		end
 	end
 
-	def contains?(lat,lon)
-		distance = GeoCalc::distance(lat,lon,self.lat,self.lon)
+	def contains?(lat,lng)
+		distance = GeoCalc::distance(lat,lng,self.lat,self.lng)
 		distance <= self.range
 	end
 
@@ -70,7 +70,7 @@ class Zone < ActiveRecord::Base
 			if self.grow_id == user.id
 				ZoneRebuilder.new(self).run
 			elsif self.grow_id == nil
-				ZoneRebuilder.new(self).run if GeoCalc::distance(self.lat,self.lon,user.flat,user.flon) > (self.range / 2)
+				ZoneRebuilder.new(self).run if GeoCalc::distance(self.lat,self.lng,user.flat,user.flng) > (self.range / 2)
 			end
 		else
 			self.destroy
@@ -82,8 +82,8 @@ class Zone < ActiveRecord::Base
 		users.where(activationqueue_id: nil).present?
 	end
 
-	def within_50km_of lat,lon
-		GeoCalc::distance(self.lat,self.lon,lat,lon) < 50000
+	def within_50km_of lat,lng
+		GeoCalc::distance(self.lat,self.lng,lat,lng) < 50000
 	end
 
 end

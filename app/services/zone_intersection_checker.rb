@@ -21,7 +21,7 @@ class ZoneIntersectionChecker
 		r1 = @test_zone.range 
 		r2 = zone.range
 		eq1 = r1-r2
-		eq2 = GeoCalc::distance(@test_zone.lat,@test_zone.lon,zone.lat,zone.lon)
+		eq2 = GeoCalc::distance(@test_zone.lat,@test_zone.lng,zone.lat,zone.lng)
 		eq3 = r1+r2
 
 		eq1 <= eq2 && eq2 <= eq3

@@ -8,23 +8,23 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 	end
 
 	create_table "hunts", force: true do |t|
-		t.integer "hunter_id"
+		t.integer "stalker_id"
 		t.integer "target_id"
 		t.datetime "created_at"
 		t.datetime "completed_at"
-		t.integer "influence_appropriated"
-		t.boolean  "counteracted",         default: false,  null: false
+		t.integer "stealth_stolen"
+		t.boolean  "was_exposed",         default: false,  null: false
 		t.boolean  "active",               default: true,  null: false
 		t.decimal "lat",  precision: 8, scale: 6
-		t.decimal "lon", precision: 9, scale: 6
+		t.decimal "lng", precision: 9, scale: 6
 	end
-	add_index "hunts", ["hunter_id"], name: "index_hunts_on_hunter_id"
+	add_index "hunts", ["stalker_id"], name: "index_hunts_on_stalker_id"
 	add_index "hunts", ["target_id"], name: "index_hunts_on_target_id"
 
 	create_table "locations", force: true do |t|
 		t.integer "user_id"
 		t.decimal "lat",  precision: 8, scale: 6, null: false	
-		t.decimal "lon", precision: 9, scale: 6, null: false	
+		t.decimal "lng", precision: 9, scale: 6, null: false	
 		t.datetime "created_at"
 	end
 	add_index "locations", ["user_id"], name: "index_locations_on_user_id"
@@ -46,12 +46,12 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 		t.string   "birthday"
 		t.integer  "activationqueue_id"
 		t.integer  "zone_id"
-		t.integer  "influence",        default: 0,  null: false
-		t.integer  "exposed_count",        default: 0,  null: false
-		t.integer  "counteract_count",          default: 0,  null: false
-		t.integer  "disavowed_count",          default: 0,  null: false		
-		t.integer  "compromised_count",          default: 0,  null: false
-		t.integer  "hunters_count",          default: 0,  null: false
+		t.integer  "stealth",        default: 0,  null: false
+		t.integer  "targets_found_count",        default: 0,  null: false
+		t.integer  "found_count",          default: 0,  null: false
+		t.integer  "stalkers_exposed_count",          default: 0,  null: false		
+		t.integer  "exposed_count",          default: 0,  null: false
+		t.integer  "stalkers_count",          default: 0,  null: false
 		t.integer  "targets_count",          default: 0,  null: false
 		t.integer  "givers_count",          default: 0,  null: false
 		t.integer  "receivers_count",          default: 0,  null: false		
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20140310174426) do
 
 	create_table "zones", force: true do |t|
 		t.decimal "lat",  precision: 8, scale: 6, null: false	
-		t.decimal "lon", precision: 9, scale: 6, null: false
+		t.decimal "lng", precision: 9, scale: 6, null: false
 		t.integer "range", null:false, default: DEFAULT_MAX_DISTANCE
 		t.integer "grow_id"
 	end

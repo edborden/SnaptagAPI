@@ -1,5 +1,5 @@
 class Hunt < ActiveRecord::Base
-	belongs_to :hunter, class_name: "User"
+	belongs_to :stalker, class_name: "User"
 	belongs_to :target, class_name: "User"
 
 	after_create :plus_one, :ensure_matching_web
@@ -9,14 +9,14 @@ class Hunt < ActiveRecord::Base
 
 	def ensure_matching_web
 		if !matching_web
-			make_room(hunter)
+			make_room(stalker)
 			make_room(target)
-			if hunter.receivers_count <= target.receivers_count
-				giver = hunter
+			if stalker.receivers_count <= target.receivers_count
+				giver = stalker
 				receiver = target
 			else
 				giver = target
-				receiver = hunter
+				receiver = stalker
 			end
 			Web.create(giver_id: giver.id, receiver_id: receiver.id)
 		end
@@ -27,19 +27,19 @@ class Hunt < ActiveRecord::Base
 	end
 
 	def matching_web
-		Web.find_by(giver_id: self.hunter_id, receiver_id: self.target_id) || Web.find_by(giver_id: self.target_id, receiver_id: self.hunter_id)
+		Web.find_by(giver_id: self.stalker_id, receiver_id: self.target_id) || Web.find_by(giver_id: self.target_id, receiver_id: self.stalker_id)
 	end
 
 	def plus_one
-		hunter.increment! :targets_count
-		target.increment! :hunters_count
+		stalker.increment! :targets_count
+		target.increment! :stalkers_count
 	end
 
 	def minus_one
 		# when deactivated, counts get set to 0, don't need to decrement
 		if self.active
-			hunter.decrement! :targets_count
-			target.decrement! :hunters_count
+			stalker.decrement! :targets_count
+			target.decrement! :stalkers_count
 		end
 	end
 

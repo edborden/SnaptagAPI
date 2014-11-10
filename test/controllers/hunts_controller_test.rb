@@ -8,7 +8,7 @@ class HuntsControllerTest < ActionController::TestCase
 		user12 = Fabricate(:user,zone_id:nil)
 		Blastoff.expects(:new).returns(stub(:run))
 		Activationqueue.expects(:find_by).returns Activationqueue.first
-		get(:join, {location:{lat: 10,lon: 10}},{'Authorization' => 'Bearer ' + user12.token})
+		get(:join, {location:{lat: 10,lng: 10}},{'Authorization' => 'Bearer ' + user12.token})
 		assert_equal 200,@response.status
 		assert_equal 0,Activationqueue.count
 		assert user12.reload.active

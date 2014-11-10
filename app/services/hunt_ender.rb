@@ -2,36 +2,36 @@ class HuntEnder
 
 	def initialize(hunt)
 		@hunt = hunt
-		@hunter = hunt.hunter
+		@stalker = hunt.stalker
 		@target = hunt.target
 	end
 
-	def expose_success
+	def found_target
 
 		# hunt
 
 		@hunt.active = false
 		@hunt.completed_at = Time.now
-		@hunt.lat = @hunter.lat
-		@hunt.lon = @hunter.lon
-		@hunt.influence_appropriated = @target.influence
+		@hunt.lat = @stalker.lat
+		@hunt.lng = @stalker.lng
+		@hunt.stealth_stolen = @target.stealth
 
-		# hunter
+		# stalker
 
-		@hunter.exposed_count += 1
-		@hunter.influence += @target.influence
-		@hunter.targets_count -= 1
+		@stalker.exposed_count += 1
+		@stalker.stealth += @target.stealth
+		@stalker.targets_count -= 1
 
 		# target
 
 		@target.compromised_count += 1
-		@target.hunters_count -= 1
-		@target.influence = 0
+		@target.stalkers_count -= 1
+		@target.stealth = 0
 
 		# save
 
 		@hunt.save
-		@hunter.save
+		@stalker.save
 		@target.save
 
 		# deactivate
@@ -40,38 +40,38 @@ class HuntEnder
 
 	end
 
-	def counteract_success
+	def expose
 
 		# hunt
 
 		@hunt.active = false
-		@hunt.counteracted = true
+		@hunt.was_exposed = true
 		@hunt.completed_at = Time.now
 		@hunt.lat = @target.lat
-		@hunt.lon = @target.lon
-		@hunt.influence_appropriated = @hunter.influence
+		@hunt.lng = @target.lng
+		@hunt.stealth_stolen = @stalker.stealth
 
 		# target
 
 		@target.compromised_count += 1
-		@target.hunters_count -= 1
-		@target.influence = @hunter.influence
+		@target.stalkers_count -= 1
+		@target.stealth = @stalker.stealth
 
-		# hunter
+		# stalker
 
-		@hunter.exposed_count += 1
-		@hunter.influence = 0
-		@hunter.targets_count -= 1
+		@stalker.exposed_count += 1
+		@stalker.stealth = 0
+		@stalker.targets_count -= 1
 
 		# save
 
 		@hunt.save
-		@hunter.save
+		@stalker.save
 		@target.save
 
 		# deactivate
 
-		@hunter.deactivate		
+		@stalker.deactivate		
 
 	end
 

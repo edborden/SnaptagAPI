@@ -13,9 +13,9 @@ class WebTest < ActiveSupport::TestCase
 	end
 
 	test "matching_hunt" do
-		hunt = Hunt.create(hunter_id:@user0.id,target_id:@user1.id)
+		hunt = Hunt.create(stalker_id:@user0.id,target_id:@user1.id)
 		assert_equal hunt,@web0.matching_hunt
-		hunt.hunter_id = @user1.id
+		hunt.stalker_id = @user1.id
 		hunt.target_id = @user0.id
 		hunt.save
 		assert_equal hunt,@web0.matching_hunt
