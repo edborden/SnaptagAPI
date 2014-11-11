@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+	acts_as_messageable
 	belongs_to :activationqueue, counter_cache: true
 	belongs_to :zone
 	has_one :session
@@ -65,6 +66,7 @@ class User < ActiveRecord::Base
 		webs.destroy_all
 		antiwebs.destroy_all
 		locations.destroy_all
+		Pusher.trigger(self.id, "remove", self.id)
 	end
 
 	def remove_nonhunt_web
