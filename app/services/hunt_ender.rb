@@ -18,13 +18,13 @@ class HuntEnder
 
 		# stalker
 
-		@stalker.exposed_count += 1
+		@stalker.targets_found_count += 1
 		@stalker.stealth += @target.stealth
 		@stalker.targets_count -= 1
 
 		# target
 
-		@target.compromised_count += 1
+		@target.found_count += 1
 		@target.stalkers_count -= 1
 		@target.stealth = 0
 
@@ -53,9 +53,9 @@ class HuntEnder
 
 		# target
 
-		@target.compromised_count += 1
+		@target.stalkers_exposed_count += 1
 		@target.stalkers_count -= 1
-		@target.stealth = @stalker.stealth
+		@target.stealth += @stalker.stealth
 
 		# stalker
 
