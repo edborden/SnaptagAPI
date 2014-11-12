@@ -20,9 +20,9 @@ class HuntsHoleFiller
 		targets = User.need_stalkers.take(3)
 		stalkers = User.need_targets.take(3)
 		targets.each {|target| Hunt.create(stalker_id:lucky_player.id,target_id:target.id)}
-		json_package = SuspectSerializer.new lucky_player
 		stalkers.each do |stalker| 
 			Hunt.create(stalker_id:stalker.id,target_id:lucky_player.id)
+			json_package = SuspectSerializer.new lucky_player, scope:stalker
 			Pusher.trigger stalker.id,"new_target",json_package
 		end
 	end
