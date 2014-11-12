@@ -9,7 +9,7 @@ class HuntsHoleFiller
 	end
 
 	def it_is_time?
-		User.need_stalkers.count >= 3 && User.need_targets.count >= 3 && Activationqueue.all.present?
+		User.need_stalkers.count >= 3 && User.need_targets.count >= 3 && Activationqueue.exists?
 	end
 
 	def lucky_player
@@ -20,7 +20,11 @@ class HuntsHoleFiller
 		targets = User.need_stalkers.take(3)
 		stalkers = User.need_targets.take(3)
 		targets.each {|target| Hunt.create(stalker_id:lucky_player.id,target_id:target.id)}
-		stalkers.each {|stalker| Hunt.create(stalker_id:stalker.id,target_id:lucky_player.id)}
+		json_package = SuspectSerializer.new lucky_player
+		stalkers.each do |stalker| 
+			Hunt.create(stalker_id:stalker.id,target_id:lucky_player.id)
+			Pusher.trigger stalker.id,"new_target",json_package
+		end
 	end
 
 end
