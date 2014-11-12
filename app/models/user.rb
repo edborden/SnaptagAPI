@@ -71,7 +71,10 @@ class User < ActiveRecord::Base
 
 	def remove_nonhunt_web
 		nonhunt_webs = allwebs.select { |web| !web.matching_hunt }
-		nonhunt_webs[0].destroy
+		nonhunt_web = nonhunt_webs.first
+		Pusher.trigger nonhunt_web.giver.id, 'remove_suspect', nonhunt_web.receiver.id
+		Pusher.trigger nonhunt_web.receiver.id, 'remove_suspect', nonhunt_web.giver.id
+		nonhunt_web.destroy
 	end
 
 	def active
