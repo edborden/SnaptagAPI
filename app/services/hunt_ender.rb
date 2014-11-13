@@ -45,7 +45,7 @@ class HuntEnder
 			body = "Your target, " + @target.name + ", was found by another Stalker."
 			subject = "Target removed"
 			other_stalkers.each do |stalker|
-				stalker.notify subject,body,nil
+				stalker.notify subject,body,@target
 				json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
 				Pusher.trigger stalker.id,'notification',json_package
 			end
