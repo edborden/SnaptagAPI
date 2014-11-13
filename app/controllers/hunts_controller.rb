@@ -14,7 +14,7 @@ class HuntsController < ApplicationController
 	def found_target
 		hunt = Hunt.find_by(stalker_id: @current_user.id, target_id: params[:target_id])
 		HuntEnder.new(hunt).found_target
-		render text: "success"
+		render json: current_user.first_notif, serializer: NotificationSerializer
 	end
 
 	def join

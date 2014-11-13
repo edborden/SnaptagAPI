@@ -121,4 +121,8 @@ class User < ActiveRecord::Base
 		locations.first.lng
 	end
 
+	def first_notif
+		mailbox.notifications.first
+	end
+
 end
