@@ -34,22 +34,15 @@ class HuntEnder
 		@stalker.save
 		@target.save
 
-		# deactivate
-
-		@target.deactivate
-
 		# notify targets' other stalkers
 
-		other_stalkers = @target.stalkers - [@stalker]
-		if other_stalkers.present?
 			body = "Your target, " + @target.name + ", was found by another Stalker."
 			subject = "Target removed"
-			other_stalkers.each do |stalker|
+			@target.stalkers.each do |stalker|
 				stalker.notify subject,body,@target
 				json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
 				Pusher.trigger stalker.id,'notification',json_package
 			end
-		end
 
 		# notify target
 
@@ -62,6 +55,11 @@ class HuntEnder
 
 		stalker_body = "Hunt completed successfully!"
 		@stalker.notify "Target Found",stalker_body,nil
+
+		# deactivate
+
+		@target.deactivate
+
 	end
 
 	def expose
