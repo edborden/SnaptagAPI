@@ -38,12 +38,28 @@ class HuntEnder
 
 		@target.deactivate
 
-		# notifications
+		# notify targets' other stalkers
 
-		target_body = "You're Stalker found you! You've been removed from the game."
-		@target.notify "Found",target_body,nil
+		other_stalkers = @target.stalkers - [@stalker]
+		if other_stalkers.present?
+			body = "Your target, " + @target.name + ", was found by another Stalker."
+			subject = "Target removed"
+			other_stalkers.each do |stalker|
+				stalker.notify subject,body,nil
+				json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
+				Pusher.trigger stalker.id,'notification',json_package
+			end
+		end
+
+		# notify target
+
+		body = "Your Stalker found you! You've been removed from the game."
+		@target.notify "Found",body,nil
 		json_package = NotificationSerializer.new @target.first_notif, scope:@target
 		Pusher.trigger @target.id,"notification",json_package
+
+		# notify stalker - notification gets push out via controller
+
 		stalker_body = "Hunt completed successfully!"
 		@stalker.notify "Target Found",stalker_body,nil
 	end
