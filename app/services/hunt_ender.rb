@@ -41,11 +41,11 @@ class HuntEnder
 		# notifications
 
 		target_body = "You're Stalker found you! You've been removed from the game."
-		target.notify "Found",target_body,nil
-		json_package = NotificationSerializer.new target.first_notif, scope:target
+		@target.notify "Found",target_body,nil
+		json_package = NotificationSerializer.new @target.first_notif, scope:@target
 		Pusher.trigger @target.id,"notification",json_package
 		stalker_body = "Hunt completed successfully!"
-		stalker.notify "Target Found",stalker_body,nil
+		@stalker.notify "Target Found",stalker_body,nil
 	end
 
 	def expose
