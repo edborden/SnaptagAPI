@@ -67,8 +67,6 @@ class User < ActiveRecord::Base
 		# notify self
 		body = "You've been removed from the game."
 		notify "Exposed self",body,nil
-		json_package = NotificationSerializer.new first_notif, scope:self
-		Pusher.trigger self.id,'notification',json_package		
 		
 		deactivate
 	end
