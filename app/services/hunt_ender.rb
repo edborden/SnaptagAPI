@@ -36,25 +36,24 @@ class HuntEnder
 
 		# notify targets' other stalkers
 
-			body = "Your target, " + @target.name + ", was found by another Stalker."
-			subject = "Target removed"
-			@target.stalkers.each do |stalker|
-				stalker.notify subject,body,@target
-				json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
-				Pusher.trigger stalker.id,'notification',json_package
-			end
+		body = "Your target, " + @target.name + ", was found by another Stalker."
+		@target.stalkers.each do |stalker|
+			stalker.notify "Target removed",body,@target
+			json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
+			Pusher.trigger stalker.id,'notification',json_package
+		end
 
 		# notify target
 
-		body = "Your Stalker found you! You've been removed from the game."
+		body = "Your Stalker, " + @stalker.name + ", found you! You've been removed from the game."
 		@target.notify "Found",body,nil
 		json_package = NotificationSerializer.new @target.first_notif, scope:@target
 		Pusher.trigger @target.id,"notification",json_package
 
 		# notify stalker - notification gets push out via controller
 
-		stalker_body = "Hunt completed successfully!"
-		@stalker.notify "Target Found",stalker_body,nil
+		body = "Hunt completed successfully!"
+		@stalker.notify "Target Found",body,nil
 
 		# deactivate
 
@@ -90,6 +89,27 @@ class HuntEnder
 		@hunt.save
 		@stalker.save
 		@target.save
+
+		# notify stalker's stalkers
+
+		body = "Your target, " + @stalker.name + ", was exposed by one of their targets."
+		@stalker.stalkers.each do |stalker|
+			stalker.notify "Target removed",body,@stalker
+			json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
+			Pusher.trigger stalker.id,'notification',json_package
+		end
+
+		# notify stalker
+
+		body = "Your target, " + @target.name + ", exposed you! You've been removed from the game."
+		@stalker.notify "Exposed",body,nil
+		json_package = NotificationSerializer.new @stalker.first_notif, scope:@stalker
+		Pusher.trigger @stalker.id,"notification",json_package
+
+		# notify target - notification gets push out via controller
+
+		body = "You exposed your stalker!"
+		@target.notify "Stalker exposed",body,nil
 
 		# deactivate
 

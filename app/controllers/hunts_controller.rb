@@ -4,7 +4,7 @@ class HuntsController < ApplicationController
 		hunt = Hunt.find_by(stalker_id: params[:stalker_id], target_id: @current_user.id, active: true)
 		if hunt
 			HuntEnder.new(hunt).expose
-			render text: "success"
+			render json: current_user.first_notif, serializer: NotificationSerializer
 		else
 			@current_user.expose_self
 			render text: "failure"
