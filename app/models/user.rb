@@ -55,6 +55,21 @@ class User < ActiveRecord::Base
 	def expose_self
 		# WHERE DOES THE STEALTH GO?
 		increment!(:exposed_count)
+
+		# notify stalkers
+		body = "Your target, " + self.name + ", exposed themselves."
+		stalkers.each do |stalker|
+			stalker.notify "Target removed",body,self
+			json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
+			Pusher.trigger stalker.id,'notification',json_package
+		end
+
+		# notify self
+		body = "You've been removed from the game."
+		notify "Exposed self",body,nil
+		json_package = NotificationSerializer.new first_notif, scope:self
+		Pusher.trigger self.id,'notification',json_package		
+		
 		deactivate
 	end
 

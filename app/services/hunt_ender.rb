@@ -94,9 +94,12 @@ class HuntEnder
 
 		body = "Your target, " + @stalker.name + ", was exposed by one of their targets."
 		@stalker.stalkers.each do |stalker|
-			stalker.notify "Target removed",body,@stalker
-			json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
-			Pusher.trigger stalker.id,'notification',json_package
+			# handle when target is also stalker, so they don't get two messages
+			unless stalker == @target
+				stalker.notify "Target removed",body,@stalker
+				json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
+				Pusher.trigger stalker.id,'notification',json_package
+			end
 		end
 
 		# notify stalker
