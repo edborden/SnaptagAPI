@@ -7,4 +7,7 @@ Rails.application.routes.draw do
 	get 'hunts/join', to: 'hunts#join'
 	get 'hunts/found_target', to: 'hunts#found_target'
 	get 'hunts/expose', to: 'hunts#expose'
+
+	match "*all" => "application#cors_preflight_check", via: [:options]
+
 end

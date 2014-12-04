@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.6'
 gem 'rails-api', "0.2.1"
 gem 'active_model_serializers', git: "https://github.com/rails-api/active_model_serializers.git", ref: 'b9d216d'
-gem 'tzinfo-data', platforms: [:mingw, :mswin]
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'pg'
 gem 'fabrication'
 gem "faker"
