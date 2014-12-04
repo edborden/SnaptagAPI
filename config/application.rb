@@ -11,5 +11,7 @@ module Stalkers
 			config.embed = :ids
 			#config.embed_in_root = false
 		end
+		config.middleware.use "Cors"
+		config.middleware.insert 0, "Cors"
 	end
 end
