@@ -3,8 +3,9 @@ class ApplicationController < ActionController::API
 
 	# Renders a 401 status code if the current user is not authorized
 	def ensure_authenticated_user
-				if request.method_symbol != :options
-		head :unauthorized unless params[:inactive_map] || current_user
+		if request.method_symbol != :options
+			head :unauthorized unless params[:inactive_map] || current_user
+		end
 	end
 
 	# Returns the user associated with the access token if available
@@ -18,7 +19,7 @@ class ApplicationController < ActionController::API
 		bearer ||= request.headers["rack.session"].try(:[], 'Authorization')
 		bearer.present? ? bearer.split.last : nil
 	end
-	
+
 	def cors_preflight_check
 		if request.method_symbol == :options
 			headers['Access-Control-Allow-Origin'] = '*'
