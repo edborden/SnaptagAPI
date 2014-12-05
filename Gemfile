@@ -10,6 +10,7 @@ gem "faker"
 gem "pusher"
 gem "mailboxer"
 gem "koala", "~> 1.10.0rc"
+gem 'unicorn'
 
 group :test do
 	gem 'mocha', "~> 1.0.0"
@@ -17,4 +18,5 @@ end
 
 group :production do
 	gem 'rails_12factor'
+	gem 'newrelic_rpm'
 end
