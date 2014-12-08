@@ -31,6 +31,12 @@ class HuntsController < ApplicationController
 		render json: current_user.reload, serializer: MeSerializer, root: 'user'
 	end
 
+	def unjoin
+		current_user.activationqueue.remove_user current_user
+		current_user.deactivate
+		head :ok
+	end
+
 	#def intro_map
 	#	render json: Hunt.completed, each_serializer: HuntLocationOnlySerializer
 	#end

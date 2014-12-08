@@ -10,4 +10,9 @@ class Activationqueue < ActiveRecord::Base
 		end
 	end
 
+	def remove_user user
+		users.delete user
+		destroy if users(true).blank?
+	end
+
 end
