@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.0.0'
 
 gem 'rails', '4.1.6'
 gem 'rails-api', "0.2.1"
@@ -11,10 +12,6 @@ gem "pusher"
 gem "mailboxer"
 gem "koala", "~> 1.10.0rc"
 
-group :development do
-  gem 'thin'
-end
-
 group :test do
 	gem 'mocha', "~> 1.0.0"
 end
@@ -22,5 +19,5 @@ end
 group :production do
 	gem 'rails_12factor'
 	gem 'newrelic_rpm'
-	gem 'unicorn'
+	gem 'unicorn', platforms: :ruby
 end

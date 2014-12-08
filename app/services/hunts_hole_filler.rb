@@ -24,11 +24,7 @@ class HuntsHoleFiller
 			Hunt.create(stalker_id:stalker.id,target_id:lucky_player.id)
 			json_package = SuspectSerializer.new lucky_player, scope:stalker, root:'user'
 			Pusher.trigger stalker.id,"new_target",json_package
-			subject = "New target added"
-			body = "Get moving!"
-			stalker.notify subject,body,nil
-			json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
-			Pusher.trigger stalker.id,"notification",json_package		
+			stalker.notify "New target added","Get moving!",nil	
 		end
 	end
 

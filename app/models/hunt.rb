@@ -9,8 +9,8 @@ class Hunt < ActiveRecord::Base
 
 	def ensure_matching_web
 		if !matching_web
-			make_room(stalker)
-			make_room(target)
+			stalker.make_room
+			target.make_room
 			if stalker.receivers_count <= target.receivers_count
 				giver = stalker
 				receiver = target
@@ -20,10 +20,6 @@ class Hunt < ActiveRecord::Base
 			end
 			Web.create(giver_id: giver.id, receiver_id: receiver.id)
 		end
-	end
-
-	def make_room(user)
-		user.remove_nonhunt_web until user.reload.allwebs_count < 11
 	end
 
 	def matching_web

@@ -22,7 +22,7 @@ class HuntsController < ApplicationController
 		current_user.reload
 		########
 		########
-		Demo.new.create_activationqueue_around current_user
+		#Demo.new.create_activationqueue_around current_user
 		########
 		########
 		queue = Activationqueue.find_by(zone_id: current_user.zone_id) || Activationqueue.create(zone_id: current_user.zone_id)

@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
 	has_many :receivers, through: :webs, source: :receiver
 	has_many :antiwebs, class_name: "Web", foreign_key: "receiver_id"
 	has_many :givers, through: :antiwebs, source: :giver
-	# I don't need to pass an ID in here, do I? Just reference self.id directly
+
 	scope :need_givers, ->(id) { where("givers_count < 6").where("receivers_count < 6").active.where.not(id: id).order(givers_count: :asc) }
 	scope :need_receivers, ->(id) { where("givers_count < 6").where("receivers_count < 6").active.where.not(id: id).order(receivers_count: :asc) }
 
@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
 	end
 
 	def token
-		session.present? ? session.token : nil
+		try(:session).try(:token)
 	end
 
 	def suspects
@@ -54,21 +54,23 @@ class User < ActiveRecord::Base
 
 	def expose_self
 		# WHERE DOES THE STEALTH GO?
+
 		increment!(:exposed_count)
 
 		# notify stalkers
 		body = "Your target, " + self.name + ", exposed themselves."
-		stalkers.each do |stalker|
-			stalker.notify "Target removed",body,self
-			json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
-			Pusher.trigger stalker.id,'notification',json_package
-		end
+		stalkers.each {|stalker| stalker.notify "Target removed",body,self}
 
 		# notify self
-		body = "You've been removed from the game."
-		notify "Exposed self",body,nil
+		notify "Exposed self","You've been removed from the game.",nil
 		
 		deactivate
+	end
+
+	def notify subject,body,object
+		super subject,body,object
+		json_package = NotificationSerializer.new mailbox.notifications.first, scope:self
+		Pusher.trigger self.id,'notification',json_package
 	end
 
 	def deactivate
@@ -82,12 +84,18 @@ class User < ActiveRecord::Base
 		Pusher.trigger self.id, "remove", self.id
 	end
 
+	def make_room
+		remove_nonhunt_web until reload.allwebs_count < 11
+	end
+
 	def remove_nonhunt_web
-		nonhunt_webs = allwebs.select { |web| !web.matching_hunt }
-		nonhunt_web = nonhunt_webs.first
-		Pusher.trigger nonhunt_web.giver.id, 'remove_suspect', nonhunt_web.receiver.id
-		Pusher.trigger nonhunt_web.receiver.id, 'remove_suspect', nonhunt_web.giver.id
+		nonhunt_web = allwebs.find { |web| !web.matching_hunt }
+		nonhunt_web.remove_suspects
 		nonhunt_web.destroy
+	end
+
+	def remove_suspect suspect
+		Pusher.trigger self.id, 'remove_suspect', suspect.id
 	end
 
 	def active
@@ -132,10 +140,6 @@ class User < ActiveRecord::Base
 
 	def flng
 		locations.first.lng
-	end
-
-	def first_notif
-		mailbox.notifications.first
 	end
 
 end

@@ -25,19 +25,6 @@ class HuntTest < ActiveSupport::TestCase
 		assert_not hunt.matching_web
 	end
 
-	test "make_room" do
-		13.times {Fabricate(:user)}
-		users = User.all - [@user0] - [@user1]
-		users.each do |user|
-			Web.create(giver_id: @user0.id, receiver_id: user.id)
-		end
-		assert_equal 14,Web.count
-		assert_equal 14,@user0.reload.allwebs_count
-		Hunt.new.make_room(@user0)
-		assert_equal 10,Web.count
-		assert_equal 10,@user0.reload.allwebs_count
-	end
-
 	test "plus_one, minus_one" do
 		assert_equal 0,@user0.targets_count
 		hunt = Hunt.create(stalker_id: @user0.id, target_id: @user1.id)

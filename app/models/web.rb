@@ -19,4 +19,16 @@ class Web < ActiveRecord::Base
 		receiver.decrement!(:givers_count)
 	end
 
+	def remove_suspects
+		giver.remove_suspect receiver
+		receiver.remove_suspect giver
+	end
+
+	def push
+		json_package = SuspectSerializer.new giver, scope:receiver, root:'user'
+		Pusher.trigger receiver.id,'new_suspect',json_package
+		json_package = SuspectSerializer.new receiver, scope:giver, root:'user'
+		Pusher.trigger giver.id,'new_suspect',json_package
+	end
+
 end

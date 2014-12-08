@@ -97,4 +97,22 @@ class UserTest < ActiveSupport::TestCase
 		assert_equal "inactive",@user0.status
 	end
 
+	test "notify pushes notification" do
+		@user1.notify "test","test",nil
+		assert_equal 1,@user1.mailbox.notifications.count
+	end
+
+	test "make_room" do
+		12.times {Fabricate(:user)}
+		users = User.all - [@user0] - [@user1]
+		users.each do |user|
+			Web.create(giver_id: @user0.id, receiver_id: user.id)
+		end
+		assert_equal 14,Web.count
+		assert_equal 14,@user0.reload.allwebs_count
+		@user0.make_room
+		assert_equal 10,Web.count
+		assert_equal 10,@user0.reload.allwebs_count
+	end
+
 end

@@ -72,6 +72,7 @@ GEM
       metaclass (~> 0.0.1)
     multi_json (1.10.1)
     multipart-post (2.0.0)
+    newrelic_rpm (3.9.8.273)
     pg (0.17.1-x64-mingw32)
     pg (0.17.1-x86-mingw32)
     pusher (0.14.1)
@@ -134,9 +135,11 @@ DEPENDENCIES
   koala (~> 1.10.0rc)
   mailboxer
   mocha (~> 1.0.0)
+  newrelic_rpm
   pg
   pusher
   rails (= 4.1.6)
   rails-api (= 0.2.1)
   rails_12factor
   tzinfo-data
+  unicorn

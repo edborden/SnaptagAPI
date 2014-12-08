@@ -37,23 +37,16 @@ class HuntEnder
 		# notify targets' other stalkers
 
 		body = "Your target, " + @target.name + ", was found by another Stalker."
-		@target.stalkers.each do |stalker|
-			stalker.notify "Target removed",body,@target
-			json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
-			Pusher.trigger stalker.id,'notification',json_package
-		end
+		@target.stalkers.each {|stalker| stalker.notify "Target removed",body,@target}
 
 		# notify target
 
 		body = "Your Stalker, " + @stalker.name + ", found you! You've been removed from the game."
 		@target.notify "Found",body,nil
-		json_package = NotificationSerializer.new @target.first_notif, scope:@target
-		Pusher.trigger @target.id,"notification",json_package
 
-		# notify stalker - notification gets push out via controller
+		# notify stalker
 
-		body = "Hunt completed successfully!"
-		@stalker.notify "Target Found",body,nil
+		@stalker.notify "Target Found","Hunt completed successfully!",nil
 
 		# deactivate
 
@@ -91,28 +84,19 @@ class HuntEnder
 		@target.save
 
 		# notify stalker's stalkers
+		# handle when target is also stalker, so they don't get two messages
 
 		body = "Your target, " + @stalker.name + ", was exposed by one of their targets."
-		@stalker.stalkers.each do |stalker|
-			# handle when target is also stalker, so they don't get two messages
-			unless stalker == @target
-				stalker.notify "Target removed",body,@stalker
-				json_package = NotificationSerializer.new stalker.first_notif, scope:stalker
-				Pusher.trigger stalker.id,'notification',json_package
-			end
-		end
+		@stalker.stalkers.each {|stalker| stalker.notify "Target removed",body,@stalker unless stalker == @target}
 
 		# notify stalker
 
 		body = "Your target, " + @target.name + ", exposed you! You've been removed from the game."
 		@stalker.notify "Exposed",body,nil
-		json_package = NotificationSerializer.new @stalker.first_notif, scope:@stalker
-		Pusher.trigger @stalker.id,"notification",json_package
 
-		# notify target - notification gets push out via controller
-
-		body = "You exposed your stalker!"
-		@target.notify "Stalker exposed",body,nil
+		# notify target
+ 
+		@target.notify "Stalker exposed","You exposed your stalker!",nil
 
 		# deactivate
 
