@@ -75,7 +75,8 @@ class User < ActiveRecord::Base
 
 	def deactivate
 		#THIS CAUSES WAY TOO MANY DATABASE WRITES THRU MINUS_ONE'S
-		zone.remove_user(self)
+		zone.remove_user self
+		self.activated_at = nil
 		hunts.destroy_all
 		flights.destroy_all
 		webs.destroy_all
