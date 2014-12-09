@@ -5,9 +5,7 @@ class ZoneWithUsersSerializer < ApplicationSerializer
 	# this may be causing zone_id to be wiped if an active user calls zones>index
 	def users
 		if scope
-			users = object.users
-			users.delete scope
-			users
+			users = object.users - [scope]
 		else
 			object.users
 		end
