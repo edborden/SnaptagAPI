@@ -57,7 +57,7 @@ class Zone < ActiveRecord::Base
 	end
 
 	def contains?(lat,lng)
-		distance = GeoCalc::distance(lat,lng,self.lat,self.lng)
+		distance = GeoCalc::distance lat,lng,self.lat,self.lng
 		distance <= self.range
 	end
 
@@ -65,7 +65,7 @@ class Zone < ActiveRecord::Base
 	## WHEN I LEAVE THE GAME, IF I'M THE USER THE GREW THE ZONE (FARTHEST FROM CENTER, IDENTIFIED BY GROW_ID), REBUILD THE ZONE.
 	# WHEN I LEAVE THE GAME AND THE ZONE HAS NO GROW_ID, IT NEEDS TO BE REBUILT IF MY DISTANCE FROM THE ZONE CENTER IS MORE THAN 50% OF THE ZONE RANGE
 	# IF THE ZONE IS EMPTY, DELETE IT
-		self.users.delete(user)
+		self.users.delete user
 		if self.users.exists?
 			if self.grow_id == user.id
 				ZoneRebuilder.new(self).run

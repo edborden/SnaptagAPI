@@ -11,8 +11,8 @@ class Demo
 
 	def web
 #		ed = User.find_by(name: "Ed")
-		queue = Activationqueue.create
-		11.times { Fabricate(:user_with_location,activationqueue_id: queue.id) }
+		activationqueue = Activationqueue.create
+		11.times { Fabricate(:user_with_location,activationqueue_id: activationqueue.id) }
 		25.times { Fabricate(:active_test_user) }
 	end
 
@@ -22,10 +22,10 @@ class Demo
 		end
 	end
 
-	def create_activationqueue_around user
+	def create_queue_around user
 		zone = user.zone
-		queue = Activationqueue.create(zone_id: zone.id)
-		Fabricate.times(11, :user, zone_id:zone.id, activationqueue_id:queue.id) do
+		activationqueue = Activationqueue.create(zone_id: zone.id)
+		Fabricate.times(11, :user, zone_id:zone.id, activationqueue_id:activationqueue.id) do
 			after_create { |attrs| 25.times { Fabricate(:location, user_id: attrs[:id], lat: (rand*rand*0.075 -0.0375) + zone.lat, lng: (rand*rand*0.075 -0.0375) + zone.lng)}}
 		end
 	end

@@ -14,16 +14,16 @@ class HuntsHoleFillerTest < ActiveSupport::TestCase
 	end
 
 	test "lucky_player returns a player on the activation queue" do
-		activationqueue = Activationqueue.create
+		queue = Activationqueue.create
 		User.all.each do |user|
-			activationqueue.users<<(user)
+			queue.users<<(user)
 		end
-		assert activationqueue.users.include?(HuntsHoleFiller.new.lucky_player)
+		assert queue.users.include?(HuntsHoleFiller.new.lucky_player)
 	end
 
 	test "fill_hunt_holes" do
-		activationqueue = Activationqueue.create
-		activationqueue.users<<(@user3)
+		queue = Activationqueue.create
+		queue.users<<(@user3)
 		assert_equal 4,User.count
 		assert_equal 3,User.need_stalkers.count
 		HuntsHoleFiller.new.fill_hunt_holes(@user3)
@@ -32,8 +32,8 @@ class HuntsHoleFillerTest < ActiveSupport::TestCase
 	end
 
 	test "the whole enchilada" do
-		activationqueue = Activationqueue.create
-		@user3.activationqueue_id = activationqueue.id
+		queue = Activationqueue.create
+		@user3.activationqueue_id = queue.id
 		@user3.save
 		HuntsHoleFiller.new.run
 		assert_equal 6,Hunt.count

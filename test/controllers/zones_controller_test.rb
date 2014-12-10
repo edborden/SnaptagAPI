@@ -13,7 +13,7 @@ class ZonesControllerTest < ActionController::TestCase
 		Fabricate :zone
 		get :index, {lat: testuser.lat,lng: testuser.lng}
 		assert_equal 200,@response.status
-		assert_equal "{}",@response.body
+		assert_equal "{\"zones\":[]}",@response.body
 	end
 
 	test "index, active zone" do

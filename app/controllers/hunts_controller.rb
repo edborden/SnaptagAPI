@@ -25,14 +25,14 @@ class HuntsController < ApplicationController
 		#Demo.new.create_activationqueue_around current_user
 		########
 		########
-		queue = Activationqueue.find_by(zone_id: current_user.zone_id) || Activationqueue.create(zone_id: current_user.zone_id)
-		queue.users<<current_user
+		activationqueue = Activationqueue.find_by(zone_id: current_user.zone_id) || Activationqueue.create(zone_id: current_user.zone_id)
+		activationqueue.users<<current_user
 		HuntsHoleFiller.new.run
 		render json: current_user.reload, serializer: MeSerializer, root: 'user'
 	end
 
 	def unjoin
-		current_user.activationqueue.remove_user current_user
+		current_user.activationqueue.users.delete current_user
 		current_user.deactivate
 		head :ok
 	end
