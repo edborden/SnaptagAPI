@@ -3,7 +3,6 @@ class MeSerializer < ApplicationSerializer
 	has_many :suspects, embed_in_root: true, serializer: SuspectSerializer, root: "users"
 	has_many :notifications, embed_in_root: true
 	has_many :targets
-	has_one :zone, embed_in_root: true
 	has_one :activationqueue, embed_in_root: true
 
 	def notifications
