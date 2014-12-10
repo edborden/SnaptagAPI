@@ -25,10 +25,14 @@ class Demo
 	def create_queue_around user
 		zone = user.zone
 		activationqueue = Activationqueue.create(zone_id: zone.id)
-		Fabricate.times(11, :user, zone_id:zone.id, activationqueue_id:activationqueue.id) do
+		add_users_to activationqueue,11
+	end
+
+	def add_users_to activationqueue,num=1
+		Fabricate.times(num, :user, zone_id:activationqueue.zone.id, activationqueue_id:activationqueue.id) do
 			after_create { |attrs| 25.times { Fabricate(:location, user_id: attrs[:id], lat: (rand*rand*0.075 -0.0375) + zone.lat, lng: (rand*rand*0.075 -0.0375) + zone.lng)}}
 		end
-		ZoneRebuilder.new(zone).run
+		ZoneRebuilder.new(zone).run		
 	end
 
 end
