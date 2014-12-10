@@ -11,11 +11,13 @@ class Activationqueue < ActiveRecord::Base
 	end
 
 	def push_add user
-		Pusher.trigger "activationqueue"+self.id.to_s,"add_user",user
+		json_package = UserSerializer.new user
+		Pusher.trigger "activationqueue"+self.id.to_s,"add_user",json_package
 	end
 
 	def push_remove user
-		Pusher.trigger "activationqueue"+self.id.to_s,"remove_user",user
+		json_package = UserSerializer.new user
+		Pusher.trigger "activationqueue"+self.id.to_s,"remove_user",json_package
 	end
 
 	def destroy_if_empty user = nil

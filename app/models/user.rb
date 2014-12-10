@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
 	def notify subject,body,object
 		super subject,body,object
 		json_package = NotificationSerializer.new mailbox.notifications.first, scope:self
-		Pusher.trigger self.id,'notification',json_package
+		Pusher.trigger "user"+self.id.to_s,'notification',json_package
 	end
 
 	def deactivate
@@ -82,7 +82,7 @@ class User < ActiveRecord::Base
 		webs.destroy_all
 		antiwebs.destroy_all
 		locations.destroy_all
-		Pusher.trigger self.id, "remove", self.id
+		Pusher.trigger "user"+self.id.to_s, "remove", self.id
 	end
 
 	def make_room
@@ -96,7 +96,7 @@ class User < ActiveRecord::Base
 	end
 
 	def remove_suspect suspect
-		Pusher.trigger self.id, 'remove_suspect', suspect.id
+		Pusher.trigger "user"+self.id.to_s, 'remove_suspect', suspect.id
 	end
 
 	def active
