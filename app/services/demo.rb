@@ -30,8 +30,10 @@ class Demo
 
 	def add_users_to activationqueue,num=1
 		zone = activationqueue.zone
-		Fabricate.times(num, :user, zone_id:zone.id, activationqueue_id:activationqueue.id) do
-			after_create { |attrs| 25.times { Fabricate(:location, user_id: attrs[:id], lat: (rand*rand*0.075 -0.0375) + zone.lat, lng: (rand*rand*0.075 -0.0375) + zone.lng)}}
+		num.times do
+			Fabricate(:user, zone_id:zone.id) do
+				after_create { |attrs| 25.times { Fabricate(:location, user_id: attrs[:id], lat: (rand*rand*0.075 -0.0375) + zone.lat, lng: (rand*rand*0.075 -0.0375) + zone.lng)}}
+			end
 		end
 		ZoneRebuilder.new(zone).run		
 	end
