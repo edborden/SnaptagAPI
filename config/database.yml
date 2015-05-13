@@ -3,7 +3,7 @@ development:
   host: localhost
   username: postgres
   password: bonebreak1
-  database: development
+  database: stalkers-development
   encoding: UTF8
 
 test:
@@ -11,7 +11,7 @@ test:
   host: localhost
   username: postgres
   password: bonebreak1
-  database: test        # or whatever the name is
+  database: stalkers-test        # or whatever the name is
   encoding: UTF8
 
 production:
