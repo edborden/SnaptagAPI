@@ -2,11 +2,14 @@ class Facebook
 
 	def initialize(token)
 		@token = token
-		@facebook ||= Koala::Facebook::API.new(@token)
 	end
 
-	def get_profile
-		@facebook.get_object("me")
+	def client
+		@client ||= Koala::Facebook::API.new(@token)
+	end
+
+	def profile
+		@profile ||= client.get_object("me")
 	end
 
 	#def verify_token?(facebookid)
@@ -14,30 +17,24 @@ class Facebook
 	#	return true if facebookid.to_i == response["data"]["user_id"]
 	#end
 
-	def get_pics
-		get_picId_profile
-		get_medium_pic
-		get_large_pic
-		pichash = {smallpic: @smallpic,mediumpic: @mediumpic,largepic: @largepic}
+	def profilepic
+		@profilepic ||= client.get_object("me?fields=picture")
 	end
 
-	def get_picId_profile
-		result = @facebook.get_object("me?fields=picture")
-		@smallpic = result["picture"]["data"]["url"]
-		picId = @smallpic.split("_")
-		@picId = picId[1]
+	def smallpic
+		@smallpic ||= profilepic["picture"]["data"]["url"]
 	end
 
-	def get_medium_pic
-		string = @picId + "?fields=picture"
-		hash = @facebook.get_object(string)
-		@mediumpic = hash["picture"]
+	def picId
+		@picId ||= smallpic.split("_")[1]
 	end
 
-	def get_large_pic
-		call = @picId + "?fields=source"
-		hash = @facebook.get_object(call)
-		@largepic = hash["source"]
+	def mediumpic
+		@mediumpic ||= client.get_object("#{picId}?fields=picture")["picture"]
+	end
+
+	def largepic
+		@largepic ||= client.get_object("#{picId}?fields=source")["source"]
 	end
 
 	#def get_pic_id
@@ -46,9 +43,23 @@ class Facebook
 	#def get_pic_album
 	#end
 
+	def oauth
+		@oauth ||= Koala::Facebook::OAuth.new 726528350693125, "96ec2c1f6e53d6d1b4607164c190109c"
+	end
+
 	def exchange_token
-		oauth = Koala::Facebook::OAuth.new(726528350693125, "96ec2c1f6e53d6d1b4607164c190109c")
-		@token = oauth.exchange_access_token(@token)
+		@token = oauth.exchange_access_token @token
+	end
+
+	def create_user
+		User.create facebookid: profile["id"],
+			name: profile["first_name"],
+			email: profile["email"],
+			gender: profile["gender"],
+			#user.birthday = profile["birthday"]
+			smallpic: smallpic,
+			mediumpic: mediumpic,
+			largepic: largepic
 	end
 
 end

@@ -22,7 +22,7 @@ class Demo
 		ZoneRebuilder.new(zone).run
 	end
 
-	def create_queue_around user
+	def create_activationqueue_around user
 		zone = user.zone
 		activationqueue = Activationqueue.create(zone_id: zone.id)
 		add_users_to activationqueue,11

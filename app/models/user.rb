@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
 
 	def notify subject,body,object
 		super subject,body,object
-		json_package = NotificationSerializer.new mailbox.notifications.first, scope:self
+		json_package = NotificationSerializer.new first_notif, scope:self
 		Pusher.trigger "user"+self.id.to_s,'notification',json_package
 	end
 
@@ -103,20 +103,6 @@ class User < ActiveRecord::Base
 		self.zone_id.present?
 	end
 
-	def self.create_from_facebook(token,profile)
-		pichash = Facebook.new(token).get_pics
-		create! do |user|
-			user.facebookid = profile["id"]
-			user.name = profile["first_name"]
-			user.email = profile["email"]
-			user.gender = profile["gender"]
-			#user.birthday = profile["birthday"]
-			user.smallpic = pichash[:smallpic]
-			user.mediumpic = pichash[:mediumpic]
-			user.largepic = pichash[:largepic]
-		end
-	end
-
 	def status
 		if self.activationqueue_id
 			return "queue" 
@@ -141,6 +127,10 @@ class User < ActiveRecord::Base
 
 	def flng
 		locations.first.lng
+	end
+
+	def first_notif
+		mailbox.notifications.first
 	end
 
 end
