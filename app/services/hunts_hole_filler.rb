@@ -5,6 +5,7 @@ class HuntsHoleFiller
 			fill_hunt_holes lucky_player
 			lucky_player.activationqueue_id = nil
 			lucky_player.save
+			lucky_player.notify_entered_game
 		end
 	end
 
@@ -23,7 +24,7 @@ class HuntsHoleFiller
 		stalkers.each do |stalker| 
 			Hunt.create(stalker_id:stalker.id,target_id:lucky_player.id)
 			json_package = SuspectSerializer.new lucky_player, scope:stalker, root:'user'
-			Pusher.trigger "user"+stalker.id.to_s,"new_target",json_package
+			Pusher.trigger "user"+stalker.id.to_s,"New target",json_package
 			stalker.notify "New target added","Get moving!",nil	
 		end
 	end

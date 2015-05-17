@@ -1,40 +1,60 @@
 class HuntsController < ApplicationController
 
 	def expose
+
+		head :no_content
+
 		hunt = Hunt.find_by(stalker_id: params[:stalker_id], target_id: @current_user.id, active: true)
 		if hunt
 			HuntEnder.new(hunt).expose
 		else
 			current_user.expose_self
 		end
-		render json: current_user.first_notif, serializer: NotificationSerializer
 	end
 
 	def found_target
+
+		head :no_content
+
 		hunt = Hunt.find_by(stalker_id: @current_user.id, target_id: params[:target_id])
 		HuntEnder.new(hunt).found_target
-		render json: current_user.first_notif, serializer: NotificationSerializer
 	end
 
 	def join
+
+		head :no_content
+
 		current_user.locations.create params.require(:location).permit(:lat,:lng)
 		current_user.activate
 		current_user.reload
 		########
 		########
-		Demo.new.create_activationqueue_around current_user
+		#Demo.new.create_activationqueue_around current_user
 		########
 		########
+
+
 		activationqueue = Activationqueue.find_by(zone_id: current_user.zone_id) || Activationqueue.create(zone_id: current_user.zone_id)
 		activationqueue.users<<current_user
+
+		json_package = UserSerializer.new current_user
+		Pusher.trigger "activationqueue"+activationqueue.id.to_s,"Add user to activationqueue",json_package
+
+
+		current_user.notify "Added to activationqueue",nil,activationqueue
+
 		HuntsHoleFiller.new.run
-		render json: current_user.reload, serializer: MeSerializer, root: 'user'
 	end
 
 	def unjoin
+		
+		head :no_content
+
+		Pusher.trigger "activationqueue"+current_user.activationqueue.id.to_s,"Remove user from activationqueue",current_user.id
 		current_user.activationqueue.users.delete current_user
 		current_user.deactivate
-		head :ok
+
+
 	end
 
 	#def intro_map

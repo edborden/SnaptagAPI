@@ -26,9 +26,9 @@ class Web < ActiveRecord::Base
 
 	def push
 		json_package = SuspectSerializer.new giver, scope:receiver, root:'user'
-		Pusher.trigger "user"+receiver.id.to_s,'new_suspect',json_package
+		Pusher.trigger "user"+receiver.id.to_s,'New suspect',json_package
 		json_package = SuspectSerializer.new receiver, scope:giver, root:'user'
-		Pusher.trigger "user"+giver.id.to_s,'new_suspect',json_package
+		Pusher.trigger "user"+giver.id.to_s,'New suspect',json_package
 	end
 
 end

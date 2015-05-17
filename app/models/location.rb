@@ -5,7 +5,7 @@ class Location < ActiveRecord::Base
 
 	def push_create
 		json_package = LocationSerializer.new self
-		Pusher.trigger "user"+user.id.to_s, 'location', json_package
+		Pusher.trigger "user"+user.id.to_s, 'New target location', json_package
 	end
 
 end

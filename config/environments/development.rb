@@ -30,7 +30,7 @@ Stalkers::Application.configure do
 
   require 'pusher'
 
-  Pusher.app_id = '71489'
-  Pusher.key    = '920f77cedd553842882b'
-  Pusher.secret = '4325b6be5578e4345a68'
+  Pusher.app_id = '71488'
+  Pusher.key    = '0750760773b8ed5ae1dc'
+  Pusher.secret = 'd7afffa52119a743d0ba'
 end

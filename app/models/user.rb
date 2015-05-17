@@ -68,13 +68,20 @@ class User < ActiveRecord::Base
 	end
 
 	def notify subject,body,object
-		super subject,body,object
-		json_package = NotificationSerializer.new first_notif, scope:self
+		Mailboxer::Notification.clear_validators!
+		receipt = super subject,body,object
+		json_package = NotificationSerializer.new receipt.notification, scope:self
 		Pusher.trigger "user"+self.id.to_s,'notification',json_package
+	end
+
+	def notify_entered_game
+		notify "You have entered the game","",nil		
 	end
 
 	def deactivate
 		#THIS CAUSES WAY TOO MANY DATABASE WRITES THRU MINUS_ONE'S
+		givers.each {|giver| giver.remove_suspect(self)}
+		receivers.each {|receiver| receiver.remove_suspect(self)}
 		zone.remove_user self
 		self.activated_at = nil
 		hunts.destroy_all
@@ -82,7 +89,6 @@ class User < ActiveRecord::Base
 		webs.destroy_all
 		antiwebs.destroy_all
 		locations.destroy_all
-		Pusher.trigger "user"+self.id.to_s, "remove", self.id
 	end
 
 	def make_room
@@ -96,7 +102,7 @@ class User < ActiveRecord::Base
 	end
 
 	def remove_suspect suspect
-		Pusher.trigger "user"+self.id.to_s, 'remove_suspect', suspect.id
+		Pusher.trigger "user"+self.id.to_s, "Suspect removed", suspect.id
 	end
 
 	def active

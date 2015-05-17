@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 	resources :locations, only: :create
 	resources :zones, only: :index
 	resources :notifications, only: :update
+	resources :activationqueues, only: :show
 
 	get 'hunts/join', to: 'hunts#join'
 	get 'hunts/found_target', to: 'hunts#found_target'
