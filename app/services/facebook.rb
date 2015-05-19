@@ -30,7 +30,8 @@ class Facebook
 	end
 
 	def mediumpic
-		@mediumpic ||= client.get_object("#{picId}?fields=picture")["picture"]
+		puts request = "#{picId}?fields=picture"
+		@mediumpic ||= client.get_object(request)["picture"]
 	end
 
 	def largepic
