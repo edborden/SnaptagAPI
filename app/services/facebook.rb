@@ -12,30 +12,21 @@ class Facebook
 		@profile ||= client.get_object("me")
 	end
 
+	def facebookid
+		@facebookid ||= profile["id"]
+	end
+
 	#def verify_token?(facebookid)
 	#	response = Koala::Facebook::API.new(FB_APP_ACCESS_TOKEN).debug_token(@token)
 	#	return true if facebookid.to_i == response["data"]["user_id"]
 	#end
 
-	def profilepic
-		@profilepic ||= client.get_object("me?fields=picture")
-	end
-
 	def smallpic
-		@smallpic ||= profilepic["picture"]["data"]["url"]
-	end
-
-	def picId
-		@picId ||= smallpic.split("_")[1]
-	end
-
-	def mediumpic
-		puts request = "#{picId}?fields=picture"
-		@mediumpic ||= client.get_object(request)["picture"]
+		HTTParty.get("https://graph.facebook.com/#{facebookid}/picture?type=medium&redirect=false")["data"]["url"]
 	end
 
 	def largepic
-		@largepic ||= client.get_object("#{picId}?fields=source")["source"]
+		HTTParty.get("https://graph.facebook.com/#{facebookid}/picture?type=large&redirect=false")["data"]["url"]
 	end
 
 	#def get_pic_id
@@ -53,13 +44,12 @@ class Facebook
 	end
 
 	def create_user
-		User.create facebookid: profile["id"],
+		User.create facebookid: facebookid,
 			name: profile["first_name"],
 			email: profile["email"],
 			gender: profile["gender"],
 			#user.birthday = profile["birthday"]
 			smallpic: smallpic,
-			mediumpic: mediumpic,
 			largepic: largepic
 	end
 

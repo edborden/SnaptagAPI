@@ -100,7 +100,6 @@ ActiveRecord::Schema.define(version: 20141218005706) do
     t.string   "name"
     t.string   "facebookid"
     t.string   "smallpic"
-    t.string   "mediumpic"
     t.string   "largepic"
     t.string   "birthday"
     t.integer  "activationqueue_id"
