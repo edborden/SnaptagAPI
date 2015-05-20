@@ -23,27 +23,8 @@ class HuntsController < ApplicationController
 	def join
 
 		head :no_content
+		Join.new current_user,params.require(:location).permit(:lat,:lng)
 
-		current_user.locations.create params.require(:location).permit(:lat,:lng)
-		current_user.activate
-		current_user.reload
-		########
-		########
-		#Demo.new.create_activationqueue_around current_user
-		########
-		########
-
-
-		activationqueue = Activationqueue.find_by(zone_id: current_user.zone_id) || Activationqueue.create(zone_id: current_user.zone_id)
-		activationqueue.users<<current_user
-
-		json_package = UserSerializer.new current_user
-		Pusher.trigger "activationqueue"+activationqueue.id.to_s,"Add user to activationqueue",json_package
-
-
-		current_user.notify "Added to activationqueue",nil,activationqueue
-
-		HuntsHoleFiller.new.run
 	end
 
 	def unjoin

@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
 		self.zone= Zone.determine_zone_for(lat,lng) || Zone.create_or_grow(self)
 		self.activated_at = Time.now
 		save
+		return self
 	end
 
 	def increment_stealth location
