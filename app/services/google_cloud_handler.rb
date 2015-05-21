@@ -9,7 +9,9 @@ class GoogleCloudHandler
 		@client ||= GCM.new @key
 	end
 
-	def send_message subject="-", body="-"
+	def send_message subject,body
+		subject = "-" unless subject
+		body = "-" unless body
 		options = {data: {message: body,title:subject}, collapse_key: "update"}
 		client.send([@reg_id], options)
 	end
