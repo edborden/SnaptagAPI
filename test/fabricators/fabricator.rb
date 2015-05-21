@@ -4,7 +4,6 @@ Fabricator(:user) do
 	zone_id 1000
 	facebookid {Faker::Lorem.characters(10)}
 	smallpic "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/1453322_10152034746179906_322109215_n.jpg?oh=2be7f4662187072a8d064f6f1ca06aeb&oe=55BF0524&__gda__=1438669811_a50703ef62311de875222cde0bcab743"
-	mediumpic "https://scontent.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/p130x130/1453322_10152034746179906_322109215_n.jpg?oh=69871e88ab5710178e1e874eb72d13e2&oe=55C436CC"
 	largepic "https://scontent.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/p720x720/1453322_10152034746179906_322109215_n.jpg?oh=027f4f80abd2daa60b72e1197efbb4a3&oe=56028AB0"
 	activated_at {Time.now}
 	targets_found_count {Faker::Number.number(2)}
