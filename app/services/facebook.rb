@@ -22,11 +22,11 @@ class Facebook
 	#end
 
 	def smallpic
-		HTTParty.get("https://graph.facebook.com/#{facebookid}/picture?type=medium&redirect=false")["data"]["url"]
+		HTTParty.get("http://graph.facebook.com/#{facebookid}/picture?type=normal&redirect=false")["data"]["url"]
 	end
 
 	def largepic
-		HTTParty.get("https://graph.facebook.com/#{facebookid}/picture?type=large&redirect=false")["data"]["url"]
+		HTTParty.get("http://graph.facebook.com/#{facebookid}/picture?type=large&redirect=false")["data"]["url"]
 	end
 
 	#def get_pic_id

@@ -4,8 +4,7 @@ class SessionsController < ApplicationController
 	def create
 		facebook = Facebook.new params[:session][:token]
 		token = facebook.exchange_token
-		profile = facebook.profile
-		user = User.find_by_facebookid profile["id"]
+		user = User.find_by_facebookid facebook.facebookid
 		user = facebook.create_user unless user
 
 		reg_id = params[:session][:reg_id]
