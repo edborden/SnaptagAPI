@@ -22,4 +22,6 @@ class Join
 
 		HuntsHoleFiller.new.run
 
+	end
+
 end
