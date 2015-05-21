@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
 		deactivate
 	end
 
-	def notify subject,body,object,alert
+	def notify subject,body,object,alert=false
 		Mailboxer::Notification.clear_validators!
 		receipt = super subject,body,object
 		json_package = NotificationSerializer.new receipt.notification, scope:self
