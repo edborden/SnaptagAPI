@@ -1,7 +1,7 @@
 class Alerter < ActiveRecord::Base
 	belongs_to :user
 
-	def send subject,body
+	def send_alert subject,body
 		if platform == "android"
 			GoogleCloudHandler.new(reg_id).send_message subject,body
 		else
