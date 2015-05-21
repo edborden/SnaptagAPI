@@ -7,6 +7,13 @@ class SessionsController < ApplicationController
 		profile = facebook.profile
 		user = User.find_by_facebookid profile["id"]
 		user = facebook.create_user unless user
+
+		reg_id = params[:session][:reg_id]
+		platform = params[:session][:platform]
+		if reg_id && platform
+			Alerter.create user_id:user.id,reg_id:reg_id,platform:platform
+		end
+
 		WebsHoleFiller.new(user).run if user.active
 		user.session.destroy if user.session.present?
 		session = user.create_session token: token		
@@ -26,7 +33,7 @@ class SessionsController < ApplicationController
 
 	def destroy
 		current_user.session.destroy
-		head :ok
+		head :no_content
 	end
 
 end

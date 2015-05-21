@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 	belongs_to :activationqueue, counter_cache: true
 	belongs_to :zone
 	has_one :session
+	has_one :alerter
 
 	has_many :locations, after_add: :increment_stealth
 
@@ -68,15 +69,16 @@ class User < ActiveRecord::Base
 		deactivate
 	end
 
-	def notify subject,body,object
+	def notify subject,body,object,alert
 		Mailboxer::Notification.clear_validators!
 		receipt = super subject,body,object
 		json_package = NotificationSerializer.new receipt.notification, scope:self
-		Pusher.trigger "user"+self.id.to_s,'notification',json_package
+		Pusher.trigger "user"+self.id.to_s,'notification',json_package		
+		alerter.send subject,body if alert?
 	end
 
 	def notify_entered_game
-		notify "You have entered the game","",nil		
+		notify "You have entered the game","",nil,true	
 	end
 
 	def deactivate
