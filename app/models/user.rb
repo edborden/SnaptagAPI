@@ -74,11 +74,11 @@ class User < ActiveRecord::Base
 		receipt = super subject,body,object
 		json_package = NotificationSerializer.new receipt.notification, scope:self
 		Pusher.trigger "user"+self.id.to_s,'notification',json_package		
-		alerter.send subject,body if alert?
+		alerter.send subject,body if alert
 	end
 
 	def notify_entered_game
-		notify "You have entered the game","",nil,true	
+		notify "You have entered the game",nil,nil,true
 	end
 
 	def deactivate
