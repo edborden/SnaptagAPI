@@ -127,11 +127,11 @@ ActiveRecord::Schema.define(version: 20141218005706) do
     t.integer "grow_id"
   end
 
-  create_table "alerter", force: true do |t|
+  create_table "alerters", force: true do |t|
     t.integer "user_id"
     t.string "reg_id"
     t.string "platform"
   end
-  add_index "alerter", ["user_id"]
+  add_index "alerters", ["user_id"]
 
 end
