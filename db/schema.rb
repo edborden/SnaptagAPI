@@ -134,4 +134,10 @@ ActiveRecord::Schema.define(version: 20141218005706) do
   end
   add_index "alerters", ["user_id"]
 
+  create_table "versions", force: true do |t|
+    t.integer "user_id"
+    t.string "revision"
+    t.string "platform"
+  end
+
 end

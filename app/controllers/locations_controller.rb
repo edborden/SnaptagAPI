@@ -1,4 +1,4 @@
-class LocationsController < ApplicationController
+class LocationsController < AuthenticatedController
 
 	def create
 		location = current_user.locations.create params.require(:location).permit(:lat,:lng)

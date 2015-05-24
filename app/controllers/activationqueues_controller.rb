@@ -1,4 +1,4 @@
-class ActivationqueuesController < ApplicationController
+class ActivationqueuesController < AuthenticatedController
 
 	def show
 		activationqueue = Activationqueue.find params[:id]

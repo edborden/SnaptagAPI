@@ -1,4 +1,4 @@
-class HuntsController < ApplicationController
+class HuntsController < AuthenticatedController
 
 	def expose
 

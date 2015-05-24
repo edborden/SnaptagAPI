@@ -1,4 +1,4 @@
-class NotificationsController < ApplicationController
+class NotificationsController < AuthenticatedController
 
 	def update
 		notification = Mailboxer::Notification.find params[:id]

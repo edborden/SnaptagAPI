@@ -11,4 +11,6 @@ Rails.application.routes.draw do
 	get 'hunts/expose', to: 'hunts#expose'
 	get 'hunts/unjoin', to: 'hunts#unjoin'
 
+	get 'versions', to: 'versions#index'
+
 end
