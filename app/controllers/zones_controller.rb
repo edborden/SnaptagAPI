@@ -1,4 +1,5 @@
-class ZonesController < ApplicationController
+class ZonesController < AuthenticatedController
+	skip_before_action :ensure_authenticated_user
 
 	def index
 		########
