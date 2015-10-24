@@ -2,7 +2,7 @@ module GeoCalc
 
 	DEGREE_TO_RADIAN = 0.01745327
 	RADIAN_TO_DEGREES = 57.2957795
-	R = 6371 # radius of earth
+	R = 6371 # radius of earth in km
 	PI = 3.14159265359
 
 	# Equirectangular approximation good enough http://www.movable-type.co.uk/scripts/latlong.html

@@ -14,7 +14,7 @@ class HuntsHoleFiller
 	end
 
 	def lucky_player
-		@lucky_player ||= Activationqueue.first.users.shuffle.first
+		@lucky_player ||= Activationqueue.first.users.shuffle.first ## REFACTOR WITH http://hashrocket.com/blog/posts/rails-quick-tips-random-records
 	end
 
 	def fill_hunt_holes(lucky_player)

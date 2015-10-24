@@ -35,6 +35,8 @@ class Demo
 				after_create { |attrs| 25.times { Fabricate(:location, user_id: attrs[:id], lat: (rand*rand*0.075 -0.0375) + zone.lat, lng: (rand*rand*0.075 -0.0375) + zone.lng)}}
 			end
 			activationqueue.users<< user
+			json_package = UserSerializer.new user
+			Pusher.trigger "activationqueue"+activationqueue.id.to_s,"Add user to activationqueue",json_package
 		end
 		ZoneRebuilder.new(zone).run		
 	end
