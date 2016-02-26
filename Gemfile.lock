@@ -133,19 +133,22 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers!
-  fabrication
-  faker
-  gcm
-  httparty
+  fabrication (= 2.13.2)
+  faker (= 1.4.3)
+  gcm (= 0.1.0)
+  httparty (= 0.13.4)
   koala (~> 1.10.0rc)
-  mailboxer
+  mailboxer (= 0.12.5)
   mocha (~> 1.0.0)
   newrelic_rpm
   pg
-  pusher
-  rack-cors
+  pusher (= 0.14.5)
+  rack-cors (= 0.4.0)
   rails (= 4.1.9)
   rails-api (= 0.4.0)
   rails_12factor
   tzinfo-data
   unicorn
+
+BUNDLED WITH
+   1.10.6
