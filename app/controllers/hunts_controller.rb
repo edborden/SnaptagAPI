@@ -38,8 +38,4 @@ class HuntsController < AuthenticatedController
 
 	end
 
-	#def intro_map
-	#	render json: Hunt.completed, each_serializer: HuntLocationOnlySerializer
-	#end
-
 end

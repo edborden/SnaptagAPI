@@ -3,8 +3,8 @@ Fabricator(:user) do
 	email { |attrs| "#{attrs[:name].parameterize}@example.com" }
 	zone_id 1000
 	facebookid {Faker::Lorem.characters(10)}
-	smallpic "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/1453322_10152034746179906_322109215_n.jpg?oh=2be7f4662187072a8d064f6f1ca06aeb&oe=55BF0524&__gda__=1438669811_a50703ef62311de875222cde0bcab743"
-	largepic "https://scontent.xx.fbcdn.net/hphotos-xap1/v/t1.0-9/p720x720/1453322_10152034746179906_322109215_n.jpg?oh=027f4f80abd2daa60b72e1197efbb4a3&oe=56028AB0"
+	smallpic "https://scontent.xx.fbcdn.net/hprofile-xpa1/v/t1.0-1/p100x100/1453322_10152034746179906_322109215_n.jpg?oh=d5702d7c27f1415af068381c66e793f2&oe=5767AAE4"
+	largepic "https://scontent.xx.fbcdn.net/hprofile-xpa1/v/t1.0-1/p200x200/1453322_10152034746179906_322109215_n.jpg?oh=a5579553c8576276c054b74d508e8c5c&oe=574C7B05"
 	activated_at {Time.now}
 	targets_found_count {Faker::Number.number(2)}
 	found_count {Faker::Number.number(2)}
