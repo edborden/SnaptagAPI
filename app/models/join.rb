@@ -8,7 +8,7 @@ class Join
 
 		########
 		########
-		Demo.new.create_activationqueue_around user
+		#Demo.new.create_activationqueue_around user
 		########
 		########
 

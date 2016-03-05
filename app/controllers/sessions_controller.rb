@@ -1,5 +1,5 @@
-class SessionsController < ApplicationController
-	skip_before_action :ensure_authenticated_user, except: :destroy
+class SessionsController < AuthenticatedController
+	skip_before_action :ensure_authenticated_user, except: [:destroy, :show]
 
 	def create
 		facebook = Facebook.new params[:session][:token]
@@ -17,6 +17,10 @@ class SessionsController < ApplicationController
 		user.session.destroy if user.session.present?
 		session = user.create_session token: token		
 		render json: session, scope: user
+	end
+
+	def show
+		render json: current_session, scope: current_user
 	end
 
 	def index
