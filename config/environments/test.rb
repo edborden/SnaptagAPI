@@ -36,9 +36,7 @@ Stalkers::Application.configure do
   
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
-  require 'pusher'
-
-  Pusher.app_id = '71489'
-  Pusher.key    = '920f77cedd553842882b'
-  Pusher.secret = '4325b6be5578e4345a68'
+  Pusher.app_id = ENV['PUSHER_APP_ID']
+  Pusher.key    = ENV['PUSHER_KEY']
+  Pusher.secret = ENV['PUSHER_SECRET']
 end
