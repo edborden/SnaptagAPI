@@ -4,6 +4,8 @@ class Activationqueue < ActiveRecord::Base
 
 	def blastoff_if_full user = nil
 		if full?
+			json_package = ActivationqueueSerializer.new self
+			Keen.publish 'blastoff', json_package
 			Blastoff.new(users).run
 			users.each {|user| user.notify_entered_game}
 			users.clear
