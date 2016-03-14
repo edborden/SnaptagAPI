@@ -6,7 +6,7 @@ class HuntEnder
 		@target = hunt.target
 	end
 
-	def found_target
+	def found_target(image_id)
 
 		# hunt
 
@@ -15,6 +15,7 @@ class HuntEnder
 		@hunt.lat = @stalker.lat
 		@hunt.lng = @stalker.lng
 		@hunt.stealth_stolen = @target.stealth
+		@hunt.image_id = image_id
 
 		# stalker
 
@@ -42,11 +43,11 @@ class HuntEnder
 		# notify target
 
 		body = "Your Stalker, " + @stalker.name + ", found you! You've been removed from the game."
-		@target.notify "Found",body,nil
+		@target.notify "Found",body,@hunt
 
 		# notify stalker
 
-		@stalker.notify "Target Found","Hunt completed successfully!",nil
+		@stalker.notify "Target Found","Hunt completed successfully!",@hunt
 
 		# deactivate
 
