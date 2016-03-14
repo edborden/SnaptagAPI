@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20141218005706) do
     t.datetime "created_at"
     t.datetime "completed_at"
     t.integer  "stealth_stolen"
+    t.string   "image_id"
     t.boolean  "was_exposed",                            default: false, null: false
     t.boolean  "active",                                 default: true,  null: false
     t.decimal  "lat",            precision: 8, scale: 6
