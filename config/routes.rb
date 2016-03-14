@@ -5,11 +5,12 @@ Rails.application.routes.draw do
 	resources :zones, only: :index
 	resources :notifications, only: :update
 	resources :activationqueues, only: :show
+	resources :hunts, only: :show
 
-	get 'hunts/join', to: 'hunts#join'
-	get 'hunts/found_target', to: 'hunts#found_target'
-	get 'hunts/expose', to: 'hunts#expose'
-	get 'hunts/unjoin', to: 'hunts#unjoin'
+	get 'actions/join', to: 'actions#join'
+	get 'actions/found_target', to: 'actions#found_target'
+	get 'actions/expose', to: 'actions#expose'
+	get 'actions/unjoin', to: 'actions#unjoin'
 
 	get 'versions', to: 'versions#index'
 
