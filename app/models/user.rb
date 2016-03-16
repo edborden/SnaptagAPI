@@ -60,11 +60,11 @@ class User < ActiveRecord::Base
 		increment!(:exposed_count)
 
 		# notify stalkers
-		body = "Your target, " + self.name + ", exposed themselves."
+		body = "Your target, " + self.name + ", unsuccessfully tried to counter-tag someone."
 		stalkers.each {|stalker| stalker.notify "Target removed",body,self}
 
 		# notify self
-		notify "Exposed self","You've been removed from the game.",nil
+		notify "Counter-tag unsuccessful","You've been removed from the game.",nil
 		
 		deactivate
 	end

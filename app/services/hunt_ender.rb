@@ -37,17 +37,17 @@ class HuntEnder
 
 		# notify targets' other stalkers
 
-		body = "Your target, " + @target.name + ", was found by another Stalker."
+		body = "Your target, " + @target.name + ", was found by another player."
 		@target.stalkers.each {|stalker| stalker.notify "Target removed",body,@target}
 
 		# notify target
 
-		body = "Your Stalker, " + @stalker.name + ", found you! You've been removed from the game."
+		body = @stalker.name + " found you! You've been removed from the game."
 		@target.notify "Found",body,@hunt
 
 		# notify stalker
 
-		@stalker.notify "Target Found","Hunt completed successfully!",@hunt
+		@stalker.notify "Target Found","Snaptag successful!",@hunt
 
 		# deactivate
 
@@ -87,17 +87,17 @@ class HuntEnder
 		# notify stalker's stalkers
 		# handle when target is also stalker, so they don't get two messages
 
-		body = "Your target, " + @stalker.name + ", was exposed by one of their targets."
+		body = "Your target, " + @stalker.name + ", was counter-tagged by one of their targets."
 		@stalker.stalkers.each {|stalker| stalker.notify "Target removed",body,@stalker unless stalker == @target}
 
 		# notify stalker
 
-		body = "Your target, " + @target.name + ", exposed you! You've been removed from the game."
+		body = "Your target, " + @target.name + ", counter-tagged you! You've been removed from the game."
 		@stalker.notify "Exposed",body,nil
 
 		# notify target
  
-		@target.notify "Stalker exposed","You exposed your stalker!",nil
+		@target.notify "Counter-tag successful","You knocked out " + @stalker.name + "!",nil
 
 		# deactivate
 
