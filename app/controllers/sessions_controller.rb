@@ -7,10 +7,16 @@ class SessionsController < AuthenticatedController
 		user = User.find_by_facebookid facebook.facebookid
 		user = facebook.create_user unless user
 
-		reg_id = params[:session][:reg_id]
-		platform = params[:session][:platform]
-		if reg_id && platform
-			Alerter.create user_id:user.id,reg_id:reg_id,platform:platform
+		unless user.alerter
+			## create email alerter
+			Alerter.create user_id: user.id, reg_id: user.email, platform: 'email'
+
+			## create mobile alerter
+			reg_id = params[:session][:reg_id]
+			platform = params[:session][:platform]
+			if reg_id && platform
+				Alerter.create user_id:user.id,reg_id:reg_id,platform:platform
+			end
 		end
 
 		WebsHoleFiller.new(user).run if user.active

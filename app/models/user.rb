@@ -55,8 +55,6 @@ class User < ActiveRecord::Base
 	end
 
 	def expose_self
-		# WHERE DOES THE STEALTH GO?
-
 		increment!(:exposed_count)
 
 		# notify stalkers
@@ -78,7 +76,7 @@ class User < ActiveRecord::Base
 	end
 
 	def notify_entered_game
-		notify "You have entered the game",nil,nil,true
+		notify "You have entered the game","Get moving!",nil,true
 	end
 
 	def deactivate
