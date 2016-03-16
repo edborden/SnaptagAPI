@@ -1,5 +1,5 @@
 class NotificationSerializer < ApplicationSerializer
-  attributes :read, :subject, :body, :created_at
+  attributes :read, :subject, :body, :created_at, :notified_object_type, :notified_object_id
   has_one :hunt, embed_in_root: true
 
   def read

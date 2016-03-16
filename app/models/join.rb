@@ -19,7 +19,7 @@ class Join
 			json_package = UserSerializer.new user
 			Pusher.trigger "activationqueue"+activationqueue.id.to_s,"Add user to activationqueue",json_package
 
-			user.notify "Added to activationqueue",nil,activationqueue
+			user.notify "Added to queue",nil,activationqueue
 
 			HuntsHoleFiller.new.run
 		end
