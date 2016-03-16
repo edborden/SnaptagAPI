@@ -43,7 +43,7 @@ class HuntEnder
 		# notify target
 
 		body = @stalker.name + " found you! You've been removed from the game."
-		@target.notify "Found",body,@hunt
+		@target.notify "Found",body,@hunt,true
 
 		# notify stalker
 
@@ -93,7 +93,7 @@ class HuntEnder
 		# notify stalker
 
 		body = "Your target, " + @target.name + ", counter-tagged you! You've been removed from the game."
-		@stalker.notify "Exposed",body,nil
+		@stalker.notify "Exposed",body,nil,true
 
 		# notify target
  
