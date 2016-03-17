@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 	resources :notifications, only: :update
 	resources :activationqueues, only: :show
 	resources :hunts, only: :show
+	resources :metrics, only: :index
 
 	get 'actions/join', to: 'actions#join'
 	get 'actions/found_target', to: 'actions#found_target'
