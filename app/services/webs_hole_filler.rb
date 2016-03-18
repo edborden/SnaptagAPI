@@ -10,11 +10,11 @@ class WebsHoleFiller
 	end
 
 	def need_givers
-		zone.users.need_givers(@user.id) - [currently_webbed]
+		@zone.users.need_givers(@user.id) - [currently_webbed]
 	end
 
 	def need_receivers
-		zone.users.need_receivers(@user.id) - [currently_webbed]
+		@zone.users.need_receivers(@user.id) - [currently_webbed]
 	end
 
 	def run
