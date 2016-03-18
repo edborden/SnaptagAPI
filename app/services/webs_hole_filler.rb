@@ -2,6 +2,7 @@ class WebsHoleFiller
 
 	def initialize(user)
 		@user = user
+		@zone = user.zone
 	end
 
 	def currently_webbed
@@ -9,11 +10,11 @@ class WebsHoleFiller
 	end
 
 	def need_givers
-		User.need_givers(@user.id) - [currently_webbed]
+		zone.users.need_givers(@user.id) - [currently_webbed]
 	end
 
 	def need_receivers
-		User.need_receivers(@user.id) - [currently_webbed]
+		zone.users.need_receivers(@user.id) - [currently_webbed]
 	end
 
 	def run
