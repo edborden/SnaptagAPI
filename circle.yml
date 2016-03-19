@@ -1,0 +1,10 @@
+test:
+  override:
+    - rake test:all
+deployment:
+  production:
+    branch: master
+    commands:
+      - "[[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
+      - git push git@heroku.com:damp-sea-6022.git $CIRCLE_SHA1:refs/heads/master --force
+      - heroku run rake db:migrate --app damp-sea-6022
