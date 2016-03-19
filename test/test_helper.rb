@@ -31,3 +31,9 @@ class ActiveSupport::TestCase
 		@json_response ||= JSON.parse @response.body
 	end
 end
+
+class Keen
+  def self.publish *args
+    return
+  end
+end

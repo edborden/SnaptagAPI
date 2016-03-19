@@ -14,11 +14,14 @@ gem 'koala', '~> 1.10.0rc'
 gem 'rack-cors', '0.4.0', require: 'rack/cors'
 gem 'gcm', '0.1.0', require: 'gcm'
 gem 'httparty', '0.13.4'
-gem 'keen', '0.9.4'
 gem 'figaro', '1.1.1'
 
 group :test do
 	gem 'mocha', '~> 1.0.0'
+end
+
+group :development, :production do
+  gem 'keen', '0.9.4'
 end
 
 group :production do
