@@ -2,12 +2,6 @@ require 'test_helper'
 
 class ZonesControllerTest < ActionController::TestCase
 
-	test "api call with unmatching token" do
-		skip
-		get(:me, {token: "faketoken"})
-		assert_equal 401,response.status
-	end
-
 	test "index, no zone" do
 		testuser = Fabricate :user_in_nyc
 		Fabricate :zone

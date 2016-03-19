@@ -3,7 +3,7 @@ require 'test_helper'
 class ZoneRebuilderTest < ActiveSupport::TestCase
 
 	def setup
-		@zone = Fabricate(:zone_in_nyc,range:100000)
+		@zone = Fabricate(:zone_in_nyc)
 	end
 
 	test "get_users_not_in_zone" do
@@ -21,7 +21,7 @@ class ZoneRebuilderTest < ActiveSupport::TestCase
 		response = ZoneRebuilder.new(@zone).run
 		assert_equal original_lat,response.lat
 		assert_equal original_lng,response.lng
-		assert_not_equal original_range,response.range
+		assert_equal original_range,response.range
 	end
 
 	test "integration" do

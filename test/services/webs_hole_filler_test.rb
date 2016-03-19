@@ -3,7 +3,13 @@ require 'test_helper'
 class WebsHoleFillerTest < ActiveSupport::TestCase
 
 	def setup
-		12.times { |n| instance_variable_set("@user" + n.to_s, Fabricate(:user)) }
+		zone = Fabricate :zone
+		12.times do |n|
+			user = Fabricate :user
+			user.zone = zone
+			user.save
+			instance_variable_set("@user" + n.to_s, user)
+		end
 	end
 
 	test "currently_webbed" do

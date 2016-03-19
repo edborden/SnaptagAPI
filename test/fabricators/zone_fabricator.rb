@@ -1,13 +1,11 @@
 Fabricator(:zone) do
 	lat {Faker::Address.latitude}
 	lng {Faker::Address.longitude}
-	range 1200
 end
 
 Fabricator(:zone_in_nyc, from: :zone) do
-	lat 40.7127
-	lng -74.0059
-	range 15000
+	lat 40.71275
+	lng -74.00585
 end
 
 Fabricator(:zone_in_boonton, from: :zone) do

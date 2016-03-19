@@ -9,7 +9,7 @@ class GeoCalcTest < ActiveSupport::TestCase
 	end		
 
 	test "get_bearing_from" do
-		assert_equal 259.39076824284336,GeoCalc::get_bearing_from(@z2.lat,@z2.lng,@z1.lat,@z1.lng)
+		assert_equal 259.390768,GeoCalc::get_bearing_from(@z2.lat,@z2.lng,@z1.lat,@z1.lng).round(6)
 	end
 
 	test "get_new_point_with_bearing" do

@@ -8,10 +8,10 @@ class ZoneTest < ActiveSupport::TestCase
 	end
 
 	test "determine_zone_for" do
-		10.times {Fabricate(:zone)}
+		10.times {Fabricate(:zone, range: 10)}
 		assert_equal @nyczone,Zone.determine_zone_for(@nycuser.flat,@nycuser.flng)
-		user = Fabricate(:user_with_location)
-		assert_nil Zone.determine_zone_for(user.flat,user.flng)
+		@nyczone.destroy
+		assert_nil Zone.determine_zone_for(@nycuser.flat,@nycuser.flng)
 	end
 
 	test "determine_nearest_zone_for" do
