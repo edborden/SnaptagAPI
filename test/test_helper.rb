@@ -11,7 +11,7 @@ class ActiveSupport::TestCase
 	end
 
 	def fbprofile
-		@@fbprofile ||= Facebook.new(fbhash["access_token"]).get_profile
+		@@fbprofile ||= Facebook.new(fbhash["access_token"]).profile
 	end
 
 	# create a test user that can be used across tests with gobal variable and doesn't keep pinging facebook
