@@ -3,7 +3,7 @@ development:
   host: localhost
   username: postgres
   password: bonebreak1
-  database: stalkers-development
+  database: snaptag-development
   encoding: UTF8
 
 test:
@@ -11,7 +11,7 @@ test:
   host: localhost
   username: postgres
   password: bonebreak1
-  database: stalkers-test        # or whatever the name is
+  database: snaptag-test        # or whatever the name is
   encoding: UTF8
 
 production:
