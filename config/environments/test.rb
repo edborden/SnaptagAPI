@@ -35,8 +35,4 @@ Rails.application.configure do
   config.active_support.deprecation = :stderr
   
   OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-
-  Pusher.app_id = ENV['PUSHER_APP_ID']
-  Pusher.key    = ENV['PUSHER_KEY']
-  Pusher.secret = ENV['PUSHER_SECRET']
 end

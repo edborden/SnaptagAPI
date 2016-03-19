@@ -37,3 +37,9 @@ class Keen
     return
   end
 end
+
+class Pusher
+  def self.trigger *args
+    return
+  end
+end

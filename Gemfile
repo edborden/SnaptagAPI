@@ -8,7 +8,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem 'pg'
 gem 'fabrication', '2.13.2'
 gem 'faker', '1.4.3'
-gem 'pusher', '0.14.5', require: 'pusher'
 gem 'mailboxer', '0.12.5'
 gem 'koala', '~> 1.10.0rc'
 gem 'rack-cors', '0.4.0', require: 'rack/cors'
@@ -22,6 +21,7 @@ end
 
 group :development, :production do
   gem 'keen', '0.9.4'
+  gem 'pusher', '0.14.5', require: 'pusher'
 end
 
 group :production do
