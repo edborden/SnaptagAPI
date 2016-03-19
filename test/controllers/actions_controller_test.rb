@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class HuntsControllerTest < ActionController::TestCase
+class ActionsControllerTest < ActionController::TestCase
 
 	test "join" do
 		queue = Activationqueue.create
