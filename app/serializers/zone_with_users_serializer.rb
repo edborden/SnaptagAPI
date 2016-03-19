@@ -1,5 +1,4 @@
-class ZoneWithUsersSerializer < ApplicationSerializer
-	attributes :lat, :lng, :range, :active
+class ZoneWithUsersSerializer < ZoneSerializer
 	has_many :users, embed_in_root: true
 
 	def users
