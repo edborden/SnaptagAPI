@@ -2,13 +2,14 @@ require 'test_helper'
 
 class ZonesControllerTest < ActionController::TestCase
 
-	test "index, no zone" do
-		testuser = Fabricate :user_in_nyc
-		Fabricate :zone
-		get :index, {lat: testuser.lat,lng: testuser.lng}
-		assert_equal 200,@response.status
-		assert_equal "{\"zones\":[]}",@response.body
-	end
+	# not doing this anymore, never render nothing if there are zones
+	#test "index, no zone" do
+	#	testuser = Fabricate :user_in_nyc
+	#	Fabricate :zone
+	#	get :index, {lat: testuser.lat,lng: testuser.lng}
+	#	assert_equal 200,@response.status
+	#	assert_equal "{\"zones\":[]}",@response.body
+	#end
 
 	test "index, active zone" do
 		nyczone = Fabricate :zone_in_nyc

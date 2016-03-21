@@ -8,8 +8,8 @@ class ZonesController < AuthenticatedController
 		########
 		########
 		nearest_zone = Zone.determine_nearest_zone_for params[:lat].to_f,params[:lng].to_f
-		# if no zones within 30 miles, render "none"
-		unless nearest_zone && nearest_zone.within_50km_of(params[:lat].to_f,params[:lng].to_f)
+		# if no zones, render "none"
+		unless nearest_zone# && nearest_zone.within_50km_of(params[:lat].to_f,params[:lng].to_f)
 			render json: {zones:[]}
 		else
 		# If it's in an active zone, show me that zone and its users
