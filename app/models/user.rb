@@ -23,8 +23,8 @@ class User < ActiveRecord::Base
 	has_many :antiwebs, class_name: "Web", foreign_key: "receiver_id"
 	has_many :givers, through: :antiwebs, source: :giver
 
-	scope :need_givers, ->(id) { where("givers_count < 6").where("receivers_count < 6").active.where.not(id: id).order(givers_count: :asc) }
-	scope :need_receivers, ->(id) { where("givers_count < 6").where("receivers_count < 6").active.where.not(id: id).order(receivers_count: :asc) }
+	scope :need_givers, -> { where("givers_count < 6").where("receivers_count < 6").active.order(givers_count: :asc) }
+	scope :need_receivers, -> { where("givers_count < 6").where("receivers_count < 6").active.order(receivers_count: :asc) }
 
 	def allwebs_count
 		self.givers_count + self.receivers_count

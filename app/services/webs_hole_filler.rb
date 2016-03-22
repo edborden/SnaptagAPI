@@ -3,18 +3,12 @@ class WebsHoleFiller
 	def initialize(user)
 		@user = user
 		@zone = user.zone
-	end
-
-	def currently_webbed
-		@user.givers + @user.receivers
-	end
-
-	def need_givers
-		@zone.users.need_givers(@user.id) - [currently_webbed]
-	end
-
-	def need_receivers
-		@zone.users.need_receivers(@user.id) - [currently_webbed]
+		@allwebs_count = @user.allwebs_count
+		@receivers_count = @user.receivers_count
+		@givers_count = @user.givers_count
+		@currently_webbed = @user.givers + @user.receivers
+		@need_givers = @zone.users.need_givers - [@currently_webbed] - [@user]
+		@need_receivers ||= @zone.users.need_receivers - [@currently_webbed] - [@user]
 	end
 
 	def run
@@ -22,26 +16,25 @@ class WebsHoleFiller
 	end
 
 	def time_to_stop?
-		true if @user.reload.allwebs_count >= 11 || (need_givers.blank? && need_receivers.blank?)
+		true if @allwebs_count >= 11 || (@need_givers.blank? && @need_receivers.blank?)
 	end
 
 	def fill_web_hole
-		if giver_or_receiver == "giver" && need_receivers.present?
-			receiver = need_givers.first
+		if giver? && @need_receivers.present?
+			receiver = @need_givers.shift
 			web = Web.create(giver_id: @user.id, receiver_id: receiver.id)
+			@receivers_count += 1
 		else
-			giver = need_receivers.first
+			giver = @need_receivers.shift
 			web = Web.create(giver_id: giver.id, receiver_id: @user.id)
+			@givers_count += 1
 		end
+		@allwebs_count += 1
 		web.push
 	end
 
-	def giver_or_receiver
-		if @user.givers_count >= @user.receivers_count
-			return "receiver"
-		else
-			return "giver"
-		end
+	def giver?
+		@givers_count <= @receivers_count
 	end
 
 end
