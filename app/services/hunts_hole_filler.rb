@@ -10,8 +10,8 @@ class HuntsHoleFiller
 		if it_is_time?
 			fill_hunt_hole lucky_player
 			if lucky_player.activationqueue_id
-				lucky_player.activationqueue.remove_user lucky_player
-				WebsHoleFiller(lucky_player).run
+				lucky_player.activationqueue.users.delete lucky_player
+				WebsHoleFiller.new(lucky_player).run
 				lucky_player.notify_entered_game
 			end
 			@ran = true

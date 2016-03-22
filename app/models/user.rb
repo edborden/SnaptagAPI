@@ -15,16 +15,16 @@ class User < ActiveRecord::Base
 	has_many :targets, through: :hunts, source: :target
 	has_many :flights, -> { where active: true }, class_name: "Hunt", foreign_key: "target_id"
 	has_many :stalkers, through: :flights, source: :stalker
-	scope :need_stalkers, -> { where("stalkers_count < 3").active.where(activationqueue_id: nil).order(stalkers_count: :asc) }
-	scope :need_targets, -> { where("targets_count < 3").active.where(activationqueue_id: nil).order(targets_count: :asc) }
+	scope :need_stalkers, -> { active.where("stalkers_count < 3").order(stalkers_count: :asc) }
+	scope :need_targets, -> { active.where("targets_count < 3").order(targets_count: :asc) }
 
 	has_many :webs, foreign_key: "giver_id"
 	has_many :receivers, through: :webs, source: :receiver
 	has_many :antiwebs, class_name: "Web", foreign_key: "receiver_id"
 	has_many :givers, through: :antiwebs, source: :giver
 
-	scope :need_givers, -> { where("givers_count < 6").where("receivers_count < 6").active.order(givers_count: :asc) }
-	scope :need_receivers, -> { where("givers_count < 6").where("receivers_count < 6").active.order(receivers_count: :asc) }
+	scope :need_givers, -> { active.where("givers_count < 6").where("receivers_count < 6").order(givers_count: :asc) }
+	scope :need_receivers, -> { active.where("givers_count < 6").where("receivers_count < 6").order(receivers_count: :asc) }
 
 	def allwebs_count
 		self.givers_count + self.receivers_count
@@ -64,7 +64,14 @@ class User < ActiveRecord::Base
 		# notify self
 		notify "Counter-tag unsuccessful","You've been removed from the game.",nil
 		
+		# grab zone before deactivate
+		#zone = zone
+
+		# deactivate
 		deactivate
+
+		# fill hunt holes
+		#GameHealer.new(zone).run
 	end
 
 	def notify subject,body,object,alert=false
