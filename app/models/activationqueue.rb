@@ -24,7 +24,7 @@ class Activationqueue < ActiveRecord::Base
 	end
 
 	def full?
-		users(true).size == 4
+		users(true).size >= 4
 	end
 
 end
