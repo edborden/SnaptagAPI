@@ -20,7 +20,7 @@ class WebsHoleFiller
 	end
 
 	def fill_web_hole
-		if giver? && @need_receivers.present?
+		if giver? && @need_givers.present?
 			receiver = @need_givers.shift
 			web = Web.create(giver_id: @user.id, receiver_id: receiver.id)
 			@receivers_count += 1
