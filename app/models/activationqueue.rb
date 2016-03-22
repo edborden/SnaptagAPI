@@ -6,10 +6,13 @@ class Activationqueue < ActiveRecord::Base
 		if full?
 			json_package = ActivationqueueSerializer.new self
 			Keen.publish 'blastoff', json_package
-			Blastoff.new(users).run
-			users.each {|user| user.notify_entered_game}
+			cached_users = users.to_a
+			zone_id = zone.id
 			users.clear
 			destroy
+			zone = Zone.find zone_id
+			GameHealer.new(zone).run
+			cached_users.each {|user| user.notify_entered_game}
 		end
 	end
 
@@ -21,7 +24,7 @@ class Activationqueue < ActiveRecord::Base
 	end
 
 	def full?
-		users(true).size == 12
+		users(true).size == 4
 	end
 
 end

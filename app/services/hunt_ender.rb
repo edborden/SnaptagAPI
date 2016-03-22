@@ -4,6 +4,7 @@ class HuntEnder
 		@hunt = hunt
 		@stalker = hunt.stalker
 		@target = hunt.target
+		@zone = @target.zone #get this from hunt later
 	end
 
 	def found_target(image_id)
@@ -53,6 +54,8 @@ class HuntEnder
 
 		@target.deactivate
 
+		# complete
+		after_end
 	end
 
 	def expose
@@ -102,6 +105,14 @@ class HuntEnder
 		# deactivate
 
 		@stalker.deactivate		
+
+		# completed
+		after_end
+	end
+
+	def after_end
+
+		GameHealer.new(@zone).run
 
 	end
 
