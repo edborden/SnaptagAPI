@@ -1,29 +1,34 @@
 class Join
 
-	def initialize user,location_params
+  def initialize user,location_params
 
-		user.locations.create location_params
-		user.activate
-		user.reload
+    user.locations.create location_params
+    user.activate
+    user.reload
 
-		########
-		########
-		#Demo.new.create_activationqueue_around user
-		########
-		########
+    ########
+    ########
+    #Demo.new.create_activationqueue_around user
+    ########
+    ########
 
-		activationqueue = Activationqueue.find_by_zone_id(user.zone_id) || Activationqueue.create(zone_id: user.zone_id)
-		activationqueue.users<<user
+    activationqueue = Activationqueue.find_by_zone_id(user.zone_id)
 
-		unless activationqueue.destroyed?
-			json_package = UserSerializer.new user
-			Pusher.trigger "activationqueue"+activationqueue.id.to_s,"Add user to activationqueue",json_package
+    unless activationqueue
+      hole_filler = HuntsHoleFiller.new(user.zone.users, [user])
+      hole_filler.run
+      unless hole_filler.ran
+        activationqueue = Activationqueue.create(zone_id: user.zone_id)
+      end
+    end
 
-			user.notify "Added to queue",nil,activationqueue
+    if activationqueue
+      activationqueue.users<<user
+      json_package = UserSerializer.new user
+      Pusher.trigger "activationqueue"+activationqueue.id.to_s,"Add user to activationqueue",json_package
+      user.notify "Added to queue",nil,activationqueue
+    end
 
-			HuntsHoleFiller.new.run
-		end
-
-	end
+  end
 
 end
