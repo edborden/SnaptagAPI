@@ -7,14 +7,15 @@ class ZoneRebuilder
 	end
 
 	def run
-	# TO REBUILD A ZONE, RESET RANGE.
+	# TO REBUILD A ZONE, FIRST RESET.
 		@z.range = DEFAULT_MAX_DISTANCE
+		@z.grow_id = nil
 	# GET LIST OF USERS NOT IN ZONE.
 		users_not_in_zone = get_users_not_in_zone(@z.users,@z)
 	# CREATE ZONE AROUND ONE RANDOM USER, JOIN THEM, GET NEW LIST OF USERS NOT IN THE NEW ZONE.
 		until users_not_in_zone.empty?
 			random_user = users_not_in_zone.shuffle.first
-			random_zone = Zone.new(lat:random_user.locations.first.lat,lng:random_user.locations.first.lng,grow_id:random_user.id)
+			random_zone = Zone.new(lat:random_user.flat,lng:random_user.flng,grow_id:random_user.id)
 			new_zone = GeoCalc::compute_containing_zone(@z,random_zone)
 			users_not_in_zone = get_users_not_in_zone(users_not_in_zone,new_zone)
 	# KEEP CHECKING THE REST OF THE USERS AND GROWING THE ZONE UNTIL THEY ARE ALL CONTAINED.
