@@ -11,7 +11,7 @@ class Demo
 	def web
 #		ed = User.find_by(name: "Ed")
 		activationqueue = Activationqueue.create
-		11.times { Fabricate(:user_with_location,activationqueue_id: activationqueue.id) }
+		3.times { Fabricate(:user_with_location,activationqueue_id: activationqueue.id) }
 		25.times { Fabricate(:active_test_user) }
 	end
 
@@ -25,7 +25,7 @@ class Demo
 	def create_activationqueue_around user
 		zone = user.zone
 		activationqueue = Activationqueue.create(zone_id: zone.id)
-		add_users_to activationqueue,11
+		add_users_to activationqueue,3
 	end
 
 	def add_users_to activationqueue,num=1

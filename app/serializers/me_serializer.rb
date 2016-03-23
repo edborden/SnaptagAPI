@@ -4,6 +4,7 @@ class MeSerializer < ApplicationSerializer
 	has_many :notifications, embed_in_root: true
 	has_many :targets
 	has_one :activationqueue, embed_in_root: true
+	has_one :zone, embed_in_root: true
 
 	def notifications
 		object.mailbox.notifications.first(9)
