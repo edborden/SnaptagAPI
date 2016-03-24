@@ -1,3 +1,6 @@
+# only used for inserting new players into the game
+# @players is an ActiveRecord User Collection
+# @fillers is a vanilla array of new players
 class HuntsHoleFiller
 	attr_accessor :ran, :lucky_player
 
@@ -27,13 +30,13 @@ class HuntsHoleFiller
 	end
 
 	def fill_hunt_hole(lucky_player)
-		target = @players.need_stalkers.first
-		stalker = @players.need_targets.first
+		# adding a shuffle here, otherwise always gets the same player for both target/stalker
+		target = @players.need_stalkers.shuffle.first
+		stalker = @players.need_targets.shuffle.first
 		Hunt.create stalker_id: lucky_player.id, target_id: target.id
-		Hunt.create stalker_id:stalker.id, target_id:lucky_player.id
-		json_package = SuspectSerializer.new lucky_player, scope:stalker, root:'user'
-		Pusher.trigger "user"+stalker.id.to_s,"New target",json_package
-		stalker.notify "New target added","Get moving!",nil	
+		to_notify = Hunt.create stalker_id:stalker.id, target_id:lucky_player.id
+		to_notify.notify_stalker
+
 	end
 
 end

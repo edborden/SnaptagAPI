@@ -36,7 +36,8 @@ class GameHealer
         target = @zone.users.need_stalkers.where(stalkers_count: 0).first
         stalkers = @zone.users.need_targets - [target]
         stalker = stalkers.first
-        Hunt.create stalker_id: stalker.id, target_id: target.id
+        hunt = Hunt.create stalker_id: stalker.id, target_id: target.id
+        hunt.notify_stalker
       end
 
       # run for users that have no targets
@@ -44,7 +45,8 @@ class GameHealer
         stalker = @zone.users.need_targets.where(targets_count: 0).first
         targets = @zone.users.need_stalkers - [stalker]
         target = targets.first
-        Hunt.create stalker_id: stalker.id, target_id: target.id
+        hunt = Hunt.create stalker_id: stalker.id, target_id: target.id
+        hunt.notify_stalker
       end
 
     end
