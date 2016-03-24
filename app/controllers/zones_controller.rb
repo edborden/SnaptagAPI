@@ -7,7 +7,12 @@ class ZonesController < AuthenticatedController
 		#Demo.new.zones_controller params[:lat].to_f,params[:lng].to_f
 		########
 		########
-		nearest_zone = Zone.determine_nearest_zone_for params[:lat].to_f,params[:lng].to_f
+		if params[:lat] && params[:lng]
+			nearest_zone = Zone.determine_nearest_zone_for params[:lat].to_f,params[:lng].to_f
+		else
+			nearest_zone = Zone.first
+		end
+		
 		# if no zones, render "none"
 		unless nearest_zone# && nearest_zone.within_50km_of(params[:lat].to_f,params[:lng].to_f)
 			render json: {zones:[]}
