@@ -44,13 +44,16 @@ class Facebook
 	end
 
 	def create_user
-		User.create facebookid: facebookid,
+		user = User.create facebookid: facebookid,
 			name: profile["first_name"],
 			email: profile["email"],
 			gender: profile["gender"],
 			#user.birthday = profile["birthday"]
 			smallpic: smallpic,
 			largepic: largepic
+		json_package = MeSerializer.new user
+		Keen.publish 'signup', json_package
+		return user
 	end
 
 end
