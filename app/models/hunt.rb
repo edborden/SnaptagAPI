@@ -39,4 +39,10 @@ class Hunt < ActiveRecord::Base
 		end
 	end
 
+	def notify_stalker
+		json_package = SuspectSerializer.new target, scope:stalker, root:'user'
+		Pusher.trigger "user"+stalker.id.to_s,"New target",json_package
+		stalker.notify "New target added","Get moving!",nil,true
+	end
+
 end
