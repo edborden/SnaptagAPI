@@ -7,7 +7,7 @@ class WebsHoleFiller
 		@receivers_count = @user.receivers_count
 		@givers_count = @user.givers_count
 		@need_givers = @zone.users.need_givers - [@user.givers] - [@user]
-		@need_receivers ||= @zone.users.need_receivers - [@user.receivers] - [@user]
+		@need_receivers = @zone.users.need_receivers - [@user.receivers] - [@user]
 	end
 
 	def run
@@ -19,23 +19,40 @@ class WebsHoleFiller
 	end
 
 	def fill_web_hole
-		if giver? && @need_givers.present?
-			receiver = @need_givers.shift
-			@need_receivers.delete receiver
-			web = Web.create(giver_id: @user.id, receiver_id: receiver.id)
-			@receivers_count += 1
+		if giver?
+			if @need_givers.present?
+				create_giver_web
+			else
+				create_receiver_web
+			end
 		else
-			giver = @need_receivers.shift
-			@need_givers.delete giver
-			web = Web.create(giver_id: giver.id, receiver_id: @user.id)
-			@givers_count += 1
+			if @need_receivers.present?
+				create_receiver_web
+			else
+				create_giver_web
+			end
 		end
 		@allwebs_count += 1
-		web.push
 	end
 
 	def giver?
-		@givers_count <= @receivers_count
+		@givers_count >= @receivers_count
+	end
+
+	def create_giver_web
+		receiver = @need_givers.shift
+		@need_receivers.delete receiver
+		web = Web.create(giver_id: @user.id, receiver_id: receiver.id)
+		@receivers_count += 1
+		web.push
+	end
+
+	def create_receiver_web
+		giver = @need_receivers.shift
+		@need_givers.delete giver
+		web = Web.create(giver_id: giver.id, receiver_id: @user.id)
+		@givers_count += 1
+		web.push
 	end
 
 end

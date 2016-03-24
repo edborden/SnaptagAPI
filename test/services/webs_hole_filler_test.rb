@@ -20,6 +20,12 @@ class WebsHoleFillerTest < ActiveSupport::TestCase
 		WebsHoleFiller.new(@user0).run
 		assert 5,@user0.allwebs_count
 		assert_equal 5,Web.count
+		@user0.reload
+		assert_equal 5,@user0.allwebs_count
+		assert_not_equal 0,@user0.receivers_count
+		assert_not_equal 0,@user0.givers_count
+		assert_not_equal 5,@user0.receivers_count
+		assert_not_equal 5,@user0.givers_count
 	end
 
 end
