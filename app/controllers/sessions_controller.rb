@@ -20,7 +20,7 @@ class SessionsController < AuthenticatedController
 		end
 
 		WebsHoleFiller.new(user).run if user.active
-		user.session.destroy if user.session.present?
+		user.session.try :destroy
 		session = user.create_session token: token		
 		render json: session, scope: user
 	end
