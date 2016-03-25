@@ -15,7 +15,7 @@ class Join
     activationqueue = Activationqueue.find_by_zone_id(user.zone_id)
 
     unless activationqueue
-      hole_filler_ran = HuntsHoleFiller.new(user.zone.users.active, [user]).run
+      hole_filler_ran = HuntsHoleFiller.new(user.zone.users.active.where.not(id: user.id), [user]).run
       unless hole_filler_ran
         activationqueue = Activationqueue.create(zone_id: user.zone_id)
       end
