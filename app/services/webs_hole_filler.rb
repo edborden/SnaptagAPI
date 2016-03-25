@@ -1,4 +1,5 @@
 class WebsHoleFiller
+	attr_accessor :need_givers, :need_receivers
 
 	def initialize(user)
 		@user = user
@@ -6,8 +7,8 @@ class WebsHoleFiller
 		@allwebs_count = @user.allwebs_count
 		@receivers_count = @user.receivers_count
 		@givers_count = @user.givers_count
-		@need_givers = @zone.users.need_givers - [@user.givers] - [@user]
-		@need_receivers = @zone.users.need_receivers - [@user.receivers] - [@user]
+		@need_givers = @zone.users.need_givers - @user.suspects - [@user]
+		@need_receivers = @zone.users.need_receivers - @user.suspects - [@user]
 	end
 
 	def run

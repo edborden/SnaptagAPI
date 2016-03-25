@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
 	end
 
 	def suspects
-		suspects = receivers + givers
+		receivers + givers
 	end
 
 	def expose_self
