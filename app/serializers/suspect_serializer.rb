@@ -1,7 +1,4 @@
-class SuspectSerializer < ApplicationSerializer
-	attributes :name, :targets_found_count, :found_count, :stalkers_exposed_count, :exposed_count, :stealth
-	has_many :locations, embed_in_root: true
-
+class SuspectSerializer < UserSerializer
 	# include locations if the user is a target
 	def filter(keys)
 		keys.delete :locations unless scope.targets.include?(object)

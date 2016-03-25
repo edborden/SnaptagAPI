@@ -1,5 +1,5 @@
 class UserSerializer < ApplicationSerializer
-	attributes :targets_found_count, :activated_at, :name, :facebookid
+  attributes :name, :targets_found_count, :found_count, :stalkers_exposed_count, :exposed_count, :stealth, :facebookid
 	has_many :locations, embed_in_root: true
 
 	def locations
