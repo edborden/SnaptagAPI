@@ -2,9 +2,7 @@ Fabricator(:user) do
 	name { Faker::Name.first_name }
 	email { |attrs| "#{attrs[:name].parameterize}@example.com" }
 	zone_id 1000
-	facebookid {Faker::Lorem.characters(10)}
-	smallpic "https://scontent.xx.fbcdn.net/hprofile-xpa1/v/t1.0-1/p100x100/1453322_10152034746179906_322109215_n.jpg?oh=d5702d7c27f1415af068381c66e793f2&oe=5767AAE4"
-	largepic "https://scontent.xx.fbcdn.net/hprofile-xpa1/v/t1.0-1/p200x200/1453322_10152034746179906_322109215_n.jpg?oh=a5579553c8576276c054b74d508e8c5c&oe=574C7B05"
+	facebookid "738149905"
 	activated_at {Time.now}
 	targets_found_count {Faker::Number.number(2)}
 	found_count {Faker::Number.number(2)}

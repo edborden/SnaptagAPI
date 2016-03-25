@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
 
 	has_many :locations, after_add: :increment_stealth
 
-	validates :facebookid, uniqueness: true
-
 	scope :active, -> {where.not(zone_id: nil).where(activationqueue_id: nil)}
 
 	has_many :hunts, -> { where active: true }, foreign_key: "stalker_id"

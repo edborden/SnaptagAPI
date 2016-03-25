@@ -1,5 +1,5 @@
 class SuspectSerializer < ApplicationSerializer
-	attributes :name, :targets_found_count, :found_count, :stalkers_exposed_count, :exposed_count, :stealth, :smallpic, :largepic
+	attributes :name, :targets_found_count, :found_count, :stalkers_exposed_count, :exposed_count, :stealth
 	has_many :locations, embed_in_root: true
 
 	# include locations if the user is a target
