@@ -15,20 +15,18 @@ class HuntEnder
 		@hunt.completed_at = Time.now
 		@hunt.lat = @stalker.lat
 		@hunt.lng = @stalker.lng
-		@hunt.stealth_stolen = @target.stealth
 		@hunt.image_id = image_id
+		@hunt.detail = "#{@stalker.name} snaptagged #{target.name}"
 
 		# stalker
 
 		@stalker.targets_found_count += 1
-		@stalker.stealth += @target.stealth
 		@stalker.targets_count -= 1
 
 		# target
 
 		@target.found_count += 1
 		@target.stalkers_count -= 1
-		@target.stealth = 0
 
 		# save
 
@@ -67,18 +65,16 @@ class HuntEnder
 		@hunt.completed_at = Time.now
 		@hunt.lat = @target.lat
 		@hunt.lng = @target.lng
-		@hunt.stealth_stolen = @stalker.stealth
+		@hunt.detail = "#{@target.name} countertagged #{stalker.name}"
 
 		# target
 
 		@target.stalkers_exposed_count += 1
 		@target.stalkers_count -= 1
-		@target.stealth += @stalker.stealth
 
 		# stalker
 
 		@stalker.exposed_count += 1
-		@stalker.stealth = 0
 		@stalker.targets_count -= 1
 
 		# save

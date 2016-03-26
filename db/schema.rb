@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160325183411) do
+ActiveRecord::Schema.define(version: 20160326175005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20160325183411) do
     t.boolean  "active",                                 default: true,  null: false
     t.decimal  "lat",            precision: 8, scale: 6
     t.decimal  "lng",            precision: 9, scale: 6
+    t.string   "detail"
   end
 
   add_index "hunts", ["stalker_id", "target_id"], name: "index_hunts_on_stalker_id_and_target_id", using: :btree
