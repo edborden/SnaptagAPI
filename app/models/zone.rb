@@ -56,6 +56,17 @@ class Zone < ActiveRecord::Base
 		end
 	end
 
+	## HELPERS
+	def hunts
+		hunts = []
+		Hunt.completed.each do |hunt|
+			if contains? hunt.lat, hunt.lng
+				hunts.push hunt
+			end
+		end
+		return hunts
+	end
+
 	def contains?(lat,lng)
 		distance = GeoCalc::distance lat,lng,self.lat,self.lng
 		distance <= self.range
