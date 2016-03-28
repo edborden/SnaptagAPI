@@ -11,7 +11,7 @@ class ScriptrEmailer
 		body = {
 			recipient: @email,
 			subject: subject,
-			body: body
+			body: body + "<p><a href='https://gosnaptag.com'>Snaptag</a></p>"
 		}
 
 		options = {
