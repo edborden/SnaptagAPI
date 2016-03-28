@@ -16,7 +16,10 @@ class Join
 
     unless activationqueue
       hole_filler_ran = HuntsHoleFiller.new(user.zone.users.active.where.not(id: user.id), [user]).run
-      unless hole_filler_ran
+      if hole_filler_ran
+        WebsHoleFiller.new(user).run
+        user.notify_entered_game
+      else
         activationqueue = Activationqueue.create(zone_id: user.zone_id)
       end
     end

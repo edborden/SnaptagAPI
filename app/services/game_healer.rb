@@ -29,7 +29,9 @@ class GameHealer
   def fill_internal_holes
 
     last_man_standing = @zone.users.need_stalkers.count == 1 && @zone.users.need_targets.count == 1 && @zone.users.need_stalkers.first.id == @zone.users.need_targets.first.id
-    unless last_man_standing
+    if last_man_standing
+      return #need to handle
+    else
 
       # run for users that have no hunters
       until @zone.users(true).need_stalkers.where(stalkers_count: 0).count == 0

@@ -31,14 +31,16 @@ class Demo
 	def add_users_to activationqueue,num=1
 		zone = activationqueue.zone
 		num.times do
+			lat = near(zone.lat)
+			lng = near(zone.lng)
 			user = Fabricate(:user, zone_id:zone.id) do
 				after_create do |attrs| 
 					25.times do
-						Fabricate :location, user_id: attrs[:id], lat: near(zone.lat), lng: near(zone.lng)
+						Fabricate :location, user_id: attrs[:id], lat: lat, lng: lng
 					end
 				end
 			end
-			activationqueue.users<< user
+			activationqueue.users<<user
 			json_package = UserSerializer.new user
 			Pusher.trigger "activationqueue"+activationqueue.id.to_s,"Add user to activationqueue",json_package
 		end
@@ -46,18 +48,22 @@ class Demo
 	end
 
 	def create_completed_hunts_in zone
-		5.times do 
-			Hunt.create stalker_id: User.active.shuffle.first.id,
-				target_id: User.active.shuffle.first.id,
+		5.times do
+			stalker = User.active.shuffle.first
+			target = User.active.shuffle.first
+			Hunt.create stalker_id: stalker.id,
+				target_id: target.id,
 				active: false,
 				lat: near(zone.lat),
 				lng: near(zone.lng),
-				completed_at: Time.now
+				completed_at: Time.now,
+				image_id: "hunts/ymoi2pofvylt4q0npdbt",
+				detail: "#{stalker.name} snaptagged #{target.name}"
 		end
 	end
 
 	def near geo
-		rand (geo - 0.001)..(geo + 0.001)
+		rand (geo - 0.01)..(geo + 0.01)
 	end
 
 end

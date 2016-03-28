@@ -16,7 +16,7 @@ class HuntEnder
 		@hunt.lat = @stalker.lat
 		@hunt.lng = @stalker.lng
 		@hunt.image_id = image_id
-		@hunt.detail = "#{@stalker.name} snaptagged #{target.name}"
+		@hunt.detail = "#{@stalker.name} snaptagged #{@target.name}"
 
 		# stalker
 
@@ -65,7 +65,7 @@ class HuntEnder
 		@hunt.completed_at = Time.now
 		@hunt.lat = @target.lat
 		@hunt.lng = @target.lng
-		@hunt.detail = "#{@target.name} countertagged #{stalker.name}"
+		@hunt.detail = "#{@target.name} countertagged #{@stalker.name}"
 
 		# target
 
